@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, TouchableHighlight, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Footer from '../components/Footer';
 import globalStyles from './GlobalStyles';
@@ -7,34 +7,56 @@ import HeaderNewMeal from '../components/HeaderNewMeal';
 import TextInputField from '../components/TextInputField';
 import Slider from '@react-native-community/slider';
 
-
-export default function Payment() {
+export default function NewMeal() {
   const navigation = useNavigation();
-  const [text1, setText1] = useState('');
-  const [text, setText] = useState('');
+
+  const [mealName, setMealName] = useState('');
+  const [kkalName, setKkalName] = useState('');
   const [value1, setValue1] = useState(0);
   const [value2, setValue2] = useState(0);
   const [value3, setValue3] = useState(0);
   const [value4, setValue4] = useState(0);
   const [isChecked, setChecked] = useState(false);
 
-  const handlePress1 = () => {
-    navigation.navigate('ModalCalendar');
+  const addNewMeal = () => {
+    const newMeal = {
+      id: Date.now().toString(),
+      name: mealName,
+      imageSource: require('../assets/icons/newMealIcon.png'),
+      backgroundColor: '#FAE03C',
+      title: "Your Meal",
+      width: 297,
+      height: 297,
+      width1: 236,
+      height1: 75,
+      widthImg: 219,
+      heightImg: 212,
+      fontSize1: 16,
+      widthText: 150,
+      heightText: 17,
+      titleBut: "View",
+      ageCategoryImg: require('../assets/icons/babyboyIcon.png'),
+      kkal: kkalName,
+      price: "0",
+    };
+
+    navigation.navigate('Home', { newMeal });
   };
+
 
   return (
     <View style={styles.container}>
       <ScrollView>
         <HeaderNewMeal />
         <View style={styles.content}>
-          <Image source={require('../assets/foodImg.png')} style={{ marginTop: 27 }} />
+          <Image source={require('../assets/foodImg.png')} style={{ marginTop: 27 , width:359, height:203}} />
           <View style={styles.top}>
             <Text style={[styles.title, { marginBottom: 8 }]}>Name of the dish</Text>
           </View>
           <TextInputField
             placeholder="Name"
-            value={text1}
-            onChangeText={setText1}
+            value={mealName}
+            onChangeText={setMealName}
             style={[styles.customInputStyle, { marginBottom: 32 }]}
           />
           <View style={{ marginBottom: 14 }}>
@@ -42,8 +64,8 @@ export default function Payment() {
           </View>
           <TextInputField
             placeholder="kkal"
-            value={text}
-            onChangeText={setText}
+            value={kkalName}
+            onChangeText={setKkalName}
             style={[styles.customInputStyle, { marginBottom: 32 }]}
           />
           <View style={{marginBottom:41}}>
@@ -105,7 +127,7 @@ export default function Payment() {
       </TouchableOpacity>
       <Text style={globalStyles.smallBlackText}>Save the dish for later</Text>
       </View>
-      <TouchableOpacity  style={[globalStyles.bigAddButton, {marginBottom:55, alignSelf:'center'}]} onPress={handlePress1}>
+      <TouchableOpacity  style={[globalStyles.bigAddButton, {marginBottom:55, alignSelf:'center', marginRight:'7%'}]} onPress={addNewMeal}>
             <Text style={globalStyles.bigButtonText}>Add a meal</Text>
            </TouchableOpacity>
           
@@ -126,8 +148,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     bottom: 0,
     height: '100%',
-    paddingLeft: 30,
-    paddingHorizontal: 30,
+    paddingLeft: '7%',
     paddingBottom: 53,
   },
   top: {

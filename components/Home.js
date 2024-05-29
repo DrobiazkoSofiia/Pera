@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, ScrollView, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Header from '../components/Header';
@@ -7,6 +7,10 @@ import VideoCard from '../components/VideoCard';
 import Footer from '../components/Footer';
 import ViewButton from '../components/MealCard';
 import globalStyles from './GlobalStyles';
+import {meals as initialMeals } from './MealData';
+import {  useRoute } from '@react-navigation/native';
+
+
 
 
 
@@ -27,24 +31,35 @@ const DetailsButton = ({ onPress }) => {
 }
 
 export default function Home() {
+  const [mealCards, setMealCards] = useState(initialMeals);
   const navigation = useNavigation();
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [showConfirmationModal1, setShowConfirmationModal1] = useState(false);
   const CustomButton = ({ title, onPress, style, textStyle, icon }) => (
     <TouchableOpacity onPress={handlePress33} style={[globalStyles.button, style]}>
        {icon && <Image source={require('../assets/icons/deleteIcon.png')} style={{ width: 34, height: 34 }} />}
       <Text style={[globalStyles.buttonText, textStyle]}>{title}</Text>
     </TouchableOpacity>
   );
-
-  const handlePress = () => {
-    navigation.navigate('DescriptMealCard');
-  };
-  const handlePress1 = () => {
-    navigation.navigate('DescriptMealCard');
-  };
   const handlePress33 = () => {
     navigation.navigate('Cart');
   };
+
+  const handleDelete = (id) => {
+    setMealCards(mealCards.filter(meal => meal.id !== id));
+    setShowConfirmationModal1(true);
+    setShowConfirmationModal(false);
+  };
+  const route = useRoute();
+  const { newMeal } = route.params || {};
+  
+useEffect(() => {
+  if (newMeal) {
+    setMealCards([...mealCards, newMeal]);
+  }
+}, [newMeal]);
+
+
 
   return (
     <View style={styles.container}>
@@ -62,119 +77,42 @@ export default function Home() {
           </View>
           <View>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            <View style={styles.mealCard}>
-            <MealCard
-              backgroundColor='#FAE03C'
-              imageSource={require('../assets/productImage.png')}
-              title="Breakfast"
-              name="Morning Bowl"
-              width={297}
-              height={297}
-              width1={236}
-              height1={75}
-              widthImg={219}
-              heightImg={212}
-              fontSize1={16}
-              widthText={150}
-              heightText={17}  
-              onButtonPress={handlePress1}
-              titleBut="View"
-             />
-            </View>
-            <View style={styles.mealCard}>
-               <MealCard
-              backgroundColor='#C6EC7A'
-              imageSource={require('../assets/productImage.png')}
-              title="Snack 1"
-              name="Chicken Sticks"
-              width={297}
-              height={297}
-              width1={236}
-              height1={75}
-              widthImg={219}
-              heightImg={212}
-              fontSize1={16}
-              heightText={17}        
-              widthText={150}
-              onButtonPress={handlePress1}
-              titleBut="View"
-             />
-            </View>
-            <View style={styles.mealCard}>
-            <MealCard
-              backgroundColor='#C4BAE6'
-              imageSource={require('../assets/productImage.png')}
-              title="Snack 2"
-              name="Crunchies"
-              width={297}
-              height={297}
-              width1={236}
-              height1={75}
-              widthImg={219}
-              heightImg={212}
-              fontSize1={16}
-              heightText={17}        
-              widthText={150}
-              onButtonPress={handlePress1}
-              titleBut="View"
-             />
-            </View>
-            <View style={styles.mealCard}>
-            <MealCard
-              backgroundColor='#FFC4BC'
-              imageSource={require('../assets/productImage.png')}
-              title="Lunch"
-              name="Harvest Bowl"
-              width={297}
-              height={297}
-              width1={236}
-              height1={75}
-              widthImg={219}
-              heightImg={212}
-              fontSize1={16}
-              heightText={17}        
-              widthText={150}
-              onButtonPress={handlePress1}
-              titleBut="View"
-             />
-            </View>
-            <View style={styles.mealCard}>
-            <MealCard
-              backgroundColor='#D5EBF4'
-              imageSource={require('../assets/productImage.png')}
-              title="Snack 3"
-              name="Banana puffs"
-              width={297}
-              height={297}
-              width1={236}
-              height1={75}
-              widthImg={219}
-              heightImg={212}
-              fontSize1={16}
-              heightText={17}        
-              widthText={150}
-              onButtonPress={handlePress1}
-              titleBut="View"
-             />
-            </View>
-            <View style={styles.mealCard}>
-            <MealCard
-              backgroundColor='#FFA64F'
-              imageSource={require('../assets/productImage.png')}
-              title="Dinner"
-              name="Pasta Stars"
-              width={297}
-              height={297}
-              width1={236}
-              height1={75}
-              widthImg={219}
-              heightImg={212}
-              fontSize1={16}
-              heightText={17}        
-              widthText={150}
-              onButtonPress={handlePress1}
-              titleBut="View"
-             />
+          <View style={{flexDirection:'row'}}>
+  {mealCards.map((mealCard, index) => (
+    <MealCard
+      key={index}
+      backgroundColor={mealCard.backgroundColor}
+      imageSource={mealCard.imageSource}
+      title={mealCard.title}
+      name={mealCard.name}
+      width={mealCard.width}
+      height={mealCard.height}
+      width1={mealCard.width1}
+      height1={mealCard.height1}
+      widthImg={mealCard.widthImg}
+      heightImg={mealCard.heightImg}
+      fontSize1={mealCard.fontSize1}
+      widthText={mealCard.widthText}
+      heightText={mealCard.heightText}
+      onButtonPress={() => navigation.navigate('DescriptMealCard', { mealCard, handleDelete })}
+      titleBut={mealCard.titleBut}
+      ingridients={mealCard.ingridients}
+      smallIngridients={mealCard.smallIngridients}
+      kkal={mealCard.kkal}
+      time={mealCard.time}
+      ageCategory={mealCard.ageCategory}
+      ageMonth={mealCard.ageMonth}
+      ageCategoryImg={mealCard.ageCategoryImg}
+      smallProduct1={mealCard.smallProduct1}
+      smallProduct2={mealCard.smallProduct2}
+      smallProduct3={mealCard.smallProduct3}
+      smallProduct4={mealCard.smallProduct4}
+      navigation={navigation}
+      
+    />
+  ))}
+
+
             </View>
           </ScrollView>
           </View>
@@ -229,122 +167,42 @@ export default function Home() {
                         
                         <Image style={{width:280, height:104, marginTop:23,  marginBottom:23}} source={require('../assets/calendar.png')} />
                         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                        <View style={{width:297, height:373, marginRight:8}}>
-              <MealCard
-              backgroundColor='#FAE03C'
-              imageSource={require('../assets/productImage.png')}
-              title="Breakfast"
-              name="Morning Bowl"
-              width={297}
-              height={297}
-              width1={236}
-              height1={75}
-              widthImg={219}
-              heightImg={212}
-              fontSize1={16}
-              widthText={150}
-              heightText={17}  
-              onButtonPress={handlePress1}
-              titleBut="View"
-             />
-                        </View>
-                        <View style={{width:297, height:373, marginRight:8}}>
-                        <MealCard
-              backgroundColor='#C6EC7A'
-              imageSource={require('../assets/productImage.png')}
-              title="Snack 1"
-              name="Chicken Sticks"
-              width={297}
-              height={297}
-              width1={236}
-              height1={75}
-              widthImg={219}
-              heightImg={212}
-              fontSize1={16}
-              heightText={17}        
-              widthText={150}
-              onButtonPress={handlePress1}
-              titleBut="View"
-             />
-                        </View>
-                        <View style={{width:297, height:373, marginRight:8}}>
-                        <MealCard
-              backgroundColor='#C4BAE6'
-              imageSource={require('../assets/productImage.png')}
-              title="Snack 2"
-              name="Crunchies"
-              width={297}
-              height={297}
-              width1={236}
-              height1={75}
-              widthImg={219}
-              heightImg={212}
-              fontSize1={16}
-              heightText={17}        
-              widthText={150}
-              onButtonPress={handlePress1}
-              titleBut="View"
-             />
-          
-                        </View>
-                        <View style={{width:297, height:373, marginRight:8}}>
-                        <MealCard
-              backgroundColor='#FFC4BC'
-              imageSource={require('../assets/productImage.png')}
-              title="Lunch"
-              name="Harvest Bowl"
-              width={297}
-              height={297}
-              width1={236}
-              height1={75}
-              widthImg={219}
-              heightImg={212}
-              fontSize1={16}
-              heightText={17}        
-              widthText={150}
-              onButtonPress={handlePress1}
-              titleBut="View"
-             />
-                        </View>
-                        <View style={{width:297, height:373, marginRight:8}}>
-                        <MealCard
-              backgroundColor='#D5EBF4'
-              imageSource={require('../assets/productImage.png')}
-              title="Snack 3"
-              name="Banana puffs"
-              width={297}
-              height={297}
-              width1={236}
-              height1={75}
-              widthImg={219}
-              heightImg={212}
-              fontSize1={16}
-              heightText={17}        
-              widthText={150}
-              onButtonPress={handlePress1}
-              titleBut="View"
-             />
-                        </View>
-                        <View style={{width:297, height:373, marginRight:8}}>
-                        <MealCard
-              backgroundColor='#FFA64F'
-              imageSource={require('../assets/productImage.png')}
-              title="Dinner"
-              name="Pasta Stars"
-              width={297}
-              height={297}
-              width1={236}
-              height1={75}
-              widthImg={219}
-              heightImg={212}
-              fontSize1={16}
-              heightText={17}        
-              widthText={150}
-              onButtonPress={handlePress1}
-              titleBut="View"
-             />
-                        </View>
-                                           
+                        <View style={{flexDirection:'row'}}>
+  {mealCards.map((mealCard, index) => (
+     <MealCard
+     key={index}
+     backgroundColor={mealCard.backgroundColor}
+     imageSource={mealCard.imageSource}
+     title={mealCard.title}
+     name={mealCard.name}
+     width={mealCard.width}
+     height={mealCard.height}
+     width1={mealCard.width1}
+     height1={mealCard.height1}
+     widthImg={mealCard.widthImg}
+     heightImg={mealCard.heightImg}
+     fontSize1={mealCard.fontSize1}
+     widthText={mealCard.widthText}
+     heightText={mealCard.heightText}
+     onButtonPress={() => navigation.navigate('DescriptMealCard', { mealCard, handleDelete })}
+     titleBut={mealCard.titleBut}
+     ingridients={mealCard.ingridients}
+     smallIngridients={mealCard.smallIngridients}
+     kkal={mealCard.kkal}
+     time={mealCard.time}
+     ageCategory={mealCard.ageCategory}
+     ageMonth={mealCard.ageMonth}
+     ageCategoryImg={mealCard.ageCategoryImg}
+     smallProduct1={mealCard.smallProduct1}
+     smallProduct2={mealCard.smallProduct2}
+     smallProduct3={mealCard.smallProduct3}
+     smallProduct4={mealCard.smallProduct4}
+     navigation={navigation}
+     
+   />
+  ))}
+
+            </View>
                         </ScrollView>
                         <View style={{width:301, height:80, backgroundColor:'#7EC845', flexDirection:'column', borderRadius:10, gap:2, paddingTop:8, paddingLeft:8, marginBottom:39}}>
                         <Text style={[globalStyles.naming, {alignSelf:'flex-start'}]}>TOTAL</Text>
@@ -362,6 +220,7 @@ export default function Home() {
                         </View>
                 </View>
             </Modal>
+            
 
       <View style={styles.footer}>
       <Footer />

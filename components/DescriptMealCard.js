@@ -1,11 +1,20 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, ScrollView, ImageBackground, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import globalStyles from './GlobalStyles';
 import Footer from '../components/Footer';
 import MealCard from './MealCard';
+import { useRoute } from '@react-navigation/native';
+import { CartContext } from './CartContext';
+import {meals as initialMeals } from './MealData';
 
-export default function DescriptMealCard() {
+
+export default function DescriptMealCard({}) {
+  const [mealCards, setMealCards] = useState(initialMeals);
+  const route = useRoute();
+  const { mealCard, handleDelete } = route.params;
+  const { addToCart } = useContext(CartContext);
+
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [showConfirmationModal1, setShowConfirmationModal1] = useState(false);
   const navigation = useNavigation()
@@ -33,7 +42,17 @@ export default function DescriptMealCard() {
     const [isHeartClicked, setIsHeartClicked] = useState(false);
     const handleHeartPress = () => {
       setIsHeartClicked(!isHeartClicked);
+      
     };
+    const onDelete = () => {
+    handleDelete(mealCard.id);
+    setShowConfirmationModal1(true);
+    setShowConfirmationModal(false)
+  };
+  const onAddToCart = () => {
+    addToCart(mealCard);
+    navigation.navigate('Cart');
+  };
     return (
 
         <View style={styles.container}>
@@ -48,15 +67,16 @@ export default function DescriptMealCard() {
             <Image source={require('../assets/icons/arrowIcon.png')} style={{marginRight:42}}/>
             </TouchableOpacity>
             <View style={globalStyles.categoryName}>
-            <Text style={globalStyles.title}>Breakfast</Text>
+            <Text style={globalStyles.title}>{mealCard.title}</Text>
+
             </View>
             <TouchableOpacity onPress={handleHeartPress}>
                     <Image source={isHeartClicked ? require('../assets/icons/heartClickedIcon.png') : require('../assets/icons/heartIcon.png')} style={{ marginLeft: 42 }} />
                   </TouchableOpacity>
            </View>
-            <Text style={globalStyles.naming}>Organic Morning bowl</Text>
-            <Image source={require('../assets/productImage.png')}/>
-            <Text style={globalStyles.productIngridients}>Oats, red quinoa & farro with tropical fruits</Text>
+            <Text style={globalStyles.naming}>{mealCard.name}</Text>
+            <Image source={mealCard.imageSource}/>
+            <Text style={globalStyles.productIngridients}>{mealCard.smallIngridients}</Text>
 
             </View>
             </ImageBackground>
@@ -67,24 +87,24 @@ export default function DescriptMealCard() {
                 <View style={styles.icons}>
                 <Image source={require('../assets/icons/kkalIcon.png')} style={{width:16, height:22,}} />
                 </View>
-                <Text style={styles.kkal}>278 kkal</Text>
+                <Text style={styles.kkal}>{mealCard.kkal} kkal</Text>
                 </View>
             
                 <View style={styles.descript}>
                 <View style={styles.icons}>
                 <Image source={require('../assets/icons/timeIcon.png')} style={{width:26, height:26,}} />
                 </View>
-                <Text style={styles.kkal}>10 min</Text>
+                <Text style={styles.kkal}>{mealCard.time} min</Text>
                 </View>
                 </View>
                 <View style={styles.row2}>
                 <View style={styles.descript}>
                 <View style={styles.age}>
-                <Image source={require('../assets/icons/crawlerIcon.png')} style={{width:60, height:59,}} />
+                <Image source={mealCard.ageCategoryImg} style={{width:60, height:59,}} />
                 </View>
                 <View style={styles.ageCategory}>
-                <Text style={globalStyles.smallBlackName}>Crawler</Text>
-                <Text style={globalStyles.smallGreyText}>8-12 months</Text>
+                <Text style={globalStyles.smallBlackName}>{mealCard.ageCategory}</Text>
+                <Text style={globalStyles.smallGreyText}>{mealCard.ageMonth} months</Text>
                 </View>
                 </View>
                 <View style={styles.descript}>
@@ -97,22 +117,24 @@ export default function DescriptMealCard() {
                 <Text style={globalStyles.title2}>Ingredients</Text>
                 </View>
                 <View style={{paddingHorizontal:10,paddingLeft:10, paddingRight:10}}>
-                <Text style={globalStyles.smallBlackText}>Organic whole grain oats (contains wheat) and organic red quinoa and organic farro (wheat) cooked in water, organic banana puree, water, organic tapioca starch, organic dried mango, organic dried pineapple, organic lemon juice concentrate, natural vanilla flavor, deoiled sunflower lecithin (for texture), iron (ferrous sulfate).</Text>
+                <Text style={globalStyles.smallBlackText}>{mealCard.ingridients}</Text>
                 </View>
                 </View>
                 <View style={styles.row4}>
-                <Image source={require('../assets/smallProduct1.png')} style={{width:75, height:75,}} />
-                <Image source={require('../assets/smallProduct2.png')} style={{width:75, height:75,}} />
-                <Image source={require('../assets/smallProduct3.png')} style={{width:75, height:75,}} />
-                <Image source={require('../assets/smallProduct4.png')} style={{width:75, height:75,}} />
+                <Image source={mealCard.smallProduct1} style={{width:75, height:75,}} />
+                <Image source={mealCard.smallProduct2} style={{width:75, height:75,}} />
+                <Image source={mealCard.smallProduct3} style={{width:75, height:75,}} />
+                <Image source={mealCard.smallProduct4} style={{width:75, height:75,}} />
                 </View>
                 <View style={styles.row5}>
+                  <TouchableOpacity onPress={onAddToCart}>
                 <View style={globalStyles.bigBlueButton}>
                 <View style={globalStyles.buttonContent}>
                 <Image source={require('../assets/icons/babystollerIcon.png')} style={{width:39, height:39,}} /> 
                 <Text style={globalStyles.bigButtonText}>Add to cart</Text>
                 </View>
                 </View>
+                </TouchableOpacity>
                 </View>
                 <View style={styles.row6}>
         
@@ -144,7 +166,7 @@ export default function DescriptMealCard() {
                       <Text style={[globalStyles.bigButtonText, {color:'black'}]}>Are you sure to delete this item?</Text>
                         <View style={{ flexDirection: 'row', marginTop: 27, gap:7 }}>
                             <CustomButton style={[globalStyles.modalButton, {backgroundColor:'white', borderColor:'#007EB1', borderWidth:1}]} textStyle={[globalStyles.editButtonText, {color: 'black'}]} title="Cancel" onPress={() => setShowConfirmationModal(false)} />
-                            <CustomButton style={[globalStyles.modalButton, globalStyles.editButtonContent]} textStyle={globalStyles.editButtonText} icon={require('../assets/icons/deleteIcon.png')} title="Delete" onPress={() =>[ setShowConfirmationModal1(true), setShowConfirmationModal(false)]} />
+                            <CustomButton style={[globalStyles.modalButton, globalStyles.editButtonContent]} textStyle={globalStyles.editButtonText} icon={require('../assets/icons/deleteIcon.png')} title="Delete" onPress={onDelete} />
                         </View>
                     </View>
                 </View>
@@ -171,57 +193,8 @@ export default function DescriptMealCard() {
                     <Text style={[globalStyles.productIngridients, {marginBottom:16}]}>Other breakfast you might like</Text>
                     </View>
                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-              <MealCard
-              backgroundColor='#FAE03C'
-              imageSource={require('../assets/productImage.png')}
-              title="Morning Bowl"
-              name="Oats, barley with banana
-              and berries"
-              width={186}
-              height={186}
-              width1={166}
-              height1={92}
-              widthImg={146}
-              heightImg={146}
-              fontSize1={13}
-              onPress={handlePress}
-              widthText={150}
-              onButtonPress={handlePress1}
-              titleBut="Add"
-             />
-             <MealCard
-              backgroundColor='#FFC4BC'
-              imageSource={require('../assets/productImage.png')}
-              title="Oatmeal"
-              name="Banana Strawberry Cereal"
-              width={186}
-              height={186}
-              width1={166}
-              height1={92}
-              widthImg={146}
-              heightImg={146}
-              fontSize1={13}
-              onPress={handlePress}
-              widthText={150}
-              titleBut="Add"
-             />
-            <MealCard
-              backgroundColor='#C4BAE6'
-              imageSource={require('../assets/productImage.png')}
-              title="Oatmeal"
-              name="Whole Wheat  Blueberry Cereal"
-              width={186}
-              height={186}
-              width1={166}
-              height1={92}
-              widthImg={146}
-              heightImg={146}
-              fontSize1={13}
-              onPress={handlePress}
-              widthText={150}
-              titleBut="Add"
-             />
-             <MealCard
+                    <View style={{flexDirection:'row'}}>
+                    <MealCard
               backgroundColor='#FFBF00'
               imageSource={require('../assets/icons/plusIcon.png')}
               title="Your Meal"
@@ -239,6 +212,42 @@ export default function DescriptMealCard() {
               onButtonPress={handlePress2}
               titleBut="Add"
             />
+  {mealCards.map((mealCard, index) => (
+     <MealCard
+     key={index}
+     backgroundColor={mealCard.backgroundColor}
+     imageSource={mealCard.imageSource}
+     title={mealCard.title}
+     name={mealCard.name}
+     width={186}
+     height={186}
+     width1={166}
+     height1={92}
+     widthImg={146}
+     heightImg={146}
+     fontSize1={13}
+     widthText={150}
+     heightText={35}
+     onButtonPress={() => navigation.navigate('DescriptMealCard', { mealCard, handleDelete,}, setShowConfirmationModal1(false))}
+     titleBut={mealCard.titleBut}
+     ingridients={mealCard.ingridients}
+     smallIngridients={mealCard.smallIngridients}
+     kkal={mealCard.kkal}
+     time={mealCard.time}
+     ageCategory={mealCard.ageCategory}
+     ageMonth={mealCard.ageMonth}
+     ageCategoryImg={mealCard.ageCategoryImg}
+     smallProduct1={mealCard.smallProduct1}
+     smallProduct2={mealCard.smallProduct2}
+     smallProduct3={mealCard.smallProduct3}
+     smallProduct4={mealCard.smallProduct4}
+     navigation={navigation}
+     
+   />
+  ))}
+
+            </View>
+            
          </ScrollView>
         </View>
       </View>

@@ -1,50 +1,47 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, TouchableHighlight, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useContext } from 'react';
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Footer from '../components/Footer';
-import HeaderNewMeal from '../components/HeaderNewMeal';
-import TextInputField from '../components/TextInputField';
-import Slider from '@react-native-community/slider';
 import HeaderCart from './HeaderCart';
 import CartMeal from './CartMeal';
 import globalStyles from './GlobalStyles';
-
+import { CartContext } from './CartContext';
 
 export default function Cart() {
   const navigation = useNavigation();
-  const [text, setText] = useState('');
-  const [value1, setValue1] = useState(0);
-  const [value2, setValue2] = useState(0);
-  const [value3, setValue3] = useState(0);
-  const [value4, setValue4] = useState(0);
-  const [isChecked, setChecked] = useState(false);
+  const { cartItems, removeFromCart, updateItemCount } = useContext(CartContext);
 
-  const handlePress1 = () => {
-    navigation.navigate('RegistrationQ1');
-  };
+  const totalPayment = cartItems.reduce((sum, item) => sum + item.price * item.count, 0).toFixed(2);
 
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <HeaderCart title={'Cart'}/>
+        <HeaderCart title={'Cart'} />
         <View style={styles.content}>
-          <View style={{gap:26, paddingTop:34, marginBottom:44}}>
-          <CartMeal/>
-          <CartMeal/>
-          <CartMeal/>
-          <CartMeal/>
-          <CartMeal/>  
-          </View> 
+          <View style={{ gap: 26, paddingTop: 34, marginBottom: 44 }}>
+            <FlatList
+              data={cartItems}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({ item }) => (
+                <CartMeal
+                  name={item.name}
+                  imageSource={item.imageSource}
+                  size={item.size}
+                  price={item.price}
+                  removeFromCart={removeFromCart}
+                  updateItemCount={updateItemCount}
+                  item={item}
+                />
+              )}
+            />
+          </View>
           <View style={styles.totalContainer}>
-            <Text style={globalStyles.productIngridients1}>Total Payment</Text>
-            <Text style={globalStyles.bigButtonText1}>€24.77</Text>
-          </View>     
-      <TouchableOpacity  style={[globalStyles.bigAddButton, {marginBottom:55, alignSelf:'center'}]} onPress={handlePress1}>
+            <Text style={[globalStyles.productIngridients1, {marginTop:16}]}>Total Payment</Text>
+            <Text style={globalStyles.bigButtonText1}>€{totalPayment}</Text>
+          </View>
+          <TouchableOpacity style={[globalStyles.bigAddButton, { marginBottom: 55, alignSelf: 'center' }]}>
             <Text style={globalStyles.bigButtonText}>Proceed to checkout</Text>
-           </TouchableOpacity>
-          
+          </TouchableOpacity>
         </View>
-      </ScrollView>
       <View style={styles.footer}>
         <Footer />
       </View>
@@ -54,8 +51,8 @@ export default function Cart() {
 
 const styles = StyleSheet.create({
   container: {
-    height: 'auto',
-  
+    height: '100%',
+    backgroundColor: 'white',
   },
   content: {
     backgroundColor: 'white',
@@ -66,10 +63,14 @@ const styles = StyleSheet.create({
   },
   totalContainer: {
     flexDirection: 'row',
-    justifyContent: 'center', 
-    alignItems:'center',
+    justifyContent: 'center',
+    alignItems: 'baseline',
+    gap:155,
     marginBottom: 44,
-    
+    borderTopWidth: 5,
+    borderColor: '#92949B',
+    borderTopRadius: 2,
+    borderStyle: 'dotted',
   },
   top: {
     paddingTop: 17,
@@ -111,7 +112,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 10,
-    backgroundColor:'#ECECEC'
+    backgroundColor: '#ECECEC',
   },
   checkedCheckbox: {
     backgroundColor: '#007EB1',
@@ -124,11 +125,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   footer: {
-    position: 'absolute', // Position the footer absolutely
-    bottom: 0, // Align footer to the bottom
+    position: 'absolute',
+    bottom: 0,
     left: 0,
     right: 0,
-    alignItems: 'center', // Align items at the center horizontally
+    alignItems: 'center',
   },
   modalView: {
     width: 373,
@@ -176,4 +177,3 @@ const styles = StyleSheet.create({
     gap: 10,
   },
 });
-

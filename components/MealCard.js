@@ -18,8 +18,22 @@ export default function MealCard({
   widthText,
   heightText,
   onButtonPress,
-  titleBut
+  titleBut, 
+  meal,
+  ingridients,
+  smallIngridients,
+  kkal,
+  time,
+  ageCategory,
+  ageMonth,
+  ageCategoryImg,
+  smallProduct1,
+  smallProduct2,
+  smallProduct3,
+  smallProduct4,
+
 }) {
+ 
   const [buttonText, setButtonText] = useState(titleBut);
 
   const handleButtonPress = () => {
