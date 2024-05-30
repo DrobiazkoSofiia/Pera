@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { StyleSheet, View, ImageBackground, Text, TouchableOpacity, Image, TouchableHighlight, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import globalStyles from './GlobalStyles';
+import {  useRoute } from '@react-navigation/native';
+import ProgressBar from './ProgressBar';
 
 export default function RegistrationQ1() {
   const navigation = useNavigation();
@@ -22,10 +24,13 @@ export default function RegistrationQ1() {
     setIsBoyPressed(false);
     setIsGirlPressed(true);
   };
+  const route = useRoute();
+  const { username } = route.params || {};
 
   const handlePress5 = () => {
-    navigation.navigate('RegistrationQ2');
+    navigation.navigate('RegistrationQ2', { username });
   };
+
 
   return (
     <View style={styles.container}>
@@ -40,6 +45,7 @@ export default function RegistrationQ1() {
               <TouchableOpacity style={[globalStyles.buttonBackArrow]} onPress={handleCrossIconPress}>
                 <Image source={require('../assets/icons/arrowIcon.png')} style={{ width: 46, height: 46 }} />
               </TouchableOpacity>
+              <ProgressBar step={1} totalSteps={5} />
             </View>
             <Text style={[globalStyles.bigButtonText1, { paddingBottom: '15%' }]}>Select your baby's gender</Text>
             <View style={styles.buttonsGender}>
@@ -92,6 +98,9 @@ const styles = StyleSheet.create({
     paddingLeft: 35,
     width: '100%',
     paddingBottom: '10%',
+    flexDirection:'row',
+    alignItems:'center',
+
   },
   buttonsGender: {
     alignItems: 'center',

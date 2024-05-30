@@ -18,7 +18,7 @@ export const meals = [
         titleBut: "View",
         ingridients: "Organic whole grain oats (contains wheat) and organic red quinoa and organic farro (wheat) cooked in water, organic banana puree, water, organic tapioca starch, organic dried mango, organic dried pineapple, organic lemon juice concentrate, natural vanilla flavor, deoiled sunflower lecithin (for texture), iron (ferrous sulfate).",
           smallIngridients:"Oats, red quinoa & farro with tropical fruits",
-          kkal:"278",
+          kkal:278,
           time:"10",
           ageCategory:"Crawler",
           ageMonth:"8-12",
@@ -29,6 +29,7 @@ export const meals = [
           smallProduct4: require('../assets/smallProduct4.png'),
           price:"2.63",
           size:"1 bowl(128g)",
+          time:"15",
     },
     {
       id: 2,
@@ -48,7 +49,7 @@ export const meals = [
       titleBut: "View",
       ingridients: "Сultured reduced fat milk, sugar, strawberry puree, nonfat dry milk, tapioca starch, less than 1.5% of: gelatin, natural strawberry flavor, lactic acid esters of mono and diglycerides, fruit and vegetable juice colors, vitamin c (sodium ascorbate), vitamin e (alpha tocopheryl acetate), vitamin a acetate.",
       smallIngridients:"Freeze-dried yogurt snack with strawberry",
-      kkal:"153",
+      kkal:153,
       time:"5",
       ageCategory:"Crawler",
       ageMonth:"8-12",
@@ -59,6 +60,7 @@ export const meals = [
       smallProduct4: require('../assets/smallProduct8.png'),
       price:"2.63",
       size:"1 bowl(128g)",
+      time:"5",
       
     },
     { id: 3,
@@ -78,7 +80,7 @@ export const meals = [
       titleBut: "View",
       ingridients: "Organic dried navy beans, organic rice flour, organic high oleic sunflower oil, organic cheddar cheese (organic cultured milk, salt, enzymes), sea salt, organic sweet whey, organic lemon juice concentrate, organic dried broccoli, organic garlic oil, organic onion oil, organic black pepper oil.",
       smallIngridients:"Crunchies with broccoli, cheddar and navy beans",
-      kkal:"196",
+      kkal:196,
       time:"5",
       ageCategory:"Toddler",
       ageMonth:"12+",
@@ -89,6 +91,7 @@ export const meals = [
       smallProduct4: require('../assets/smallProduct12.png'),  
       price:"2.63",
       size:"1 bowl(128g)",
+      time:"10",
     },
     {
       id: 4,
@@ -108,7 +111,7 @@ export const meals = [
       titleBut: "View",
       ingridients: "Organic dried navy beans, organic rice flour, organic high oleic sunflower oil, organic cheddar cheese (organic cultured milk, salt, enzymes), sea salt, organic sweet whey, organic lemon juice concentrate, organic dried broccoli, organic garlic oil, organic onion oil, organic black pepper oil.",
       smallIngridients:"Crunchies with broccoli, cheddar and navy beans",
-      kkal:"196",
+      kkal:196,
       time:"5",
       ageCategory:"Toddler",
       ageMonth:"12+",
@@ -119,6 +122,7 @@ export const meals = [
       smallProduct4: require('../assets/smallProduct12.png'),
       price:"2.63",
       size:"1 bowl(128g)",
+      time:"5",
     },
     
     {id: 5,
@@ -138,7 +142,7 @@ export const meals = [
       titleBut: "View",
       ingridients: "Organic dried navy beans, organic rice flour, organic high oleic sunflower oil, organic cheddar cheese (organic cultured milk, salt, enzymes), sea salt, organic sweet whey, organic lemon juice concentrate, organic dried broccoli, organic garlic oil, organic onion oil, organic black pepper oil.",
       smallIngridients:"Crunchies with broccoli, cheddar and navy beans",
-      kkal:"196",
+      kkal:196,
       time:"5",
       ageCategory:"Toddler",
       ageMonth:"12+",
@@ -149,6 +153,7 @@ export const meals = [
       smallProduct4: require('../assets/smallProduct12.png'),
       price:"2.63",
       size:"1 bowl(128g)",
+      time:"6",
     },
     {id: 6,
       backgroundColor: '#FFA64F',
@@ -167,7 +172,7 @@ export const meals = [
       titleBut: "View",
       ingridients: "Organic dried navy beans, organic rice flour, organic high oleic sunflower oil, organic cheddar cheese (organic cultured milk, salt, enzymes), sea salt, organic sweet whey, organic lemon juice concentrate, organic dried broccoli, organic garlic oil, organic onion oil, organic black pepper oil.",
       smallIngridients:"Crunchies with broccoli, cheddar and navy beans",
-      kkal:"196",
+      kkal:196,
       time:"5",
       ageCategory:"Toddler",
       ageMonth:"12+",
@@ -178,9 +183,11 @@ export const meals = [
       smallProduct4: require('../assets/smallProduct12.png'),
       price:"2.63",
       size:"1 bowl(128g)",
+      time:"10",
 
     },
   ];
+  
   export function getMealCardsWithNavigation() {
     const navigation = useNavigation(); // Отримайте navigation
     return mealCards.map(mealCard => ({

@@ -4,6 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import globalStyles from './GlobalStyles';
 import TextInputField from './TextInputField';
+import {  useRoute } from '@react-navigation/native';
+import ProgressBar from './ProgressBar';
 
 export default function RegistrationQ3() {
   const navigation = useNavigation();
@@ -13,9 +15,12 @@ export default function RegistrationQ3() {
   const handlePress2 = () => {
     navigation.navigate('RegistrationQ2');
   };
+  const route = useRoute();
+  const { username, childname } = route.params || {};
+
 
   const handlePress5 = () => {
-    navigation.navigate('RegistrationQ4');
+    navigation.navigate('RegistrationQ4',  { username, childname } );
   };
 
   const showDatePicker = () => {
@@ -41,6 +46,7 @@ export default function RegistrationQ3() {
               <TouchableOpacity style={globalStyles.buttonBackArrow} onPress={handlePress2}>
                 <Image source={require('../assets/icons/arrowIcon.png')} style={{ width: 46, height: 46 }} />
               </TouchableOpacity>
+              <ProgressBar step={3} totalSteps={5} />
             </View>
             <Text style={[globalStyles.bigButtonText1, { marginBottom: 24, width:300 }]}>What is your child's date of birth?</Text>
             <TouchableOpacity onPress={showDatePicker} style={{width:430, marginLeft:'20%', paddingBottom: '85%'}}>
@@ -85,7 +91,9 @@ const styles = StyleSheet.create({
     paddingTop: '10%',
     paddingLeft: 35,
     width: '100%',
-    marginBottom: '10%',
+    paddingBottom: '10%',
+    flexDirection:'row',
+    alignItems:'center',
   },
   customInputStyle: {
     width: '80%',

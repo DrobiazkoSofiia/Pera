@@ -1,14 +1,17 @@
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
+import {  useRoute } from '@react-navigation/native';
 
 export default function Header() {
   const navigation = useNavigation();
   const handlePress1 = () => {
     navigation.navigate('Notification');
   };
+  const route = useRoute();
+  const { childname, username } = route.params || {};
   const handlePress2 = () => {
-    navigation.navigate('ChildAccount');
+    navigation.navigate('ChildAccount', { childname, username });
   };
   return (
     <View style={styles.container}>

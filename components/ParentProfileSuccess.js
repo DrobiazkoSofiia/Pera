@@ -2,15 +2,18 @@ import React from 'react';
 import { StyleSheet, View, Button, ImageBackground, Text, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import globalStyles from './GlobalStyles';
+import {  useRoute } from '@react-navigation/native';
 
 export default function ParentProfileSuccess() {
   const navigation = useNavigation();
+  const route = useRoute();
+  const { username } = route.params || {};
 
   const handlePress = () => {
-    navigation.navigate('HomeNotRegistered');
+    navigation.navigate('HomeNotRegistered', { username });
   };
   const handlePress1 = () => {
-    navigation.navigate('RegistrationQ1');
+    navigation.navigate('RegistrationQ1', { username });
   };
 
   return (

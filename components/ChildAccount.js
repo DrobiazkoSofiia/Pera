@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, Image, TouchableOpacity, ScrollView, ImageBackg
 import { useNavigation } from '@react-navigation/native';
 import globalStyles from './GlobalStyles';
 import Footer from '../components/Footer';
+import {  useRoute } from '@react-navigation/native';
 
 export default function ChildAccount() {
   const navigation = useNavigation()
@@ -12,6 +13,8 @@ export default function ChildAccount() {
   const handlePress1 = () => {
     navigation.navigate('RegistrationQ1');
   };
+  const route = useRoute();
+  const { childname } = route.params || {};
     return (
 
         <View style={styles.container}>
@@ -25,7 +28,7 @@ export default function ChildAccount() {
            <TouchableOpacity>
           <Image style={styles.baby} source={require('../assets/baby.jpg')} />
         </TouchableOpacity>
-        <Text style={globalStyles.textParentProfileSuccess}>Denis</Text>
+        <Text style={globalStyles.textParentProfileSuccess}>{ childname }</Text>
         </View>
            </ImageBackground>
             </View>

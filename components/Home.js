@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useContext, useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, ScrollView, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Header from '../components/Header';
@@ -9,9 +9,7 @@ import ViewButton from '../components/MealCard';
 import globalStyles from './GlobalStyles';
 import {meals as initialMeals } from './MealData';
 import {  useRoute } from '@react-navigation/native';
-
-
-
+import { CartContext } from './CartContext';
 
 
 const MoreButton = ({ onPress }) => {
@@ -30,20 +28,17 @@ const DetailsButton = ({ onPress }) => {
   );
 }
 
-export default function Home() {
+export default function Home({ }) {;
   const [mealCards, setMealCards] = useState(initialMeals);
   const navigation = useNavigation();
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-  const [showConfirmationModal1, setShowConfirmationModal1] = useState(false);
+  const [showConfirmationModal2, setShowConfirmationModal2] = useState(false);
   const CustomButton = ({ title, onPress, style, textStyle, icon }) => (
-    <TouchableOpacity onPress={handlePress33} style={[globalStyles.button, style]}>
+    <TouchableOpacity onPress={onPress} style={[globalStyles.button, style]}>
        {icon && <Image source={require('../assets/icons/deleteIcon.png')} style={{ width: 34, height: 34 }} />}
       <Text style={[globalStyles.buttonText, textStyle]}>{title}</Text>
     </TouchableOpacity>
   );
-  const handlePress33 = () => {
-    navigation.navigate('Cart');
-  };
 
   const handleDelete = (id) => {
     setMealCards(mealCards.filter(meal => meal.id !== id));
@@ -52,6 +47,7 @@ export default function Home() {
   };
   const route = useRoute();
   const { newMeal } = route.params || {};
+  const { username, childname } = route.params || {};
   
 useEffect(() => {
   if (newMeal) {
@@ -59,7 +55,25 @@ useEffect(() => {
   }
 }, [newMeal]);
 
+const calculateTotalKkal = () => {
+  let totalKkal = 0;
+  
+  // Пройдіться по першим шести об'єктам mealCards та додайте їхні значення kkal до totalKkal
+  for (let i = 0; i < 5 && i < mealCards.length; i++) {
+    totalKkal += mealCards[i].kkal;
+  }
 
+  return totalKkal;
+};
+const { addToCart } = useContext(CartContext);
+
+const specificIds = [1, 2, 3, 4, 5, 6];
+const specificMeals = mealCards.filter(meal => specificIds.includes(meal.id));
+
+const handleGetMyPlan = () => {
+  addToCart(specificMeals);
+  setShowConfirmationModal2(true);
+};
 
   return (
     <View style={styles.container}>
@@ -67,8 +81,8 @@ useEffect(() => {
       <Header />
         <View style={styles.content}>
           <View style={styles.top}>
-            <Text style={[globalStyles.title2, {marginBottom:9}]}>Welcome Ana</Text>
-            <Text style={globalStyles.productIngridients1}>Get Denis's menu for the day!</Text>
+            <Text style={[globalStyles.title2, {marginBottom:9}]}>Welcome { username }</Text>
+            <Text style={globalStyles.productIngridients1}>Get { childname }'s menu for the day!</Text>
           </View>
           <View style={styles.calendar}>
             <TouchableOpacity onPress={() => setShowConfirmationModal(true)}>
@@ -78,7 +92,7 @@ useEffect(() => {
           <View>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           <View style={{flexDirection:'row'}}>
-  {mealCards.map((mealCard, index) => (
+          {specificMeals.map((mealCard, index) => (
     <MealCard
       key={index}
       backgroundColor={mealCard.backgroundColor}
@@ -168,7 +182,7 @@ useEffect(() => {
                         <Image style={{width:280, height:104, marginTop:23,  marginBottom:23}} source={require('../assets/calendar.png')} />
                         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                         <View style={{flexDirection:'row'}}>
-  {mealCards.map((mealCard, index) => (
+                        {specificMeals.map((mealCard, index) => (
      <MealCard
      key={index}
      backgroundColor={mealCard.backgroundColor}
@@ -208,16 +222,41 @@ useEffect(() => {
                         <Text style={[globalStyles.naming, {alignSelf:'flex-start'}]}>TOTAL</Text>
                         <View style={{flexDirection:'row', gap:137}}>
                           <Text style={globalStyles.editButtonText}>Calories:</Text>
-                          <Text style={globalStyles.editButtonText}>514 kcal</Text>
+                          <Text style={globalStyles.editButtonText}>{calculateTotalKkal()}kkal</Text>
                         </View>
 
                       </View>
                       <View style={{ flexDirection: 'row', gap:7, marginBottom:18 }}>
 
-                            <CustomButton  style={[globalStyles.buttonParentProfileSuccess, globalStyles.editButtonContent, {backgroundColor:'#007EB1'}]} textStyle={globalStyles.bigButtonText} title="Confirm"  onPress={() => setShowConfirmationModal2(true)} />
+                            <CustomButton  style={[globalStyles.buttonParentProfileSuccess, globalStyles.editButtonContent, {backgroundColor:'#007EB1'}]} textStyle={globalStyles.bigButtonText} title="Confirm"  onPress={handleGetMyPlan} />
                         </View>
                        
                         </View>
+                </View>
+            </Modal>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={showConfirmationModal2}
+            >
+                <View style={styles.centeredView}>
+                    <ScrollView>
+                    <View style={styles.modalView1}>
+                    <View style={{alignSelf:'flex-end', marginBottom:24}}>
+                        <TouchableOpacity onPress={() => setShowConfirmationModal2(false)}>
+                        <Image source={require('../assets/icons/crossIcon.png')} style={{ width: 42, height: 42}} />
+                        </TouchableOpacity>
+                        </View>
+                        <View style={{alignItems: 'center', justifyContent:'center',flex:1}}>
+          <Image style={{marginBottom:29, width:298, height:232}} source={require('../assets/notRegisteredChildImg.png')}/>
+          <Text style={[globalStyles.bigButtonText1, {marginBottom:26,}]}>Your meal plan was added to Cart</Text>
+          <TouchableOpacity  style={[globalStyles.bigAddButton, {marginBottom:46}]} onPress={() => setShowConfirmationModal2(false)}>
+            <Text style={globalStyles.bigButtonText}>Done</Text>
+           </TouchableOpacity>
+           </View>
+                        
+                    </View>
+                    </ScrollView>
                 </View>
             </Modal>
             
@@ -235,6 +274,26 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 22
+},
+modalView1: {
+  width: 373,
+  height: 'auto',
+  flexShrink: 0,
+  borderRadius: 15,
+  backgroundColor: '#FFF',
+  elevation: 20,
+  margin: 20,
+  paddingHorizontal: 35,
+  paddingVertical:15,
+  alignItems: "center",
+  justifyContent: "center", // Add this line to center the content vertically
+  shadowColor: "#000",
+  shadowOffset: {
+      width: 0,
+      height: 2
+  },
+  shadowOpacity: 0.25,
+  shadowRadius: 4,
 },
 modalView: {
   width: 360,

@@ -1,14 +1,17 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image, TouchableHighlight } from 'react-native';
+import { StyleSheet, View, Text, Image,} from 'react-native';
 import globalStyles from './GlobalStyles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
+import {  useRoute } from '@react-navigation/native';
 
 export default function HeaderCart({ title }) {
   const navigation = useNavigation();
   const handlePress2 = () => {
-    navigation.navigate('ChildAccount');
+    navigation.navigate('ChildAccount', { childname, username });
   };
+  const route = useRoute();
+  const { childname, username } = route.params || {};
   return (
     <View style={styles.container}>
       <View style={{flexDirection: 'row', paddingLeft: 10, paddingRight: '10%', width:'auto',alignItems:'flex-start'}}>

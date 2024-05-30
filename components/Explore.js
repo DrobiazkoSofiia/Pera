@@ -8,6 +8,7 @@ import Article from '../components/Article';
 import ModalMenu from '../components/ModalMenu';
 import globalStyles from './GlobalStyles';
 
+
 export default function HomeNotRegistered() {
   const navigation = useNavigation();
 

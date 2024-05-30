@@ -3,17 +3,27 @@ import { StyleSheet, View, Button, ImageBackground, Text, TouchableOpacity, Imag
 import { useNavigation } from '@react-navigation/native';
 import globalStyles from './GlobalStyles';
 import TextInputField from './TextInputField';
+import {  useRoute } from '@react-navigation/native';
+import ProgressBar from './ProgressBar';
 
 export default function RegistrationQ2() {
   const navigation = useNavigation();
   const [text, setText] = useState('');
+  const [childname, setChildname] = useState('');
 
   const handlePress2 = () => {
     navigation.navigate('RegistrationQ1');
   };
+  const route = useRoute();
+  const { username } = route.params || {};
   const handlePress5 = () => {
-    navigation.navigate('RegistrationQ3');
+    if (childname.trim()) {
+    navigation.navigate('RegistrationQ3', { username, childname } );
+  } else {
+    alert('Please enter your child\'s name');
+  }
   };
+
 
   return (
     <View style={styles.container}>
@@ -24,12 +34,13 @@ export default function RegistrationQ2() {
         <TouchableOpacity  style={[globalStyles.buttonBackArrow]} onPress={handlePress2}>
         <Image source={require('../assets/icons/arrowIcon.png')} style={{ width: 46, height: 46 }} />
         </TouchableOpacity>
+        <ProgressBar step={2} totalSteps={5} />
         </View>
         <Text style={[globalStyles.bigButtonText1, {marginBottom: 24}]}>What is your child's name?</Text>
         <TextInputField
         placeholder="Name"
-        value={text}
-        onChangeText={setText}
+        value={childname}
+        onChangeText={setChildname}
         style={[styles.customInputStyle, {marginBottom:'95%'}]}
       />
         <TouchableOpacity  style={[globalStyles.buttonNext, {marginBottom:71}]} onPress={handlePress5}>
@@ -59,10 +70,12 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   top:{
-    paddingTop:'10%',
-    paddingLeft:35,
-    width:'100%',
-    marginBottom: '10%',
+    paddingTop: '10%',
+    paddingLeft: 35,
+    width: '100%',
+    paddingBottom: '10%',
+    flexDirection:'row',
+    alignItems:'center',
   },
   customInputStyle: {
     width: '80%', // Customize input field width if needed

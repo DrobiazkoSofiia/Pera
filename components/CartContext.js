@@ -5,14 +5,29 @@ export const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
 
-  const addToCart = (item) => {
-    const existingItem = cartItems.find(cartItem => cartItem.id === item.id);
-    if (existingItem) {
-      setCartItems(cartItems.map(cartItem => 
-        cartItem.id === item.id ? { ...cartItem, count: cartItem.count + 1 } : cartItem
-      ));
+  const addToCart = (items) => {
+    // Перевіряємо, чи це масив
+    if (Array.isArray(items)) {
+      items.forEach(item => {
+        const existingItem = cartItems.find(cartItem => cartItem.id === item.id);
+        if (existingItem) {
+          setCartItems(cartItems.map(cartItem => 
+            cartItem.id === item.id ? { ...cartItem, count: cartItem.count + 1 } : cartItem
+          ));
+        } else {
+          setCartItems(prevItems => [...prevItems, { ...item, count: 1 }]);
+        }
+      });
     } else {
-      setCartItems([...cartItems, { ...item, count: 1 }]);
+      // Якщо це не масив, обробляємо як один об'єкт
+      const existingItem = cartItems.find(cartItem => cartItem.id === items.id);
+      if (existingItem) {
+        setCartItems(cartItems.map(cartItem => 
+          cartItem.id === items.id ? { ...cartItem, count: cartItem.count + 1 } : cartItem
+        ));
+      } else {
+        setCartItems([...cartItems, { ...items, count: 1 }]);
+      }
     }
   };
 

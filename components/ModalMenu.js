@@ -1,22 +1,32 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, ScrollView, TouchableHighlight, Modal } from 'react-native';
+import React, {useContext, useState } from 'react';
+import { StyleSheet, View, Text, Image, TouchableOpacity, ScrollView, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import HeaderNotRegistered from '../components/HeaderNotRegistered'
-import VideoCard from '../components/VideoCard';
-import Footer from '../components/Footer';
-import ViewButton from '../components/MealCard';
 import globalStyles from './GlobalStyles';
+import { useRoute } from '@react-navigation/native';
+import {meals as initialMeals } from './MealData';
+import MealComponent from './MealComponent';
+import { CartContext } from './CartContext';
 
 
 export default function ModalMenu() {
   const navigation = useNavigation();
+  const [mealCards, setMealCards] = useState(initialMeals);
+  const route = useRoute();
+  const { mealCard, handleDelete } = route.params;
   const handlePress12 = () => {
     navigation.navigate('DescriptMealCard');
   };
-
-  const handlePress1 = () => {
-    navigation.navigate('RegistrationQ1');
+  const calculateTotalKkal = () => {
+    let totalKkal = 0;
+    
+    // Пройдіться по першим шести об'єктам mealCards та додайте їхні значення kkal до totalKkal
+    for (let i = 0; i < 5 && i < mealCards.length; i++) {
+      totalKkal += mealCards[i].kkal;
+    }
+  
+    return totalKkal;
   };
+  
   const [showConfirmationModal16, setShowConfirmationModal16] = useState(false);
   const [showConfirmationModal2, setShowConfirmationModal2] = useState(false);
   const [showConfirmationModal11, setShowConfirmationModal11] = useState(false);
@@ -24,6 +34,22 @@ export default function ModalMenu() {
   const [showConfirmationModal13, setShowConfirmationModal13] = useState(false);
   const [showConfirmationModal14, setShowConfirmationModal14] = useState(false);
   const [showConfirmationModal15, setShowConfirmationModal15] = useState(false);
+  
+const { addToCart } = useContext(CartContext);
+
+  const handleGetMyPlan = () => {
+    const meals = [
+      mealCards[0],
+      mealCards[1],
+      mealCards[2],
+      mealCards[3],
+      mealCards[5]
+    ];
+    addToCart(meals);
+    setShowConfirmationModal2(true);
+  };
+    
+      
 
     const CustomButton = ({ title, onPress, style, textStyle, icon }) => (
         <TouchableOpacity onPress={onPress} style={[globalStyles.button, style]}>
@@ -31,6 +57,7 @@ export default function ModalMenu() {
           <Text style={[globalStyles.buttonText, textStyle]}>{title}</Text>
         </TouchableOpacity>
       );
+
       
 
   return (
@@ -134,132 +161,23 @@ export default function ModalMenu() {
                         <Text style={globalStyles.title}>Today</Text>
                       </View> 
                       <View style={{gap:14, marginBottom:41}}>
-                        <View style={styles.meal}>
-                            <View>
-                            <View style={{flexDirection:'column', gap:2, alignItems:'flex-end'}}>
-                                <Text style={globalStyles.textDietName}>Breakfast</Text>
-                                <View>
-                                <Image source={require('../assets/breakfastMealImg.png')}/>
-                                </View>
-                            </View>
-                            </View>
-                            <View style={{flexDirection:'column', paddingTop:22, gap:4}}>
-                                <Text style={globalStyles.smallBlackText}>Morning Bowl</Text>
-                                <View style={{flexDirection:'row'}}>
-                                <Image source={require('../assets/icons/timeGreenIcon.png')} style={{width: 25, height: 25}}/>
-                                <Text style={globalStyles.smallGreyText}>15 minutes</Text>
-                                </View>
-                                <Text style={[globalStyles.smallGreyText, {color:'#7EC845'}]}>75 kkal</Text>
-                            </View>
-                            <View style={{position:'absolute', right:12, top:48}}>
-                              <TouchableOpacity onPress={handlePress12}>
-                            <Image source={require('../assets/icons/dotsGreenIcon.png')} />
-                            </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={styles.meal}>
-                            <View>
-                            <View style={{flexDirection:'column', gap:2, alignItems:'flex-end'}}>
-                                <Text style={globalStyles.textDietName}>Snack 1</Text>
-                                <View>
-                                <Image source={require('../assets/snack1Img.png')}/>
-                                </View>
-                            </View>
-                            </View>
-                            <View style={{flexDirection:'column', paddingTop:22, gap:4}}>
-                                <Text style={globalStyles.smallBlackText}>Banana berry</Text>
-                                <View style={{flexDirection:'row'}}>
-                                <Image source={require('../assets/icons/timeGreenIcon.png')} style={{width: 25, height: 25}}/>
-                                <Text style={globalStyles.smallGreyText}>5 minutes</Text>
-                                </View>
-                                <Text style={[globalStyles.smallGreyText, {color:'#7EC845'}]}>90 kkal</Text>
-                            </View>
-                            <View style={{position:'absolute', right:12, top:48}}>
-                            <TouchableOpacity onPress={handlePress12}>
-                            <Image source={require('../assets/icons/dotsGreenIcon.png')} />
-                            </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={styles.meal}>
-                            <View>
-                            <View style={{flexDirection:'column', gap:2, alignItems:'flex-end'}}>
-                                <Text style={globalStyles.textDietName}>Lunch</Text>
-                                <View >
-                                <Image source={require('../assets/lunchImg.png')}/>
-                                </View>
-                            </View>
-                            </View>
-                            <View style={{flexDirection:'column', paddingTop:22, gap:4}}>
-                                <Text style={globalStyles.smallBlackText}>Harvest Bowl </Text>
-                                <View style={{flexDirection:'row'}}>
-                                <Image source={require('../assets/icons/timeGreenIcon.png')} style={{width: 25, height: 25}}/>
-                                <Text style={globalStyles.smallGreyText}>10 minutes</Text>
-                                </View>
-                                <Text style={[globalStyles.smallGreyText, {color:'#7EC845'}]}>127 kkal</Text>
-                            </View>
-                            <View style={{position:'absolute', right:12, top:48}}>
-                            <TouchableOpacity onPress={handlePress12}>
-                            <Image source={require('../assets/icons/dotsGreenIcon.png')} />
-                            </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={styles.meal}>
-                            <View>
-                            <View style={{flexDirection:'column', gap:2, alignItems:'flex-end'}}>
-                                <Text style={globalStyles.textDietName}>Snack 2</Text>
-                                <View >
-                                <Image source={require('../assets/snack2Img.png')}/>
-                                </View>
-                            </View>
-                            </View>
-                            <View style={{flexDirection:'column', paddingTop:22, gap:4}}>
-                                <Text style={globalStyles.smallBlackText}>Mango natural</Text>
-                                <View style={{flexDirection:'row'}}>
-                                <Image source={require('../assets/icons/timeGreenIcon.png')} style={{width: 25, height: 25}}/>
-                                <Text style={globalStyles.smallGreyText}>5 minutes</Text>
-                                </View>
-                                <Text style={[globalStyles.smallGreyText, {color:'#7EC845'}]}>90 kkal</Text>
-                            </View>
-                            <View style={{position:'absolute', right:12, top:48}}>
-                            <TouchableOpacity onPress={handlePress12}>
-                            <Image source={require('../assets/icons/dotsGreenIcon.png')} />
-                            </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={styles.meal}>
-                            <View>
-                            <View style={{flexDirection:'column', gap:2, alignItems:'flex-end'}}>
-                                <Text style={globalStyles.textDietName}>Dinner</Text>
-                                <View >
-                                <Image source={require('../assets/dinnerImg.png')}/>
-                                </View>
-                            </View>
-                            </View>
-                            <View style={{flexDirection:'column', paddingTop:22, gap:4}}>
-                                <Text style={globalStyles.smallBlackText}>Spinach Ravioli</Text>
-                                <View style={{flexDirection:'row'}}>
-                                <Image source={require('../assets/icons/timeGreenIcon.png')} style={{width: 25, height: 25}}/>
-                                <Text style={globalStyles.smallGreyText}>6 minutes</Text>
-                                </View>
-                                <Text style={[globalStyles.smallGreyText, {color:'#7EC845'}]}>132 kkal</Text>
-                            </View>
-                            <View style={{position:'absolute', right:12, top:48}}>
-                            <Image source={require('../assets/icons/dotsGreenIcon.png')} />
-                            </View>
-                        </View>
+                      <MealComponent mealCard={mealCards[0]} />
+                      <MealComponent mealCard={mealCards[1]} />
+                      <MealComponent mealCard={mealCards[2]} />
+                      <MealComponent mealCard={mealCards[3]} />
+                      <MealComponent mealCard={mealCards[5]} />
                       </View>
                       <View style={{width:301, height:80, backgroundColor:'#7EC845', flexDirection:'column', borderRadius:10, gap:2, paddingTop:8, paddingLeft:8, marginBottom:39}}>
                         <Text style={[globalStyles.naming, {alignSelf:'flex-start'}]}>TOTAL</Text>
                         <View style={{flexDirection:'row', gap:137}}>
                           <Text style={globalStyles.editButtonText}>Calories:</Text>
-                          <Text style={globalStyles.editButtonText}>514 kcal</Text>
+                          <Text style={globalStyles.editButtonText}>{calculateTotalKkal()}kkal</Text>
                         </View>
 
                       </View>
                       <View style={{ flexDirection: 'row', gap:7, marginBottom:18 }}>
-
-                            <CustomButton  style={[globalStyles.buttonParentProfileSuccess, globalStyles.editButtonContent, {backgroundColor:'#007EB1'}]} textStyle={globalStyles.bigButtonText} title="Get my plan"  onPress={() => setShowConfirmationModal2(true)} />
-                        </View>
+                        <CustomButton  style={[globalStyles.buttonParentProfileSuccess, globalStyles.editButtonContent, {backgroundColor:'#007EB1'}]} textStyle={globalStyles.bigButtonText} title="Get my plan"  onPress={handleGetMyPlan} />
+                      </View>
                     </View>
                     </View>
                     </ScrollView>
@@ -285,132 +203,23 @@ export default function ModalMenu() {
                         <Text style={globalStyles.title}>Today</Text>
                       </View> 
                       <View style={{gap:14, marginBottom:41}}>
-                        <View style={styles.meal}>
-                            <View>
-                            <View style={{flexDirection:'column', gap:2, alignItems:'flex-end'}}>
-                                <Text style={globalStyles.textDietName}>Breakfast</Text>
-                                <View>
-                                <Image source={require('../assets/breakfastMealImg.png')}/>
-                                </View>
-                            </View>
-                            </View>
-                            <View style={{flexDirection:'column', paddingTop:22, gap:4}}>
-                                <Text style={globalStyles.smallBlackText}>Morning Bowl</Text>
-                                <View style={{flexDirection:'row'}}>
-                                <Image source={require('../assets/icons/timeGreenIcon.png')} style={{width: 25, height: 25}}/>
-                                <Text style={globalStyles.smallGreyText}>15 minutes</Text>
-                                </View>
-                                <Text style={[globalStyles.smallGreyText, {color:'#7EC845'}]}>75 kkal</Text>
-                            </View>
-                            <View style={{position:'absolute', right:12, top:48}}>
-                              <TouchableOpacity onPress={handlePress12}>
-                            <Image source={require('../assets/icons/dotsGreenIcon.png')} />
-                            </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={styles.meal}>
-                            <View>
-                            <View style={{flexDirection:'column', gap:2, alignItems:'flex-end'}}>
-                                <Text style={globalStyles.textDietName}>Snack 1</Text>
-                                <View>
-                                <Image source={require('../assets/snack1Img.png')}/>
-                                </View>
-                            </View>
-                            </View>
-                            <View style={{flexDirection:'column', paddingTop:22, gap:4}}>
-                                <Text style={globalStyles.smallBlackText}>Banana berry</Text>
-                                <View style={{flexDirection:'row'}}>
-                                <Image source={require('../assets/icons/timeGreenIcon.png')} style={{width: 25, height: 25}}/>
-                                <Text style={globalStyles.smallGreyText}>5 minutes</Text>
-                                </View>
-                                <Text style={[globalStyles.smallGreyText, {color:'#7EC845'}]}>90 kkal</Text>
-                            </View>
-                            <View style={{position:'absolute', right:12, top:48}}>
-                            <TouchableOpacity onPress={handlePress12}>
-                            <Image source={require('../assets/icons/dotsGreenIcon.png')} />
-                            </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={styles.meal}>
-                            <View>
-                            <View style={{flexDirection:'column', gap:2, alignItems:'flex-end'}}>
-                                <Text style={globalStyles.textDietName}>Lunch</Text>
-                                <View >
-                                <Image source={require('../assets/lunchImg.png')}/>
-                                </View>
-                            </View>
-                            </View>
-                            <View style={{flexDirection:'column', paddingTop:22, gap:4}}>
-                                <Text style={globalStyles.smallBlackText}>Harvest Bowl </Text>
-                                <View style={{flexDirection:'row'}}>
-                                <Image source={require('../assets/icons/timeGreenIcon.png')} style={{width: 25, height: 25}}/>
-                                <Text style={globalStyles.smallGreyText}>10 minutes</Text>
-                                </View>
-                                <Text style={[globalStyles.smallGreyText, {color:'#7EC845'}]}>127 kkal</Text>
-                            </View>
-                            <View style={{position:'absolute', right:12, top:48}}>
-                            <TouchableOpacity onPress={handlePress12}>
-                            <Image source={require('../assets/icons/dotsGreenIcon.png')} />
-                            </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={styles.meal}>
-                            <View>
-                            <View style={{flexDirection:'column', gap:2, alignItems:'flex-end'}}>
-                                <Text style={globalStyles.textDietName}>Snack 2</Text>
-                                <View >
-                                <Image source={require('../assets/snack2Img.png')}/>
-                                </View>
-                            </View>
-                            </View>
-                            <View style={{flexDirection:'column', paddingTop:22, gap:4}}>
-                                <Text style={globalStyles.smallBlackText}>Mango natural</Text>
-                                <View style={{flexDirection:'row'}}>
-                                <Image source={require('../assets/icons/timeGreenIcon.png')} style={{width: 25, height: 25}}/>
-                                <Text style={globalStyles.smallGreyText}>5 minutes</Text>
-                                </View>
-                                <Text style={[globalStyles.smallGreyText, {color:'#7EC845'}]}>90 kkal</Text>
-                            </View>
-                            <View style={{position:'absolute', right:12, top:48}}>
-                            <TouchableOpacity onPress={handlePress12}>
-                            <Image source={require('../assets/icons/dotsGreenIcon.png')} />
-                            </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={styles.meal}>
-                            <View>
-                            <View style={{flexDirection:'column', gap:2, alignItems:'flex-end'}}>
-                                <Text style={globalStyles.textDietName}>Dinner</Text>
-                                <View >
-                                <Image source={require('../assets/dinnerImg.png')}/>
-                                </View>
-                            </View>
-                            </View>
-                            <View style={{flexDirection:'column', paddingTop:22, gap:4}}>
-                                <Text style={globalStyles.smallBlackText}>Spinach Ravioli</Text>
-                                <View style={{flexDirection:'row'}}>
-                                <Image source={require('../assets/icons/timeGreenIcon.png')} style={{width: 25, height: 25}}/>
-                                <Text style={globalStyles.smallGreyText}>6 minutes</Text>
-                                </View>
-                                <Text style={[globalStyles.smallGreyText, {color:'#7EC845'}]}>132 kkal</Text>
-                            </View>
-                            <View style={{position:'absolute', right:12, top:48}}>
-                            <Image source={require('../assets/icons/dotsGreenIcon.png')} />
-                            </View>
-                        </View>
+                      <MealComponent mealCard={mealCards[0]} />
+                      <MealComponent mealCard={mealCards[1]} />
+                      <MealComponent mealCard={mealCards[2]} />
+                      <MealComponent mealCard={mealCards[3]} />
+                      <MealComponent mealCard={mealCards[5]} />
                       </View>
                       <View style={{width:301, height:80, backgroundColor:'#7EC845', flexDirection:'column', borderRadius:10, gap:2, paddingTop:8, paddingLeft:8, marginBottom:39}}>
                         <Text style={[globalStyles.naming, {alignSelf:'flex-start'}]}>TOTAL</Text>
                         <View style={{flexDirection:'row', gap:137}}>
                           <Text style={globalStyles.editButtonText}>Calories:</Text>
-                          <Text style={globalStyles.editButtonText}>514 kcal</Text>
+                          <Text style={globalStyles.editButtonText}>{calculateTotalKkal()}kkal</Text>
                         </View>
 
                       </View>
                       <View style={{ flexDirection: 'row', gap:7, marginBottom:18 }}>
-
-                            <CustomButton  style={[globalStyles.buttonParentProfileSuccess, globalStyles.editButtonContent, {backgroundColor:'#007EB1'}]} textStyle={globalStyles.bigButtonText} title="Get my plan"  onPress={() => setShowConfirmationModal2(true)} />
-                        </View>
+                        <CustomButton  style={[globalStyles.buttonParentProfileSuccess, globalStyles.editButtonContent, {backgroundColor:'#007EB1'}]} textStyle={globalStyles.bigButtonText} title="Get my plan"  onPress={handleGetMyPlan} />
+                      </View>
                     </View>
                     </View>
                     </ScrollView>
@@ -436,132 +245,23 @@ export default function ModalMenu() {
                         <Text style={globalStyles.title}>Today</Text>
                       </View> 
                       <View style={{gap:14, marginBottom:41}}>
-                        <View style={styles.meal}>
-                            <View>
-                            <View style={{flexDirection:'column', gap:2, alignItems:'flex-end'}}>
-                                <Text style={globalStyles.textDietName}>Breakfast</Text>
-                                <View>
-                                <Image source={require('../assets/breakfastMealImg.png')}/>
-                                </View>
-                            </View>
-                            </View>
-                            <View style={{flexDirection:'column', paddingTop:22, gap:4}}>
-                                <Text style={globalStyles.smallBlackText}>Morning Bowl</Text>
-                                <View style={{flexDirection:'row'}}>
-                                <Image source={require('../assets/icons/timeGreenIcon.png')} style={{width: 25, height: 25}}/>
-                                <Text style={globalStyles.smallGreyText}>15 minutes</Text>
-                                </View>
-                                <Text style={[globalStyles.smallGreyText, {color:'#7EC845'}]}>75 kkal</Text>
-                            </View>
-                            <View style={{position:'absolute', right:12, top:48}}>
-                              <TouchableOpacity onPress={handlePress12}>
-                            <Image source={require('../assets/icons/dotsGreenIcon.png')} />
-                            </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={styles.meal}>
-                            <View>
-                            <View style={{flexDirection:'column', gap:2, alignItems:'flex-end'}}>
-                                <Text style={globalStyles.textDietName}>Snack 1</Text>
-                                <View>
-                                <Image source={require('../assets/snack1Img.png')}/>
-                                </View>
-                            </View>
-                            </View>
-                            <View style={{flexDirection:'column', paddingTop:22, gap:4}}>
-                                <Text style={globalStyles.smallBlackText}>Banana berry</Text>
-                                <View style={{flexDirection:'row'}}>
-                                <Image source={require('../assets/icons/timeGreenIcon.png')} style={{width: 25, height: 25}}/>
-                                <Text style={globalStyles.smallGreyText}>5 minutes</Text>
-                                </View>
-                                <Text style={[globalStyles.smallGreyText, {color:'#7EC845'}]}>90 kkal</Text>
-                            </View>
-                            <View style={{position:'absolute', right:12, top:48}}>
-                            <TouchableOpacity onPress={handlePress12}>
-                            <Image source={require('../assets/icons/dotsGreenIcon.png')} />
-                            </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={styles.meal}>
-                            <View>
-                            <View style={{flexDirection:'column', gap:2, alignItems:'flex-end'}}>
-                                <Text style={globalStyles.textDietName}>Lunch</Text>
-                                <View >
-                                <Image source={require('../assets/lunchImg.png')}/>
-                                </View>
-                            </View>
-                            </View>
-                            <View style={{flexDirection:'column', paddingTop:22, gap:4}}>
-                                <Text style={globalStyles.smallBlackText}>Harvest Bowl </Text>
-                                <View style={{flexDirection:'row'}}>
-                                <Image source={require('../assets/icons/timeGreenIcon.png')} style={{width: 25, height: 25}}/>
-                                <Text style={globalStyles.smallGreyText}>10 minutes</Text>
-                                </View>
-                                <Text style={[globalStyles.smallGreyText, {color:'#7EC845'}]}>127 kkal</Text>
-                            </View>
-                            <View style={{position:'absolute', right:12, top:48}}>
-                            <TouchableOpacity onPress={handlePress12}>
-                            <Image source={require('../assets/icons/dotsGreenIcon.png')} />
-                            </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={styles.meal}>
-                            <View>
-                            <View style={{flexDirection:'column', gap:2, alignItems:'flex-end'}}>
-                                <Text style={globalStyles.textDietName}>Snack 2</Text>
-                                <View >
-                                <Image source={require('../assets/snack2Img.png')}/>
-                                </View>
-                            </View>
-                            </View>
-                            <View style={{flexDirection:'column', paddingTop:22, gap:4}}>
-                                <Text style={globalStyles.smallBlackText}>Mango natural</Text>
-                                <View style={{flexDirection:'row'}}>
-                                <Image source={require('../assets/icons/timeGreenIcon.png')} style={{width: 25, height: 25}}/>
-                                <Text style={globalStyles.smallGreyText}>5 minutes</Text>
-                                </View>
-                                <Text style={[globalStyles.smallGreyText, {color:'#7EC845'}]}>90 kkal</Text>
-                            </View>
-                            <View style={{position:'absolute', right:12, top:48}}>
-                            <TouchableOpacity onPress={handlePress12}>
-                            <Image source={require('../assets/icons/dotsGreenIcon.png')} />
-                            </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={styles.meal}>
-                            <View>
-                            <View style={{flexDirection:'column', gap:2, alignItems:'flex-end'}}>
-                                <Text style={globalStyles.textDietName}>Dinner</Text>
-                                <View >
-                                <Image source={require('../assets/dinnerImg.png')}/>
-                                </View>
-                            </View>
-                            </View>
-                            <View style={{flexDirection:'column', paddingTop:22, gap:4}}>
-                                <Text style={globalStyles.smallBlackText}>Spinach Ravioli</Text>
-                                <View style={{flexDirection:'row'}}>
-                                <Image source={require('../assets/icons/timeGreenIcon.png')} style={{width: 25, height: 25}}/>
-                                <Text style={globalStyles.smallGreyText}>6 minutes</Text>
-                                </View>
-                                <Text style={[globalStyles.smallGreyText, {color:'#7EC845'}]}>132 kkal</Text>
-                            </View>
-                            <View style={{position:'absolute', right:12, top:48}}>
-                            <Image source={require('../assets/icons/dotsGreenIcon.png')} />
-                            </View>
-                        </View>
+                      <MealComponent mealCard={mealCards[0]} />
+                      <MealComponent mealCard={mealCards[1]} />
+                      <MealComponent mealCard={mealCards[2]} />
+                      <MealComponent mealCard={mealCards[3]} />
+                      <MealComponent mealCard={mealCards[5]} />
                       </View>
                       <View style={{width:301, height:80, backgroundColor:'#7EC845', flexDirection:'column', borderRadius:10, gap:2, paddingTop:8, paddingLeft:8, marginBottom:39}}>
                         <Text style={[globalStyles.naming, {alignSelf:'flex-start'}]}>TOTAL</Text>
                         <View style={{flexDirection:'row', gap:137}}>
                           <Text style={globalStyles.editButtonText}>Calories:</Text>
-                          <Text style={globalStyles.editButtonText}>514 kcal</Text>
+                          <Text style={globalStyles.editButtonText}>{calculateTotalKkal()}kkal</Text>
                         </View>
 
                       </View>
                       <View style={{ flexDirection: 'row', gap:7, marginBottom:18 }}>
-
-                            <CustomButton  style={[globalStyles.buttonParentProfileSuccess, globalStyles.editButtonContent, {backgroundColor:'#007EB1'}]} textStyle={globalStyles.bigButtonText} title="Get my plan"  onPress={() => setShowConfirmationModal2(true)} />
-                        </View>
+                        <CustomButton  style={[globalStyles.buttonParentProfileSuccess, globalStyles.editButtonContent, {backgroundColor:'#007EB1'}]} textStyle={globalStyles.bigButtonText} title="Get my plan"  onPress={handleGetMyPlan} />
+                      </View>
                     </View>
                     </View>
                     </ScrollView>
@@ -587,132 +287,23 @@ export default function ModalMenu() {
                         <Text style={globalStyles.title}>Today</Text>
                       </View> 
                       <View style={{gap:14, marginBottom:41}}>
-                        <View style={styles.meal}>
-                            <View>
-                            <View style={{flexDirection:'column', gap:2, alignItems:'flex-end'}}>
-                                <Text style={globalStyles.textDietName}>Breakfast</Text>
-                                <View>
-                                <Image source={require('../assets/breakfastMealImg.png')}/>
-                                </View>
-                            </View>
-                            </View>
-                            <View style={{flexDirection:'column', paddingTop:22, gap:4}}>
-                                <Text style={globalStyles.smallBlackText}>Morning Bowl</Text>
-                                <View style={{flexDirection:'row'}}>
-                                <Image source={require('../assets/icons/timeGreenIcon.png')} style={{width: 25, height: 25}}/>
-                                <Text style={globalStyles.smallGreyText}>15 minutes</Text>
-                                </View>
-                                <Text style={[globalStyles.smallGreyText, {color:'#7EC845'}]}>75 kkal</Text>
-                            </View>
-                            <View style={{position:'absolute', right:12, top:48}}>
-                              <TouchableOpacity onPress={handlePress12}>
-                            <Image source={require('../assets/icons/dotsGreenIcon.png')} />
-                            </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={styles.meal}>
-                            <View>
-                            <View style={{flexDirection:'column', gap:2, alignItems:'flex-end'}}>
-                                <Text style={globalStyles.textDietName}>Snack 1</Text>
-                                <View>
-                                <Image source={require('../assets/snack1Img.png')}/>
-                                </View>
-                            </View>
-                            </View>
-                            <View style={{flexDirection:'column', paddingTop:22, gap:4}}>
-                                <Text style={globalStyles.smallBlackText}>Banana berry</Text>
-                                <View style={{flexDirection:'row'}}>
-                                <Image source={require('../assets/icons/timeGreenIcon.png')} style={{width: 25, height: 25}}/>
-                                <Text style={globalStyles.smallGreyText}>5 minutes</Text>
-                                </View>
-                                <Text style={[globalStyles.smallGreyText, {color:'#7EC845'}]}>90 kkal</Text>
-                            </View>
-                            <View style={{position:'absolute', right:12, top:48}}>
-                            <TouchableOpacity onPress={handlePress12}>
-                            <Image source={require('../assets/icons/dotsGreenIcon.png')} />
-                            </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={styles.meal}>
-                            <View>
-                            <View style={{flexDirection:'column', gap:2, alignItems:'flex-end'}}>
-                                <Text style={globalStyles.textDietName}>Lunch</Text>
-                                <View >
-                                <Image source={require('../assets/lunchImg.png')}/>
-                                </View>
-                            </View>
-                            </View>
-                            <View style={{flexDirection:'column', paddingTop:22, gap:4}}>
-                                <Text style={globalStyles.smallBlackText}>Harvest Bowl </Text>
-                                <View style={{flexDirection:'row'}}>
-                                <Image source={require('../assets/icons/timeGreenIcon.png')} style={{width: 25, height: 25}}/>
-                                <Text style={globalStyles.smallGreyText}>10 minutes</Text>
-                                </View>
-                                <Text style={[globalStyles.smallGreyText, {color:'#7EC845'}]}>127 kkal</Text>
-                            </View>
-                            <View style={{position:'absolute', right:12, top:48}}>
-                            <TouchableOpacity onPress={handlePress12}>
-                            <Image source={require('../assets/icons/dotsGreenIcon.png')} />
-                            </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={styles.meal}>
-                            <View>
-                            <View style={{flexDirection:'column', gap:2, alignItems:'flex-end'}}>
-                                <Text style={globalStyles.textDietName}>Snack 2</Text>
-                                <View >
-                                <Image source={require('../assets/snack2Img.png')}/>
-                                </View>
-                            </View>
-                            </View>
-                            <View style={{flexDirection:'column', paddingTop:22, gap:4}}>
-                                <Text style={globalStyles.smallBlackText}>Mango natural</Text>
-                                <View style={{flexDirection:'row'}}>
-                                <Image source={require('../assets/icons/timeGreenIcon.png')} style={{width: 25, height: 25}}/>
-                                <Text style={globalStyles.smallGreyText}>5 minutes</Text>
-                                </View>
-                                <Text style={[globalStyles.smallGreyText, {color:'#7EC845'}]}>90 kkal</Text>
-                            </View>
-                            <View style={{position:'absolute', right:12, top:48}}>
-                            <TouchableOpacity onPress={handlePress12}>
-                            <Image source={require('../assets/icons/dotsGreenIcon.png')} />
-                            </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={styles.meal}>
-                            <View>
-                            <View style={{flexDirection:'column', gap:2, alignItems:'flex-end'}}>
-                                <Text style={globalStyles.textDietName}>Dinner</Text>
-                                <View >
-                                <Image source={require('../assets/dinnerImg.png')}/>
-                                </View>
-                            </View>
-                            </View>
-                            <View style={{flexDirection:'column', paddingTop:22, gap:4}}>
-                                <Text style={globalStyles.smallBlackText}>Spinach Ravioli</Text>
-                                <View style={{flexDirection:'row'}}>
-                                <Image source={require('../assets/icons/timeGreenIcon.png')} style={{width: 25, height: 25}}/>
-                                <Text style={globalStyles.smallGreyText}>6 minutes</Text>
-                                </View>
-                                <Text style={[globalStyles.smallGreyText, {color:'#7EC845'}]}>132 kkal</Text>
-                            </View>
-                            <View style={{position:'absolute', right:12, top:48}}>
-                            <Image source={require('../assets/icons/dotsGreenIcon.png')} />
-                            </View>
-                        </View>
+                      <MealComponent mealCard={mealCards[0]} />
+                      <MealComponent mealCard={mealCards[1]} />
+                      <MealComponent mealCard={mealCards[2]} />
+                      <MealComponent mealCard={mealCards[3]} />
+                      <MealComponent mealCard={mealCards[5]} />
                       </View>
                       <View style={{width:301, height:80, backgroundColor:'#7EC845', flexDirection:'column', borderRadius:10, gap:2, paddingTop:8, paddingLeft:8, marginBottom:39}}>
                         <Text style={[globalStyles.naming, {alignSelf:'flex-start'}]}>TOTAL</Text>
                         <View style={{flexDirection:'row', gap:137}}>
                           <Text style={globalStyles.editButtonText}>Calories:</Text>
-                          <Text style={globalStyles.editButtonText}>514 kcal</Text>
+                          <Text style={globalStyles.editButtonText}>{calculateTotalKkal()}kkal</Text>
                         </View>
 
                       </View>
                       <View style={{ flexDirection: 'row', gap:7, marginBottom:18 }}>
-
-                            <CustomButton  style={[globalStyles.buttonParentProfileSuccess, globalStyles.editButtonContent, {backgroundColor:'#007EB1'}]} textStyle={globalStyles.bigButtonText} title="Get my plan"  onPress={() => setShowConfirmationModal2(true)} />
-                        </View>
+                        <CustomButton  style={[globalStyles.buttonParentProfileSuccess, globalStyles.editButtonContent, {backgroundColor:'#007EB1'}]} textStyle={globalStyles.bigButtonText} title="Get my plan"  onPress={handleGetMyPlan} />
+                      </View>
                     </View>
                     </View>
                     </ScrollView>
@@ -738,132 +329,23 @@ export default function ModalMenu() {
                         <Text style={globalStyles.title}>Today</Text>
                       </View> 
                       <View style={{gap:14, marginBottom:41}}>
-                        <View style={styles.meal}>
-                            <View>
-                            <View style={{flexDirection:'column', gap:2, alignItems:'flex-end'}}>
-                                <Text style={globalStyles.textDietName}>Breakfast</Text>
-                                <View>
-                                <Image source={require('../assets/breakfastMealImg.png')}/>
-                                </View>
-                            </View>
-                            </View>
-                            <View style={{flexDirection:'column', paddingTop:22, gap:4}}>
-                                <Text style={globalStyles.smallBlackText}>Morning Bowl</Text>
-                                <View style={{flexDirection:'row'}}>
-                                <Image source={require('../assets/icons/timeGreenIcon.png')} style={{width: 25, height: 25}}/>
-                                <Text style={globalStyles.smallGreyText}>15 minutes</Text>
-                                </View>
-                                <Text style={[globalStyles.smallGreyText, {color:'#7EC845'}]}>75 kkal</Text>
-                            </View>
-                            <View style={{position:'absolute', right:12, top:48}}>
-                              <TouchableOpacity onPress={handlePress12}>
-                            <Image source={require('../assets/icons/dotsGreenIcon.png')} />
-                            </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={styles.meal}>
-                            <View>
-                            <View style={{flexDirection:'column', gap:2, alignItems:'flex-end'}}>
-                                <Text style={globalStyles.textDietName}>Snack 1</Text>
-                                <View>
-                                <Image source={require('../assets/snack1Img.png')}/>
-                                </View>
-                            </View>
-                            </View>
-                            <View style={{flexDirection:'column', paddingTop:22, gap:4}}>
-                                <Text style={globalStyles.smallBlackText}>Banana berry</Text>
-                                <View style={{flexDirection:'row'}}>
-                                <Image source={require('../assets/icons/timeGreenIcon.png')} style={{width: 25, height: 25}}/>
-                                <Text style={globalStyles.smallGreyText}>5 minutes</Text>
-                                </View>
-                                <Text style={[globalStyles.smallGreyText, {color:'#7EC845'}]}>90 kkal</Text>
-                            </View>
-                            <View style={{position:'absolute', right:12, top:48}}>
-                            <TouchableOpacity onPress={handlePress12}>
-                            <Image source={require('../assets/icons/dotsGreenIcon.png')} />
-                            </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={styles.meal}>
-                            <View>
-                            <View style={{flexDirection:'column', gap:2, alignItems:'flex-end'}}>
-                                <Text style={globalStyles.textDietName}>Lunch</Text>
-                                <View >
-                                <Image source={require('../assets/lunchImg.png')}/>
-                                </View>
-                            </View>
-                            </View>
-                            <View style={{flexDirection:'column', paddingTop:22, gap:4}}>
-                                <Text style={globalStyles.smallBlackText}>Harvest Bowl </Text>
-                                <View style={{flexDirection:'row'}}>
-                                <Image source={require('../assets/icons/timeGreenIcon.png')} style={{width: 25, height: 25}}/>
-                                <Text style={globalStyles.smallGreyText}>10 minutes</Text>
-                                </View>
-                                <Text style={[globalStyles.smallGreyText, {color:'#7EC845'}]}>127 kkal</Text>
-                            </View>
-                            <View style={{position:'absolute', right:12, top:48}}>
-                            <TouchableOpacity onPress={handlePress12}>
-                            <Image source={require('../assets/icons/dotsGreenIcon.png')} />
-                            </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={styles.meal}>
-                            <View>
-                            <View style={{flexDirection:'column', gap:2, alignItems:'flex-end'}}>
-                                <Text style={globalStyles.textDietName}>Snack 2</Text>
-                                <View >
-                                <Image source={require('../assets/snack2Img.png')}/>
-                                </View>
-                            </View>
-                            </View>
-                            <View style={{flexDirection:'column', paddingTop:22, gap:4}}>
-                                <Text style={globalStyles.smallBlackText}>Mango natural</Text>
-                                <View style={{flexDirection:'row'}}>
-                                <Image source={require('../assets/icons/timeGreenIcon.png')} style={{width: 25, height: 25}}/>
-                                <Text style={globalStyles.smallGreyText}>5 minutes</Text>
-                                </View>
-                                <Text style={[globalStyles.smallGreyText, {color:'#7EC845'}]}>90 kkal</Text>
-                            </View>
-                            <View style={{position:'absolute', right:12, top:48}}>
-                            <TouchableOpacity onPress={handlePress12}>
-                            <Image source={require('../assets/icons/dotsGreenIcon.png')} />
-                            </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={styles.meal}>
-                            <View>
-                            <View style={{flexDirection:'column', gap:2, alignItems:'flex-end'}}>
-                                <Text style={globalStyles.textDietName}>Dinner</Text>
-                                <View >
-                                <Image source={require('../assets/dinnerImg.png')}/>
-                                </View>
-                            </View>
-                            </View>
-                            <View style={{flexDirection:'column', paddingTop:22, gap:4}}>
-                                <Text style={globalStyles.smallBlackText}>Spinach Ravioli</Text>
-                                <View style={{flexDirection:'row'}}>
-                                <Image source={require('../assets/icons/timeGreenIcon.png')} style={{width: 25, height: 25}}/>
-                                <Text style={globalStyles.smallGreyText}>6 minutes</Text>
-                                </View>
-                                <Text style={[globalStyles.smallGreyText, {color:'#7EC845'}]}>132 kkal</Text>
-                            </View>
-                            <View style={{position:'absolute', right:12, top:48}}>
-                            <Image source={require('../assets/icons/dotsGreenIcon.png')} />
-                            </View>
-                        </View>
+                      <MealComponent mealCard={mealCards[0]} />
+                      <MealComponent mealCard={mealCards[1]} />
+                      <MealComponent mealCard={mealCards[2]} />
+                      <MealComponent mealCard={mealCards[3]} />
+                      <MealComponent mealCard={mealCards[5]} />
                       </View>
                       <View style={{width:301, height:80, backgroundColor:'#7EC845', flexDirection:'column', borderRadius:10, gap:2, paddingTop:8, paddingLeft:8, marginBottom:39}}>
                         <Text style={[globalStyles.naming, {alignSelf:'flex-start'}]}>TOTAL</Text>
                         <View style={{flexDirection:'row', gap:137}}>
                           <Text style={globalStyles.editButtonText}>Calories:</Text>
-                          <Text style={globalStyles.editButtonText}>514 kcal</Text>
+                          <Text style={globalStyles.editButtonText}>{calculateTotalKkal()}kkal</Text>
                         </View>
 
                       </View>
                       <View style={{ flexDirection: 'row', gap:7, marginBottom:18 }}>
-
-                            <CustomButton  style={[globalStyles.buttonParentProfileSuccess, globalStyles.editButtonContent, {backgroundColor:'#007EB1'}]} textStyle={globalStyles.bigButtonText} title="Get my plan"  onPress={() => setShowConfirmationModal2(true)} />
-                        </View>
+                        <CustomButton  style={[globalStyles.buttonParentProfileSuccess, globalStyles.editButtonContent, {backgroundColor:'#007EB1'}]} textStyle={globalStyles.bigButtonText} title="Get my plan"  onPress={handleGetMyPlan} />
+                      </View>
                     </View>
                     </View>
                     </ScrollView>
@@ -889,134 +371,23 @@ export default function ModalMenu() {
                         <Text style={globalStyles.title}>Today</Text>
                       </View> 
                       <View style={{gap:14, marginBottom:41}}>
-                        <View style={styles.meal}>
-                            <View>
-                            <View style={{flexDirection:'column', gap:2, alignItems:'flex-end'}}>
-                                <Text style={globalStyles.textDietName}>Breakfast</Text>
-                                <View>
-                                <Image source={require('../assets/breakfastMealImg.png')}/>
-                                </View>
-                            </View>
-                            </View>
-                            <View style={{flexDirection:'column', paddingTop:22, gap:4}}>
-                                <Text style={globalStyles.smallBlackText}>Morning Bowl</Text>
-                                <View style={{flexDirection:'row'}}>
-                                <Image source={require('../assets/icons/timeGreenIcon.png')} style={{width: 25, height: 25}}/>
-                                <Text style={globalStyles.smallGreyText}>15 minutes</Text>
-                                </View>
-                                <Text style={[globalStyles.smallGreyText, {color:'#7EC845'}]}>75 kkal</Text>
-                            </View>
-                            <View style={{position:'absolute', right:12, top:48}}>
-                              <TouchableOpacity onPress={handlePress12}>
-                            <Image source={require('../assets/icons/dotsGreenIcon.png')} />
-                            </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={styles.meal}>
-                            <View>
-                            <View style={{flexDirection:'column', gap:2, alignItems:'flex-end'}}>
-                                <Text style={globalStyles.textDietName}>Snack 1</Text>
-                                <View>
-                                <Image source={require('../assets/snack1Img.png')}/>
-                                </View>
-                            </View>
-                            </View>
-                            <View style={{flexDirection:'column', paddingTop:22, gap:4}}>
-                                <Text style={globalStyles.smallBlackText}>Banana berry</Text>
-                                <View style={{flexDirection:'row'}}>
-                                <Image source={require('../assets/icons/timeGreenIcon.png')} style={{width: 25, height: 25}}/>
-                                <Text style={globalStyles.smallGreyText}>5 minutes</Text>
-                                </View>
-                                <Text style={[globalStyles.smallGreyText, {color:'#7EC845'}]}>90 kkal</Text>
-                            </View>
-                            <View style={{position:'absolute', right:12, top:48}}>
-                            <TouchableOpacity onPress={handlePress12}>
-                            <Image source={require('../assets/icons/dotsGreenIcon.png')} />
-                            </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={styles.meal}>
-                            <View>
-                            <View style={{flexDirection:'column', gap:2, alignItems:'flex-end'}}>
-                                <Text style={globalStyles.textDietName}>Lunch</Text>
-                                <View >
-                                <Image source={require('../assets/lunchImg.png')}/>
-                                </View>
-                            </View>
-                            </View>
-                            <View style={{flexDirection:'column', paddingTop:22, gap:4}}>
-                                <Text style={globalStyles.smallBlackText}>Harvest Bowl </Text>
-                                <View style={{flexDirection:'row'}}>
-                                <Image source={require('../assets/icons/timeGreenIcon.png')} style={{width: 25, height: 25}}/>
-                                <Text style={globalStyles.smallGreyText}>10 minutes</Text>
-                                </View>
-                                <Text style={[globalStyles.smallGreyText, {color:'#7EC845'}]}>127 kkal</Text>
-                            </View>
-                            <View style={{position:'absolute', right:12, top:48}}>
-                            <TouchableOpacity onPress={handlePress12}>
-                            <Image source={require('../assets/icons/dotsGreenIcon.png')} />
-                            </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={styles.meal}>
-                            <View>
-                            <View style={{flexDirection:'column', gap:2, alignItems:'flex-end'}}>
-                                <Text style={globalStyles.textDietName}>Snack 2</Text>
-                                <View >
-                                <Image source={require('../assets/snack2Img.png')}/>
-                                </View>
-                            </View>
-                            </View>
-                            <View style={{flexDirection:'column', paddingTop:22, gap:4}}>
-                                <Text style={globalStyles.smallBlackText}>Mango natural</Text>
-                                <View style={{flexDirection:'row'}}>
-                                <Image source={require('../assets/icons/timeGreenIcon.png')} style={{width: 25, height: 25}}/>
-                                <Text style={globalStyles.smallGreyText}>5 minutes</Text>
-                                </View>
-                                <Text style={[globalStyles.smallGreyText, {color:'#7EC845'}]}>90 kkal</Text>
-                            </View>
-                            <View style={{position:'absolute', right:12, top:48}}>
-                            <TouchableOpacity onPress={handlePress12}>
-                            <Image source={require('../assets/icons/dotsGreenIcon.png')} />
-                            </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={styles.meal}>
-                            <View>
-                            <View style={{flexDirection:'column', gap:2, alignItems:'flex-end'}}>
-                                <Text style={globalStyles.textDietName}>Dinner</Text>
-                                <View >
-                                <Image source={require('../assets/dinnerImg.png')}/>
-                                </View>
-                            </View>
-                            </View>
-                            <View style={{flexDirection:'column', paddingTop:22, gap:4}}>
-                                <Text style={globalStyles.smallBlackText}>Spinach Ravioli</Text>
-                                <View style={{flexDirection:'row'}}>
-                                <Image source={require('../assets/icons/timeGreenIcon.png')} style={{width: 25, height: 25}}/>
-                                <Text style={globalStyles.smallGreyText}>6 minutes</Text>
-                                </View>
-                                <Text style={[globalStyles.smallGreyText, {color:'#7EC845'}]}>132 kkal</Text>
-                            </View>
-                            <View style={{position:'absolute', right:12, top:48}}>
-                            <TouchableOpacity onPress={handlePress12}>
-                            <Image source={require('../assets/icons/dotsGreenIcon.png')} />
-                            </TouchableOpacity>
-                            </View>
-                        </View>
+                      <MealComponent mealCard={mealCards[0]} />
+                      <MealComponent mealCard={mealCards[1]} />
+                      <MealComponent mealCard={mealCards[2]} />
+                      <MealComponent mealCard={mealCards[3]} />
+                      <MealComponent mealCard={mealCards[5]} />
                       </View>
                       <View style={{width:301, height:80, backgroundColor:'#7EC845', flexDirection:'column', borderRadius:10, gap:2, paddingTop:8, paddingLeft:8, marginBottom:39}}>
                         <Text style={[globalStyles.naming, {alignSelf:'flex-start'}]}>TOTAL</Text>
                         <View style={{flexDirection:'row', gap:137}}>
                           <Text style={globalStyles.editButtonText}>Calories:</Text>
-                          <Text style={globalStyles.editButtonText}>514 kcal</Text>
+                          <Text style={globalStyles.editButtonText}>{calculateTotalKkal()}kkal</Text>
                         </View>
 
                       </View>
                       <View style={{ flexDirection: 'row', gap:7, marginBottom:18 }}>
-
-                            <CustomButton  style={[globalStyles.buttonParentProfileSuccess, globalStyles.editButtonContent, {backgroundColor:'#007EB1'}]} textStyle={globalStyles.bigButtonText} title="Get my plan"  onPress={() => setShowConfirmationModal2(true)} />
-                        </View>
+                        <CustomButton  style={[globalStyles.buttonParentProfileSuccess, globalStyles.editButtonContent, {backgroundColor:'#007EB1'}]} textStyle={globalStyles.bigButtonText} title="Get my plan"  onPress={handleGetMyPlan} />
+                      </View>
                     </View>
                     </View>
                     </ScrollView>

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { StyleSheet, View, ImageBackground, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import globalStyles from './GlobalStyles';
+import {  useRoute } from '@react-navigation/native';
+import ProgressBar from './ProgressBar';
 
 export default function RegistrationQ4() {
   const navigation = useNavigation();
@@ -9,8 +11,10 @@ export default function RegistrationQ4() {
   const handlePress2 = () => {
     navigation.navigate('RegistrationQ3');
   };
+  const route = useRoute();
+  const { username, childname } = route.params || {};
   const handlePress5 = () => {
-    navigation.navigate('RegistrationQ5');
+    navigation.navigate('RegistrationQ5',  { username, childname } );
   };
 
   return (
@@ -26,6 +30,7 @@ export default function RegistrationQ4() {
               <TouchableOpacity style={[globalStyles.buttonBackArrow]} onPress={handlePress2}>
                 <Image source={require('../assets/icons/arrowIcon.png')} style={{ width: 46, height: 46 }} />
               </TouchableOpacity>
+              <ProgressBar step={4} totalSteps={5} />
             </View>
             <Text style={[globalStyles.bigButtonText1, { marginBottom: 24 }]}>Add a photo of your child</Text>
             <View style={{ marginBottom: '20%' }}>
@@ -75,7 +80,9 @@ const styles = StyleSheet.create({
     paddingTop: '10%',
     paddingLeft: 35,
     width: '100%',
-    marginBottom: '10%',
+    paddingBottom: '10%',
+    flexDirection:'row',
+    alignItems:'center',
   },
   babyBoy: {
     width: 256,

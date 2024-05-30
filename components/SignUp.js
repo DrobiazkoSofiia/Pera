@@ -4,11 +4,16 @@ import { useNavigation } from '@react-navigation/native';
 import globalStyles from './GlobalStyles';
 import TextInputField from './TextInputField';
 
-export default function ChildProfileSuccess() {
+export default function ChildProfileSuccess({ }) {
+  const [username, setUsername] = useState('');
   const navigation = useNavigation();
   const [isChecked, setChecked] = useState(false);
   const handlePress33 = () => {
-    navigation.navigate('ParentProfileSuccess');
+    if (username.trim()) {
+    navigation.navigate('ParentProfileSuccess', { username });
+  } else {
+    alert('Please enter your name');
+  }
   };
   const CustomButton = ({ title, onPress, style, textStyle }) => (
     <TouchableOpacity onPress={handlePress33} style={[globalStyles.button, style]}>
@@ -28,8 +33,8 @@ export default function ChildProfileSuccess() {
           
           <TextInputField
             placeholder="Your name"
-            value={text4}
-            onChangeText={setText4}
+            value={username}
+            onChangeText={setUsername}
             style={[styles.customInputStyle, { marginBottom: 21 }]}
             icon={require('../assets/icons/profileIcon.png')}
           />

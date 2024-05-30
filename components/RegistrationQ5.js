@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { StyleSheet, View, ImageBackground, Text, TouchableOpacity, Image, TouchableHighlight, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import globalStyles from './GlobalStyles';
+import {  useRoute } from '@react-navigation/native';
+import ProgressBar from './ProgressBar';
 
 export default function RegistrationQ5() {
   const navigation = useNavigation();
@@ -14,9 +16,10 @@ export default function RegistrationQ5() {
   const handleBackPress = () => {
     navigation.navigate('RegistrationQ4');
   };
-
+  const route = useRoute();
+  const { username, childname } = route.params || {};
   const handleNextPress = () => {
-    navigation.navigate('ChildProfileSuccess');
+    navigation.navigate('ChildProfileSuccess',  { username, childname } );
   };
 
   const isDietSelected = () => {
@@ -32,6 +35,7 @@ export default function RegistrationQ5() {
               <TouchableOpacity style={[globalStyles.buttonBackArrow]} onPress={handleBackPress}>
                 <Image source={require('../assets/icons/arrowIcon.png')} style={{ width: 46, height: 46 }} />
               </TouchableOpacity>
+              <ProgressBar step={5} totalSteps={5} />
             </View>
             <Text style={[globalStyles.bigButtonText1, { marginBottom: 24, textAlign: 'left', width: 354 }]}>
               Which meal plan is right for your child?
@@ -93,7 +97,9 @@ const styles = StyleSheet.create({
     paddingTop: '10%',
     paddingLeft: 35,
     width: '100%',
-    marginBottom: '10%',
+    paddingBottom: '10%',
+    flexDirection:'row',
+    alignItems:'center',
   },
   dietType: {
     width: 359,

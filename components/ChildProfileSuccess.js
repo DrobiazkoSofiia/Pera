@@ -2,11 +2,14 @@ import React from 'react';
 import { StyleSheet, View, ImageBackground, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import globalStyles from './GlobalStyles';
+import {  useRoute } from '@react-navigation/native';
 
 export default function ChildProfileSuccess() {
   const navigation = useNavigation();
+  const route = useRoute();
+  const { username, childname } = route.params || {};
   const handlePress1 = () => {
-    navigation.navigate('Home');
+    navigation.navigate('Home',  { username, childname } );
   };
 
   return (

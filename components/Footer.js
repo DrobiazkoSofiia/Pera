@@ -1,20 +1,23 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import {  useRoute } from '@react-navigation/native';
 
 export default function Footer() {
     const navigation = useNavigation();
+    const route = useRoute();
+    const { childname, username } = route.params || {};
     const handlePress5 = () => {
-        navigation.navigate('Explore');
+        navigation.navigate('Explore', { childname, username });
       };
       const handlePress6 = () => {
-        navigation.navigate('Home');
+        navigation.navigate('Home', { childname, username });
       };
       const handlePress7 = () => {
-        navigation.navigate('Cart');
+        navigation.navigate('Cart', { childname, username });
       };
       const handlePress8 = () => {
-        navigation.navigate('Payment');
+        navigation.navigate('Payment', { childname, username });
       };
     return (
         <View style={styles.container}>

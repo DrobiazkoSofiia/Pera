@@ -7,6 +7,7 @@ import FooterNotRegistered from '../components/FooterNotRegistered';
 import ViewButton from '../components/MealCard';
 import globalStyles from './GlobalStyles';
 import ModalMenu from './ModalMenu';
+import {  useRoute } from '@react-navigation/native';
 
 const DetailsButton = ({ onPress }) => {
   return (
@@ -21,9 +22,11 @@ export default function HomeNotRegistered() {
   const navigation = useNavigation();
 
   const handlePress1 = () => {
-    navigation.navigate('RegistrationQ1');
+    navigation.navigate('RegistrationQ1', { username });
   };
   const [showConfirmationModal2, setShowConfirmationModal2] = useState(false);
+  const route = useRoute();
+  const { username } = route.params || {};
 
 
 
@@ -33,7 +36,7 @@ export default function HomeNotRegistered() {
       <HeaderNotRegistered />
         <View style={styles.content}>
           <View style={styles.top}>
-            <Text style={[styles.title, {marginBottom:27,}]}>Welcome Ana</Text>
+            <Text style={[styles.title, {marginBottom:27,}]}>Welcome { username }</Text>
           </View>
           <View style={{alignItems:'center'}}>
           <Image style={{marginBottom:29}} source={require('../assets/notRegisteredChildImg.png')}/>
