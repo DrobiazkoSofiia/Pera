@@ -3,19 +3,19 @@ import { StyleSheet, View, Text, Image, TouchableOpacity, } from 'react-native';
 import globalStyles from './GlobalStyles';
 import { useNavigation } from '@react-navigation/native';
 
-export default function VideoCard({ imageSource, title, duration, views }) {
+export default function VideoCard({ video }) {
     const navigation = useNavigation();
     const handlePress = () => {
-        navigation.navigate('VideoPage');
+        navigation.navigate('VideoPage', { video });
       };
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress={handlePress}>
-            <Image source={imageSource} style={styles.image} />
-            </TouchableOpacity>
+            
+            <Image source={video.imageSource} style={styles.image} />
+           
            <View style={styles.name}>
-                <Text style={styles.title}>{title}</Text>
-                <Text style={globalStyles.smallGreyText}>{duration} · {views} views</Text>
+                <Text style={styles.title}>{video.title}</Text>
+                <Text style={globalStyles.smallGreyText}>{video.duration} · {video.views} views</Text>
             </View>
         </View>
     );

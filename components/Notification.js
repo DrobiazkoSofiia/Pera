@@ -5,16 +5,13 @@ import Footer from '../components/Footer';
 import globalStyles from './GlobalStyles';
 import HeaderCart from './HeaderCart';
 
-
-
-
-export default function Cart() {
+export default function Notifications() {
   const navigation = useNavigation();
   const ViewButton1 = ({ title }) => {
     const navigation = useNavigation();
   
     const handlePress1 = () => {
-      navigation.navigate('NewMeal');
+      navigation.navigate('Home');
     };
     
   

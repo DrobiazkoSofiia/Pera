@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, TouchableHighlight } from 'react-native';
+import { StyleSheet, View, Text, } from 'react-native';
 import globalStyles from './GlobalStyles';
-import TextInputField from './TextInputField';
 
 export default function HeaderPayment() {
   return (
@@ -17,7 +16,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     backgroundColor: '#7EC845',
     width: '100%',
     height:113,

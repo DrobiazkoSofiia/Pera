@@ -30,7 +30,7 @@ export default function DescriptMealCard({}) {
   };
 
   const handlePress2 = () => {
-    navigation.navigate('NewMeal');
+    navigation.navigate('NewMeal', {mealCard});
   };
 
     const CustomButton = ({ title, onPress, style, textStyle, icon }) => (
@@ -45,10 +45,10 @@ export default function DescriptMealCard({}) {
       
     };
     const onDelete = () => {
-    handleDelete(mealCard.id);
-    setShowConfirmationModal1(true);
-    setShowConfirmationModal(false)
-  };
+      handleDelete(mealCard.id);
+      setShowConfirmationModal1(true);
+      setShowConfirmationModal(false);
+    };
   const onAddToCart = () => {
     addToCart(mealCard);
     navigation.navigate('Cart');

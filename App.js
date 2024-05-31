@@ -29,7 +29,8 @@ import ChildAccount from './components/ChildAccount';
 import VideoPage from './components/VideoPage';
 import ArticlePage from './components/ArticlePage';
 import ModalCalendar from './components/ModalCalendar';
-import { CartProvider } from './components/CartContext'; 
+import { CartProvider } from './components/CartContext';
+import PaymentOrder from './components/PaymentOrder'; 
 import 'react-native-gesture-handler';
 
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
@@ -87,6 +88,7 @@ export default function App() {
         <Stack.Screen name="VideoPage" component={VideoPage} />
         <Stack.Screen name="ArticlePage" component={ArticlePage} />
         <Stack.Screen name="ModalCalendar" component={ModalCalendar} />
+        <Stack.Screen name="PaymentOrder" component={PaymentOrder} />
       </Stack.Navigator>
     </NavigationContainer> 
      </CartProvider>   

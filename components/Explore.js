@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
+import { useNavigation,  useRoute  } from '@react-navigation/native'; // Import useNavigation hook
 import VideoCard from '../components/VideoCard';
 import Footer from '../components/Footer';
 import HeaderExplore from '../components/HeaderExplore';
 import Article from '../components/Article';
 import ModalMenu from '../components/ModalMenu';
 import globalStyles from './GlobalStyles';
+import { videos } from './VideoData';
+import { articles } from './ArticleData';
 
 
 export default function HomeNotRegistered() {
   const navigation = useNavigation();
+  const filteredVideos = videos.filter(video => video.id === 1 || video.id === 2 || video.id === 3);
+  const filteredVideos1 = videos.filter(video => video.id === 4 || video.id === 5 || video.id === 6);
+  const filteredArticles = articles.filter(article => article.id === 1 || article.id === 2 || article.id === 3 || article.id === 4);
+  const filteredArticles1 = articles.filter(article => article.id === 5 || article.id === 6 || article.id === 7 || article.id === 8);
 
   return (
     <View style={styles.container}>
@@ -30,22 +36,11 @@ export default function HomeNotRegistered() {
               <Text style={[globalStyles.title2, { marginBottom: 20 }]}>Most popular</Text>
             </View>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-              <Article 
-                imageSource={require('../assets/article1Img.png')}
-                title="Christmas menu for child"
-              />
-              <Article 
-                imageSource={require('../assets/article2Img.png')}
-                title="Feeding Issues: Baby Spitting Up"
-              />
-              <Article 
-                imageSource={require('../assets/article3Img.png')}
-                title="6 Tips for Traveling with Baby"
-              />
-              <Article 
-                imageSource={require('../assets/article4Img.png')}
-                title="How Babies Develop Allergies"
-              />
+            {filteredArticles.map((article, index) => (
+            <TouchableOpacity key={article.id} onPress={() => navigation.navigate('ArticlePage', { article })}>
+            <Article article={article} />
+          </TouchableOpacity>          
+        ))}
             </ScrollView>
           </View>
           <View style={{ marginBottom: 33 }}>
@@ -53,24 +48,11 @@ export default function HomeNotRegistered() {
               <Text style={[globalStyles.title2, { marginBottom: 20 }]}>Recipes</Text>
             </View>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-              <VideoCard 
-                imageSource={require('../assets/video.png')}
-                title="Carrot Cake Muffins"
-                duration="1:06 min."
-                views="14,8k"
-              />
-              <VideoCard 
-                imageSource={require('../assets/video4.png')}
-                title="Banana Oatmeal Waffels"
-                duration="0:48 min."
-                views="15,6k"
-              />
-              <VideoCard 
-                imageSource={require('../assets/video5.png')}
-                title="Butternut squash mac & cheese"
-                duration="1:02 min."
-                views="9,8k"
-              />
+            {filteredVideos.map((video, index) => (
+            <TouchableOpacity key={video.id} onPress={() => navigation.navigate('VideoPage', { video })}>
+            <VideoCard video={video} />
+          </TouchableOpacity>          
+        ))}
             </ScrollView>
           </View>
           <View style={{ marginBottom: 26 }}>
@@ -78,22 +60,11 @@ export default function HomeNotRegistered() {
               <Text style={[globalStyles.title2, { marginBottom: 20 }]}>Allergies</Text>
             </View>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-              <Article 
-                imageSource={require('../assets/allergiesImg.png')}
-                title="What is a Food Allergy?"
-              />
-              <Article 
-                imageSource={require('../assets/article5Img.png')}
-                title="Cow`s Milk Allergies in Babies"
-              />
-              <Article 
-                imageSource={require('../assets/article6Img.png')}
-                title="How Babies Develop Allergies"
-              />
-              <Article 
-                imageSource={require('../assets/article7Img.png')}
-                title="Common Food Allergies"
-              />
+            {filteredArticles1.map((article, index) => (
+            <TouchableOpacity key={article.id} onPress={() => navigation.navigate('ArticlePage', { article })}>
+            <Article article={article} />
+          </TouchableOpacity>          
+        ))}
             </ScrollView>
           </View>
           <View style={{ marginBottom: 17 }}>
@@ -101,24 +72,11 @@ export default function HomeNotRegistered() {
               <Text style={[globalStyles.title2, { marginBottom: 20 }]}>Might be interesting</Text>
             </View>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-              <VideoCard 
-                imageSource={require('../assets/video6.png')}
-                title="Banana Oatmeal Waffels"
-                duration="1:06 min."
-                views="14,8k"
-              />
-              <VideoCard 
-                imageSource={require('../assets/video7.png')}
-                title="Butternut squash mac & cheese"
-                duration="1:06 min."
-                views="14,8k"
-              />
-              <VideoCard 
-                imageSource={require('../assets/video8.png')}
-                title="Congratulations"
-                duration="1:06 min."
-                views="14,8k"
-              />
+            {filteredVideos1.map((video, index) => (
+            <TouchableOpacity key={video.id} onPress={() => navigation.navigate('VideoPage', { video })}>
+            <VideoCard video={video} />
+          </TouchableOpacity>          
+        ))}
             </ScrollView>
           </View>
         </View>

@@ -1,15 +1,14 @@
-import React, {useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, ScrollView, Modal } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import Header from '../components/Header';
 import MealCard from '../components/MealCard';
 import VideoCard from '../components/VideoCard';
 import Footer from '../components/Footer';
-import ViewButton from '../components/MealCard';
 import globalStyles from './GlobalStyles';
-import {meals as initialMeals } from './MealData';
-import {  useRoute } from '@react-navigation/native';
+import { meals as initialMeals } from './MealData';
 import { CartContext } from './CartContext';
+import { videos } from './VideoData';
 
 
 const MoreButton = ({ onPress }) => {
@@ -28,10 +27,11 @@ const DetailsButton = ({ onPress }) => {
   );
 }
 
-export default function Home({ }) {;
-  const [mealCards, setMealCards] = useState(initialMeals);
+export default function Home({ }) {
   const navigation = useNavigation();
+  const [mealCards, setMealCards] = useState(initialMeals);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [showConfirmationModal1, setShowConfirmationModal1] = useState(false);
   const [showConfirmationModal2, setShowConfirmationModal2] = useState(false);
   const CustomButton = ({ title, onPress, style, textStyle, icon }) => (
     <TouchableOpacity onPress={onPress} style={[globalStyles.button, style]}>
@@ -74,6 +74,8 @@ const handleGetMyPlan = () => {
   addToCart(specificMeals);
   setShowConfirmationModal2(true);
 };
+const filteredVideos = videos.filter(video => video.id === 1 || video.id === 2 || video.id === 3);
+
 
   return (
     <View style={styles.container}>
@@ -144,23 +146,11 @@ const handleGetMyPlan = () => {
             <Text style={[globalStyles.title2, {marginBottom:31}]}>Recipes</Text>
           </View>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          <VideoCard 
-              imageSource={require('../assets/video.png')}
-              title="Carrot Cake Muffins"
-              duration="1:06 min."
-              views="14,8k"
-            />
-         <VideoCard 
-              imageSource={require('../assets/video4.png')}
-              title="Banana Oatmeal Waffels"
-              duration="0:48 min."
-              views="15,6k"/>
-         <VideoCard 
-              imageSource={require('../assets/video5.png')}
-              title="Butternut squash mac & cheese"
-              duration="1:02 min."
-              views="9,8k"/>
-             
+          {filteredVideos.map((video, index) => (
+            <TouchableOpacity key={video.id} onPress={() => navigation.navigate('VideoPage', { video })}>
+            <VideoCard video={video} />
+          </TouchableOpacity>          
+        ))}
           </ScrollView>
           </View>
         </View>

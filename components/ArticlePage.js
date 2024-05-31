@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, ScrollView, } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import globalStyles from './GlobalStyles';
 import Footer from '../components/Footer';
 
-export default function VideoPage() {
+export default function ArticlePage() {
   const navigation = useNavigation()
+  const route = useRoute();
+  const { article } = route.params;
   const handlePress = () => {
     navigation.goBack();
   };
@@ -27,41 +29,41 @@ export default function VideoPage() {
             
             <ScrollView>
            <View style={styles.content}>
-           <Image source={require('../assets/article1Img.png')} style={{width:'100%', height:328, marginBottom:22}}/>
+           <Image source={article.imageSource} style={{width:'100%', height:328, marginBottom:22}}/>
            <Image source={require('../assets/icons/articlePageImg.png')} style={{width:102, height:73, position:'absolute',top:273, left:19,}}/>
            <View style={{paddingLeft:35}}>
-           <Text style={[globalStyles.title2,{marginBottom:5}]}>Christmas menu for children</Text>
-           <Text style={[globalStyles.smallBlackText,{marginBottom:38, width:352}]}>Сhristmas party season is on its way, and with so much to think about we want to make sure you have everything you need for your baby and toddler Christmas recipes.</Text>
-           <Text style={[globalStyles.textDietName2, {marginBottom:13}]}>1. Carrot Cake Muffins</Text>
-           <Text style={[globalStyles.smallBlackText, {marginBottom:22, width:351}]}>For baby carrot muffins are just brilliant! They can be made well ahead of time and the best part is that they freeze. </Text>
+           <Text style={[globalStyles.title2,{marginBottom:5}]}>{article.title}</Text>
+           <Text style={[globalStyles.smallBlackText,{marginBottom:38, width:352}]}>{article.paragraph1}</Text>
+           <Text style={[globalStyles.textDietName2, {marginBottom:13}]}>{article.punkt1}</Text>
+           <Text style={[globalStyles.smallBlackText, {marginBottom:22, width:351}]}>{article.paragraph2}</Text>
            <View style={{alignItems:'center', flexDirection:'row', marginBottom:22, gap:15}}>
-           <Image source={require('../assets/articlePage1Img.png')} style={{width:170, height:206, borderRadius:10,}}/>
+           <Image source={article.articlePage1Img} style={{width:170, height:206, borderRadius:10,}}/>
            <View style={{width:170, height:206, borderRadius:10, backgroundColor:'#FFC4BC', alignItems:'center', justifyContent:'center'}}>
-           <Image source={require('../assets/mealVideoImg.png')} style={{width:155, height:155,}}/>
+           <Image source={article.articlePage2Img} style={{width:155, height:155,}}/>
            </View>
            </View>
            <View style={{flexDirection:'row', gap:5, marginBottom:31}}>
            <Text style={[globalStyles.productIngridients1]}>You can watch recepi</Text>
            <Text style={[globalStyles.productIngridients1, {color:'#007EB1'}]}>here</Text>
           </View>
-          <Text style={[globalStyles.textDietName2, {marginBottom:13}]}>2. Christmas menu for children</Text>
-           <Text style={[globalStyles.smallBlackText, {marginBottom:22, width:351}]}>For baby led weaning muffins are just brilliant! They can be made well ahead of time and the best part is that they freeze. </Text>
+          <Text style={[globalStyles.textDietName2, {marginBottom:13}]}>{article.punkt2}</Text>
+           <Text style={[globalStyles.smallBlackText, {marginBottom:22, width:351}]}>{article.paragraph3}</Text>
            <View style={{alignItems:'center', flexDirection:'row', marginBottom:22, gap:15}}>
-           <Image source={require('../assets/articlePage2Img.png')} style={{width:170, height:206, borderRadius:10,}}/>
+           <Image source={article.articlePage3Img} style={{width:170, height:206, borderRadius:10,}}/>
            <View style={{width:170, height:206, borderRadius:10, backgroundColor:'#FFA64F', alignItems:'center', justifyContent:'center'}}>
-           <Image source={require('../assets/productMeal2Img.png')} style={{width:124, height:152,}}/>
+           <Image source={article.articlePage4Img} style={{width:124, height:152,}}/>
            </View>
            </View>
            <View style={{flexDirection:'row', gap:5, marginBottom:31}}>
            <Text style={[globalStyles.productIngridients1]}>You can watch recepi</Text>
            <Text style={[globalStyles.productIngridients1, {color:'#007EB1'}]}>here</Text>
           </View>
-          <Text style={[globalStyles.textDietName2, {marginBottom:13}]}>3. Christmas menu for children</Text>
-           <Text style={[globalStyles.smallBlackText, {marginBottom:22, width:351}]}>For baby led weaning muffins are just brilliant! They can be made well ahead of time and the best part is that they freeze. So make lots, freeze and the night before you (or Santa Claus) wants to eat them you can remove from the freezer to defrost.</Text>
+          <Text style={[globalStyles.textDietName2, {marginBottom:13}]}>{article.punkt3}</Text>
+           <Text style={[globalStyles.smallBlackText, {marginBottom:22, width:351}]}>{article.paragraph4}</Text>
            <View style={{alignItems:'center', flexDirection:'row', marginBottom:22, gap:15}}>
-           <Image source={require('../assets/video4.png')} style={{width:170, height:206, borderRadius:10,}}/>
+           <Image source={article.articlePage5Img} style={{width:170, height:206, borderRadius:10,}}/>
            <View style={{width:170, height:206, borderRadius:10, backgroundColor:'#D5EBF4', alignItems:'center', justifyContent:'center'}}>
-           <Image source={require('../assets/articlePage3Img.png')} style={{width:84, height:174,}}/>
+           <Image source={article.articlePage6Img} style={{width:84, height:174,}}/>
            </View>
            </View>
            <View style={{flexDirection:'row', gap:5, marginBottom:31}}>

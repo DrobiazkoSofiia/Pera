@@ -9,6 +9,10 @@ import { CartContext } from './CartContext';
 
 export default function Cart() {
   const navigation = useNavigation();
+
+  const handlePress1 = () => {
+    navigation.navigate('PaymentOrder');
+  };
   const { cartItems, removeFromCart, updateItemCount } = useContext(CartContext);
 
   const totalPayment = cartItems.reduce((sum, item) => sum + item.price * item.count, 0).toFixed(2);
@@ -39,7 +43,7 @@ export default function Cart() {
             <Text style={[globalStyles.productIngridients1, {marginTop:16}]}>Total Payment</Text>
             <Text style={globalStyles.bigButtonText1}>€{totalPayment}</Text>
           </View>
-          <TouchableOpacity style={[globalStyles.bigAddButton, { marginBottom: 5, alignSelf: 'center' }]}>
+          <TouchableOpacity style={[globalStyles.bigAddButton, { marginBottom: 5, alignSelf: 'center' }]} onPress={handlePress1}>
             <Text style={globalStyles.bigButtonText}>Proceed to checkout</Text>
           </TouchableOpacity>
           </View>

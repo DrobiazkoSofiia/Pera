@@ -3,14 +3,17 @@ import { StyleSheet, View, Text, Image, TouchableHighlight } from 'react-native'
 import globalStyles from './GlobalStyles';
 import TextInputField from './TextInputField';
 import { useNavigation } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 
 export default function HeaderPayment() {
   const navigation = useNavigation();
 
   const handleCrossIconPress = () => {
     navigation.goBack();
-    navigation.navigate('DescriptMealCard', { showConfirmationModal1: true });
+    navigation.navigate('DescriptMealCard', { showConfirmationModal1: true, mealCard });
   };
+  const route = useRoute();
+  const { mealCard, handleDelete } = route.params;
   return (
     <View style={styles.container}>
         <View style={{flexDirection: 'row', gap:50, alignItems: 'center', marginBottom:14}}>

@@ -4,22 +4,20 @@ import globalStyles from './GlobalStyles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 
-export default function Article({ imageSource, title, duration, views,  }) {
+export default function Article({ article }) {
     const navigation = useNavigation();
     const handlePress1 = () => {
         navigation.navigate('ArticlePage');
       };
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress={handlePress1}>
-            <Image source={imageSource} style={styles.image} />
-            </TouchableOpacity>
+            <Image source={article.imageSource} style={styles.image} />
             <View style={styles.blueArticle}>
                 <Image source={require('../assets/icons/articleIcon.png')} />
                 <Text style={globalStyles.smallWhiteText}>Article</Text>
             </View>
             <View style={styles.name}>
-                <Text style={globalStyles.textArticle}>{title}</Text>
+                <Text style={globalStyles.textArticle}>{article.title}</Text>
             </View>
         </View>
     );
