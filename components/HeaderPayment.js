@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, } from 'react-native';
 import globalStyles from './GlobalStyles';
 
-export default function HeaderPayment() {
+export default function HeaderPayment({title}) {
   return (
     <View style={styles.container}>
         <View style={{flexDirection: 'row', gap:173, alignItems: 'center', marginBottom:14}}>
-      <Text style={globalStyles.textParentProfileSuccess}>Payment Method</Text>
+      <Text style={globalStyles.textParentProfileSuccess}>{title}</Text>
     </View>
     </View>
   );

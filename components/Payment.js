@@ -17,7 +17,7 @@ export default function Payment() {
   return (
     <View style={styles.container}>
       <ScrollView>
-        <HeaderPayment />
+        <HeaderPayment title={'Payment Method'}/>
         <View style={styles.content}>
           <View style={styles.top}>
             <Text style={[styles.title, { marginBottom: 8 }]}>Shipping to</Text>

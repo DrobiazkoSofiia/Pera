@@ -26,6 +26,11 @@ const globalStyles = StyleSheet.create({
         fontFamily: 'Caladea-Bold',
         fontSize: 24,
     },
+    title3:{
+        color: 'black',
+        fontFamily: 'Caladea-Bold',
+        fontSize: 38,
+    },
     textParentProfileSuccess: {
         color: 'white',
         fontFamily: 'Caladea-Bold',

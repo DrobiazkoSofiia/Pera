@@ -4,12 +4,15 @@ import { useNavigation } from '@react-navigation/native';
 import Footer from '../components/Footer';
 import globalStyles from './GlobalStyles';
 import HeaderPayment from '../components/HeaderPayment';
+import { useRoute } from '@react-navigation/native';
 
 export default function PaymentOrder() {
   const navigation = useNavigation();
+  const route = useRoute();
+  const { totalPayment } = route.params;
 
   const handlePress1 = () => {
-    navigation.navigate('RegistrationQ1');
+    navigation.navigate('OrderReview',  { totalPayment });
   };
 
   const [selectedButton, setSelectedButton] = useState(null);
@@ -18,7 +21,7 @@ export default function PaymentOrder() {
   return (
     <View style={styles.container}>
       <ScrollView>
-        <HeaderPayment />
+        <HeaderPayment title={'Payment Method'}/>
         <View style={styles.content}>
           <View style={styles.top}>
           <TouchableOpacity
@@ -43,43 +46,38 @@ export default function PaymentOrder() {
           <Text style={[globalStyles.smallGreyText, selectedButton === 'paypal' && styles.selectedButtonText]}>Paypal</Text>
         </TouchableOpacity>
           </View>
-          <View style={[ selectedCard === 'master' && styles.pressedButton]}>
-            <View style={[styles.card, ]}>
-              <Image source={require('../assets/mastercardImg.png')} style={{width:65, height:52, marginLeft:10}}/>
-              <View style={{ flexDirection: 'column', width: 170 }}>
-                <Text style={globalStyles.textDietName}>MasterCard</Text>
-                <Text style={globalStyles.smallBlackText}>**** 2636</Text>
-              </View>
-              <TouchableOpacity style={[styles.buttonCard, selectedCard === 'master' && styles.selectedButton,]}
-                onPress={() => setSelectedCard('master')}>
+          <View style={{marginBottom:36}}>
+          <View style={[styles.card, selectedCard === 'master' && styles.pressedButton]}>
+      <Image source={require('../assets/mastercardImg.png')} style={{width:65, height:52, marginLeft:10}}/>
+      <View style={{ flexDirection: 'column', width: 170 }}>
+        <Text style={globalStyles.textDietName}>MasterCard</Text>
+        <Text style={globalStyles.smallBlackText}>**** 2636</Text>
+      </View>
+      <TouchableOpacity style={[styles.buttonCard, selectedCard === 'master' && styles.selectedButton]}
+        onPress={() => setSelectedCard('master')}>
+      </TouchableOpacity>
+    </View>
 
-                </TouchableOpacity>
-            </View>
-            <View style={{ flexDirection: 'row', alignItems:'center', gap: 14, width:363, height:71, borderRadius:8, borderWidth:1, borderColor:'#A3A3A3', marginBottom:19 }}>
-              <Image source={require('../assets/visaImg.png')} style={{width:65, height:52, marginLeft:10}}/>
-              <View style={{ flexDirection: 'column', width: 170 }}>
-                <Text style={globalStyles.textDietName}>Visa</Text>
-                <Text style={globalStyles.smallBlackText}>**** 3256</Text>
-              </View>
-              <TouchableOpacity style={[styles.buttonCard, selectedCard === 'visa' && styles.selectedButton,]}
-                onPress={() => setSelectedCard('visa')}>
-
-                </TouchableOpacity>
-            </View>
-            <View style={{ width: 150, height: 36, backgroundColor: '#7EC845', borderRadius: 30, alignItems: 'center', justifyContent: 'center', alignSelf: 'flex-end' }}>
-              <TouchableOpacity>
-                <Text style={globalStyles.smallWhiteText}>Change address</Text>
+    <View style={[styles.card, selectedCard === 'visa' && styles.pressedButton]}>
+      <Image source={require('../assets/visaImg.png')} style={{width:65, height:52, marginLeft:10}}/>
+      <View style={{ flexDirection: 'column', width: 170 }}>
+        <Text style={globalStyles.textDietName}>Visa</Text>
+        <Text style={globalStyles.smallBlackText}>**** 3256</Text>
+      </View>
+      <TouchableOpacity style={[styles.buttonCard, selectedCard === 'visa' && styles.selectedButton]}
+        onPress={() => setSelectedCard('visa')}>
+      </TouchableOpacity>
+    </View>
+    </View>
+            <View style={{ width:362, height:58, backgroundColor: '#D9D9D9', borderRadius:11, alignItems: 'flex-start', justifyContent: 'center', marginBottom:58 }}>
+              <TouchableOpacity style={{paddingLeft:29}}>
+                <Text style={globalStyles.productIngridients1}>+     Add new card</Text>
               </TouchableOpacity>
-            </View>
-          </View>
-          <View style={{ marginBottom: 26 }}>
-            <Text style={[styles.title]}>Add Payment Method</Text>
-          </View>
-         
+            </View>       
            
-          <View style={{ marginBottom: 202 }}>
-            <Image source={require('../assets/cardImg.png')} />
-          </View>
+          <TouchableOpacity style={[globalStyles.buttonNext]} onPress={handlePress1}>
+            <Text style={globalStyles.bigButtonText}>Next</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
       <View style={styles.footer}>
@@ -91,11 +89,13 @@ export default function PaymentOrder() {
 
 const styles = StyleSheet.create({
   container: {
-    height: 'auto',
+    height: '100%',
+    backgroundColor:'white'
   },
   content: {
     backgroundColor: 'white',
     alignItems:'center',
+    height:'100%'
   },
   top: {
     paddingTop: 45,
@@ -123,18 +123,23 @@ const styles = StyleSheet.create({
     alignItems:'center'
 
   },
-  card:{
+  card: {
     flexDirection: 'row',
-     alignItems:'center',
-      gap: 14,
-       width:363,
-       height:71,
-        borderRadius:8,
-         borderWidth:1,
-          borderColor:'#A3A3A3',
-           marginBottom:19,
-           elevation:10,
-           shadowColor:'white'
+    alignItems: 'center',
+    gap: 14,
+    width: 363,
+    height: 71,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#A3A3A3',
+    marginBottom: 19,
+    overflow: 'visible',
+    elevation: 10,
+    shadowColor: 'white',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 3.84,
+    backgroundColor: 'white',
   },
   buttonCard:{
     backgroundColor:'#D8D8D8',
@@ -147,6 +152,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#7EC845',
     borderRadius: 90,
     padding: 10,
+    shadowColor: 'black',
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    elevation: 5,
   },
   selectedButtonText: {
     color: 'white',
@@ -159,8 +169,9 @@ const styles = StyleSheet.create({
   },
   pressedButton: {
     shadowColor: 'black',
-    shadowOffset: { width: 2, height: 0 },
+    shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 0.5,
     shadowRadius: 1,
+    elevation: 5,
   },
 });

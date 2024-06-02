@@ -31,6 +31,8 @@ import ArticlePage from './components/ArticlePage';
 import ModalCalendar from './components/ModalCalendar';
 import { CartProvider } from './components/CartContext';
 import PaymentOrder from './components/PaymentOrder'; 
+import OrderReview from './components/OrderReview';
+import OrderReviewFinish from './components/OrderReviewFinish';
 import 'react-native-gesture-handler';
 
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
@@ -89,6 +91,8 @@ export default function App() {
         <Stack.Screen name="ArticlePage" component={ArticlePage} />
         <Stack.Screen name="ModalCalendar" component={ModalCalendar} />
         <Stack.Screen name="PaymentOrder" component={PaymentOrder} />
+        <Stack.Screen name="OrderReview" component={OrderReview} />
+        <Stack.Screen name="OrderReviewFinish" component={OrderReviewFinish} />
       </Stack.Navigator>
     </NavigationContainer> 
      </CartProvider>   
