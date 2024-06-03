@@ -33,6 +33,7 @@ import { CartProvider } from './components/CartContext';
 import PaymentOrder from './components/PaymentOrder'; 
 import OrderReview from './components/OrderReview';
 import OrderReviewFinish from './components/OrderReviewFinish';
+import SelectAddressScreen from './components/SelectAddressScreen';
 import 'react-native-gesture-handler';
 
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
@@ -93,6 +94,7 @@ export default function App() {
         <Stack.Screen name="PaymentOrder" component={PaymentOrder} />
         <Stack.Screen name="OrderReview" component={OrderReview} />
         <Stack.Screen name="OrderReviewFinish" component={OrderReviewFinish} />
+        <Stack.Screen name="SelectAddressScreen" component={SelectAddressScreen} />
       </Stack.Navigator>
     </NavigationContainer> 
      </CartProvider>   

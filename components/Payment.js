@@ -1,45 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Footer from '../components/Footer';
 import globalStyles from './GlobalStyles';
 import HeaderPayment from '../components/HeaderPayment';
+import { AddressContext } from './SelectAddressScreen'; // Імпорт контексту
+import { useRoute } from '@react-navigation/native';
 
 export default function Payment() {
+  const route = useRoute();
+  const [selectedAddress, setSelectedAddress] = useState(null);
   const navigation = useNavigation();
-
-  const handlePress1 = () => {
-    navigation.navigate('RegistrationQ1');
-  };
-  
   const [pressedButtonIndex, setPressedButtonIndex] = useState(null);
+
+  useEffect(() => {
+    if (route.params?.selectedAddress) {
+      setSelectedAddress(route.params.selectedAddress);
+    }
+  }, [route.params?.selectedAddress]);
+
+  const handleChangeAddress = () => {
+    navigation.navigate('SelectAddressScreen');
+  };
 
   return (
     <View style={styles.container}>
       <ScrollView>
-        <HeaderPayment title={'Payment Method'}/>
+        <HeaderPayment title={'Payment Method'} />
         <View style={styles.content}>
           <View style={styles.top}>
-            <Text style={[styles.title, { marginBottom: 8 }]}>Shipping to</Text>
+            <Text style={[globalStyles.title2, { marginBottom: 8 }]}>Shipping to</Text>
           </View>
           <View style={{ alignItems: 'flex-start', justifyContent: 'center', marginBottom: 24 }}>
             <View style={{ flexDirection: 'row', gap: 14 }}>
               <Image source={require('../assets/mapImg.png')} />
               <View style={{ flexDirection: 'column', width: 170 }}>
                 <Text style={globalStyles.textDietName}>Home</Text>
-                <Text style={globalStyles.smallGreyText}>2860 Mechelen, Lange Zandstraat 2, Belgium</Text>
+                <Text style={globalStyles.smallGreyText}>{selectedAddress}</Text>
               </View>
             </View>
-            <View style={{ width: 150, height: 36, backgroundColor: '#7EC845', borderRadius: 30, alignItems: 'center', justifyContent: 'center', alignSelf: 'flex-end' }}>
-              <TouchableOpacity>
-                <Text style={globalStyles.smallWhiteText}>Change address</Text>
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+              style={styles.changeAddressButton}
+              onPress={handleChangeAddress}
+            >
+              <Text style={globalStyles.smallWhiteText}>Change address</Text>
+            </TouchableOpacity>
           </View>
           <View style={{ marginBottom: 26 }}>
-            <Text style={[styles.title]}>Add Payment Method</Text>
+            <Text style={[globalStyles.title2]}>Add Payment Method</Text>
           </View>
-          <View style={{ marginBottom: 33, flexDirection: 'row', gap: 5 }}>
+          <View style={{ marginBottom: 33, flexDirection: 'row', gap: 5, alignItems:'center' }}>
             <TouchableOpacity
               style={[styles.shadowButton, pressedButtonIndex === 0 && styles.pressedButton]}
               onPress={() => setPressedButtonIndex(0)}
@@ -79,7 +89,7 @@ export default function Payment() {
 
 const styles = StyleSheet.create({
   container: {
-    height: 'auto',
+    flex:1
   },
   content: {
     backgroundColor: 'white',
@@ -93,12 +103,18 @@ const styles = StyleSheet.create({
     paddingTop: 17,
     marginBottom: 8,
   },
-  footer: {
-    position: 'absolute', 
-    bottom: 0,
-    left: 0,
-    right: 0,
-    alignItems: 'center', 
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  changeAddressButton: {
+    width: 150,
+    height: 36,
+    backgroundColor: '#7EC845',
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'flex-end',
   },
   shadowButton: {
     elevation: 10,
@@ -111,5 +127,12 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 1,
     shadowRadius: 7,
+  },
+  footer: {
+    position: 'absolute', 
+    bottom: 0,
+    left: 0,
+    right: 0,
+    alignItems: 'center', 
   },
 });

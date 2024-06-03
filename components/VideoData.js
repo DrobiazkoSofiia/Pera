@@ -8,6 +8,7 @@ export const videos = [
         views:"14,8k",
         ingridients: "Organic dried navy beans, organic rice flour, organic high oleic sunflower oil, organic cheddar cheese (organic cultured milk, salt, enzymes).",
         mealVideoImg:require('../assets/mealVideoImg.png'),
+        youtubeId: 'Ng7k7vhHo58',
     },
     {
       id: 2,
@@ -17,6 +18,7 @@ export const videos = [
       views:"15,6k",
       ingridients: "Сultured reduced fat milk, sugar, strawberry puree, nonfat dry milk, tapioca starch, less than 1.5% of: gelatin, natural strawberry flavor, lactic acid esters of mono and diglycerides, fruit and vegetable juice colors, vitamin c (sodium ascorbate), vitamin e (alpha tocopheryl acetate), vitamin a acetate.",
       mealVideoImg:require('../assets/smallProduct5.png'),
+      youtubeId:'SkGAWs-j4QQ',
     },
     { id: 3,
         imageSource:require('../assets/video5.png'),
@@ -25,6 +27,7 @@ export const videos = [
         views:"9,8k",
         ingridients: "Organic dried navy beans, organic rice flour, organic high oleic sunflower oil, organic cheddar cheese (organic cultured milk, salt, enzymes).",
         mealVideoImg:require('../assets/smallProduct1.png'),
+        youtubeId:'aO48oLQn2Z4',
     },
     {
       id: 4,
@@ -34,6 +37,7 @@ export const videos = [
       views:"14,8k",
       ingridients: "Organic dried navy beans, organic rice flour, organic high oleic sunflower oil, organic cheddar cheese (organic cultured milk, salt, enzymes).",
       mealVideoImg:require('../assets/mealVideoImg.png'),
+      youtubeId:'nnCBoKFds_0',
     },
     
     {id: 5,
@@ -43,6 +47,7 @@ export const videos = [
         views:"14,8k",
         ingridients: "Organic dried navy beans, organic rice flour, organic high oleic sunflower oil, organic cheddar cheese (organic cultured milk, salt, enzymes).",
         mealVideoImg:require('../assets/mealVideoImg.png'),
+        youtubeId:'Q5B5cqvwiXQ',
     },
     {id: 6,
         imageSource:require('../assets/video8.png'),
@@ -51,6 +56,7 @@ export const videos = [
         views:"14,8k",
         ingridients: "Organic dried navy beans, organic rice flour, organic high oleic sunflower oil, organic cheddar cheese (organic cultured milk, salt, enzymes).",
         mealVideoImg:require('../assets/mealVideoImg.png'),
+        youtubeId:'Yb8KqXj6tX0',
     },
   ];
   
