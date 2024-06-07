@@ -6,12 +6,12 @@ import {  useRoute } from '@react-navigation/native';
 export default function Header() {
   const navigation = useNavigation();
   const handlePress1 = () => {
-    navigation.navigate('Notification');
+    navigation.navigate('Notification', { username, childname, avatarSource });
   };
   const route = useRoute();
-  const { childname, username } = route.params || {};
+  const { childname, username, avatarSource } = route.params || {};
   const handlePress2 = () => {
-    navigation.navigate('ChildAccount', { childname, username });
+    navigation.navigate('ChildAccount', { username, childname, avatarSource });
   };
   return (
     <View style={styles.container}>
@@ -21,7 +21,11 @@ export default function Header() {
         <Image style={[styles.icon, styles.bellIcon]} source={require('../assets/icons/iconBell.png')} />
         </TouchableOpacity>
         <TouchableOpacity onPress={handlePress2}>
-          <Image style={styles.baby} source={require('../assets/baby.jpg')} />
+        {avatarSource === null ? (
+                    <Image source={require('../assets/icons/babyboyIcon.png')} style={styles.baby} />
+                  ) : (
+                    <Image source={{ uri: avatarSource }} style={styles.baby} />
+                  )}
         </TouchableOpacity>
       </View>
     </View>

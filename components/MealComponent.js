@@ -10,7 +10,7 @@ const MealComponent = ({ mealCard }) => {
   const [mealCards, setMealCards] = useState(initialMeals);
   const route = useRoute();
   const handlePress12 = () => {
-    navigation.navigate('DescriptMealCard', {mealCard});
+    navigation.navigate('DescriptMealCard', {mealCard, username, childname, avatarSource});
   };
   return (
     <View key={mealCard.id} style={styles.meal}>
@@ -45,6 +45,10 @@ const styles = StyleSheet.create({
       backgroundColor:'white',
       borderRadius: 10,
       elevation:7,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.8,
+      shadowRadius: 3,
       paddingTop:8,
       paddingLeft:12,
       flexDirection:'row',

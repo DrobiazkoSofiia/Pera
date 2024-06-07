@@ -6,18 +6,18 @@ import {  useRoute } from '@react-navigation/native';
 export default function Footer() {
     const navigation = useNavigation();
     const route = useRoute();
-    const { childname, username } = route.params || {};
+    const { childname, username, selectedAddress, avatarSource } = route.params || {};
     const handlePress5 = () => {
-        navigation.navigate('Explore', { childname, username });
+        navigation.navigate('Explore', { childname, username, selectedAddress, avatarSource });
       };
       const handlePress6 = () => {
-        navigation.navigate('Home', { childname, username });
+        navigation.navigate('Home', { childname, username, selectedAddress, avatarSource });
       };
       const handlePress7 = () => {
-        navigation.navigate('Cart', { childname, username });
+        navigation.navigate('Cart', { childname, username, selectedAddress, avatarSource });
       };
       const handlePress8 = () => {
-        navigation.navigate('Payment', { childname, username });
+        navigation.navigate('Payment', { childname, username, selectedAddress, avatarSource });
       };
     return (
         <View style={styles.container}>

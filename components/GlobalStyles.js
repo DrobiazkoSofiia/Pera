@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
 const globalStyles = StyleSheet.create({
     welcome: {
@@ -226,6 +226,7 @@ const globalStyles = StyleSheet.create({
         paddingBottom: 6,
     },
     modalButton: {
+        flexDirection:'row',
         width: 141,
         height: 44,
         alignItems: 'center',

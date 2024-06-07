@@ -6,9 +6,12 @@ import HeaderCart from './HeaderCart';
 import CartMeal from './CartMeal';
 import globalStyles from './GlobalStyles';
 import { CartContext } from './CartContext';
+import {  useRoute } from '@react-navigation/native';
 
 export default function Cart() {
   const navigation = useNavigation();
+  const route = useRoute();
+  const { childname, username, selectedAddress } = route.params || {};
   const { cartItems, removeFromCart, updateItemCount } = useContext(CartContext);
   const [totalPayment, setTotalPayment] = useState(0);
 
@@ -18,7 +21,7 @@ export default function Cart() {
   }, [cartItems]);
 
   const handlePress1 = () => {
-    navigation.navigate('PaymentOrder', { totalPayment }); // Передача totalPayment як параметру
+    navigation.navigate('PaymentOrder', { totalPayment, selectedAddress }); // Передача totalPayment як параметру
   };
 
   return (

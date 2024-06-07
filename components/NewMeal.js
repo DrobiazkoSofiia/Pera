@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import Footer from '../components/Footer';
 import globalStyles from './GlobalStyles';
 import HeaderNewMeal from '../components/HeaderNewMeal';
@@ -9,6 +9,8 @@ import Slider from '@react-native-community/slider';
 
 export default function NewMeal() {
   const navigation = useNavigation();
+  const route = useRoute();
+  const { addMeal, username, childname, avatarSource } = route.params;
 
   const [mealName, setMealName] = useState('');
   const [kkalName, setKkalName] = useState('');
@@ -39,8 +41,8 @@ export default function NewMeal() {
       kkal: kkalName,
       price: "0",
     };
-
-    navigation.navigate('Home', { newMeal });
+    addMeal(newMeal);
+    navigation.navigate('Home', {newMeal, username, childname, avatarSource })
   };
 
 
@@ -216,7 +218,11 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     borderRadius: 15,
     backgroundColor: '#FFF',
-    elevation: 20,
+    elevation: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 3,
     margin: 20,
     paddingHorizontal: 35,
     paddingVertical: 15,
@@ -249,7 +255,11 @@ const styles = StyleSheet.create({
     height: 130,
     backgroundColor: 'white',
     borderRadius: 10,
-    elevation: 7,
+    elevation: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 3,
     paddingTop: 8,
     paddingLeft: 12,
     flexDirection: 'row',

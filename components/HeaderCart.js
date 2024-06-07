@@ -8,17 +8,21 @@ import {  useRoute } from '@react-navigation/native';
 export default function HeaderCart({ title }) {
   const navigation = useNavigation();
   const handlePress2 = () => {
-    navigation.navigate('ChildAccount', { childname, username });
+    navigation.navigate('ChildAccount', { username, childname, avatarSource });
   };
   const route = useRoute();
-  const { childname, username } = route.params || {};
+  const { childname, username, avatarSource } = route.params || {};
   return (
     <View style={styles.container}>
       <View style={{flexDirection: 'row', paddingLeft: 10, paddingRight: '10%', width:'auto',alignItems:'flex-start'}}>
         <Text style={globalStyles.textParentProfileSuccess}>{title}</Text>
       </View>
       <TouchableOpacity style={{ alignItems:'flex-end'}} onPress={handlePress2}>
-        <Image style={styles.baby} source={require('../assets/baby.jpg')} />
+      {avatarSource === null ? (
+                    <Image source={require('../assets/icons/babyboyIcon.png')} style={styles.baby} />
+                  ) : (
+                    <Image source={{ uri: avatarSource }} style={styles.baby} />
+                  )}
       </TouchableOpacity>
     </View>
   );

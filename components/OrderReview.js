@@ -11,7 +11,7 @@ export default function OrderReview() {
   const navigation = useNavigation();
   const { cartItems } = useContext(CartContext);
   const route = useRoute();
-  const { totalPayment } = route.params;
+  const { totalPayment, selectedAddress, username, childname, avatarSource  } = route.params;
   const TodayDateComponent = () => {
     const getTodayDate = () => {
       const today = new Date();
@@ -30,7 +30,10 @@ export default function OrderReview() {
   };
 
   const handlePress1 = () => {
-    navigation.navigate('OrderReviewFinish');
+    navigation.navigate('OrderReviewFinish', { username, childname, avatarSource });
+  };
+  const handlePress2 = () => {
+    navigation.navigate('SelectAddressScreen', { username, childname, avatarSource });
   };
 
   const [selectedButton, setSelectedButton] = useState(null);
@@ -70,12 +73,16 @@ export default function OrderReview() {
         <View style={{flexDirection:'row', width:368, height:128, borderWidth:1, borderColor:'#92949B', borderRadius:12, gap:34, marginBottom:21, alignItems:'center'}}>
         <View style={{ flexDirection: 'row', gap: 14, paddingLeft:17}}>
               <Image source={require('../assets/mapImg.png')} />
-              <View style={{ flexDirection: 'column', width: 170 }}>
+              <View style={{ flexDirection: 'column', width: 170, height:85 }}>
                 <Text style={globalStyles.textDietName}>Home</Text>
-                <Text style={globalStyles.smallGreyText}>2860 Mechelen, Lange Zandstraat 2, Belgium</Text>
+                <ScrollView>
+                <Text style={globalStyles.smallGreyText}>{ selectedAddress  || "Select address, please"}</Text>
+                </ScrollView>
               </View>
             </View>
-            <Image source={require('../assets/icons/editOrderIcon.png')} />            
+            <TouchableOpacity onPress={handlePress2}>
+            <Image source={require('../assets/icons/editOrderIcon.png')} /> 
+            </TouchableOpacity>           
         </View>
         <Text style={[globalStyles.title2, {paddingLeft:5, marginBottom:13}]}>Payment</Text>
         <View style={[styles.card, selectedCard === 'master' && styles.pressedButton]}>
@@ -159,6 +166,10 @@ const styles = StyleSheet.create({
     marginBottom: 37,
     overflow: 'visible',
     elevation: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 3,
     shadowColor: 'white',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,
@@ -181,12 +192,20 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 5,
     elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 3,
   },
   selectedButtonText: {
     color: 'white',
   },
   shadowButton: {
-    elevation: 2,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 3,
     borderRadius: 2,
     overflow: 'hidden',
     shadowColor: 'white', 
@@ -197,5 +216,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 1,
     elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 3,
   },
 });

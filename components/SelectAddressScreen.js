@@ -1,13 +1,7 @@
-// SelectAddressScreen.js
-
 import React, { useState } from 'react';
 import { View, Button, Alert } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
-
-
-
-
 
 const SelectAddressScreen = () => {
   const [selectedCoordinate, setSelectedCoordinate] = useState(null);
@@ -50,7 +44,7 @@ const SelectAddressScreen = () => {
 
       navigation.navigate('Payment', { selectedAddress });
     } catch (error) {
-      console.error('Error fetching address from Algolia:', error); // Логування помилок
+      console.error('Error fetching address from Map:', error); // Логування помилок
       Alert.alert("Error", "Could not fetch address. Please try again.");
     }
   };

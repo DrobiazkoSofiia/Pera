@@ -31,6 +31,7 @@ export default function MealCard({
   smallProduct2,
   smallProduct3,
   smallProduct4,
+  day,
 
 }) {
  
@@ -73,6 +74,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: 'white',
     elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 3,
     bottom: 27,
     width: 236,
     height: 75,

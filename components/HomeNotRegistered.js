@@ -8,6 +8,7 @@ import ViewButton from '../components/MealCard';
 import globalStyles from './GlobalStyles';
 import ModalMenu from './ModalMenu';
 import {  useRoute } from '@react-navigation/native';
+import { videos } from './VideoData';
 
 const DetailsButton = ({ onPress }) => {
   return (
@@ -29,7 +30,7 @@ export default function HomeNotRegistered() {
   const { username } = route.params || {};
 
 
-
+  const filteredVideos = videos.filter(video => video.id === 1 || video.id === 2 || video.id === 3);
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -54,23 +55,11 @@ export default function HomeNotRegistered() {
             <Text style={[styles.title]}>More about Pera</Text>
           </View>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          <VideoCard 
-              imageSource={require('../assets/video3.png')}
-              title="Pera introduction"
-              duration="1:06 min."
-              views="14,8k"
-            />
-         <VideoCard 
-              imageSource={require('../assets/video9.png')}
-              title="Why do parents choose Gerber?"
-              duration="0:58 min."
-              views="10,1k"/>
-         <VideoCard 
-              imageSource={require('../assets/video10.png')}
-              title="How does Pera work?"
-              duration="1:12 min."
-              views="15,3k"/>
-             
+          {filteredVideos.map((video, index) => (
+            <TouchableOpacity key={video.id} onPress={() => navigation.navigate('VideoPage', { video })}>
+            <VideoCard video={video} />
+          </TouchableOpacity>          
+        ))}
           </ScrollView>
           </View>
         </View>
@@ -179,6 +168,10 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: '#FFF',
     elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 3,
     marginBottom: 20,
   },
   videoCard:{
@@ -197,7 +190,11 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     borderRadius: 15,
     backgroundColor: '#FFF',
-    elevation: 20,
+    elevation: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 3,
     margin: 20,
     paddingHorizontal: 35,
     paddingVertical:15,
@@ -231,6 +228,10 @@ const styles = StyleSheet.create({
     backgroundColor:'white',
     borderRadius: 10,
     elevation:7,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 3,
     paddingTop:8,
     paddingLeft:12,
     flexDirection:'row',

@@ -17,9 +17,9 @@ export default function RegistrationQ5() {
     navigation.navigate('RegistrationQ4');
   };
   const route = useRoute();
-  const { username, childname } = route.params || {};
+  const { username, childname, avatarSource } = route.params || {};
   const handleNextPress = () => {
-    navigation.navigate('ChildProfileSuccess',  { username, childname } );
+    navigation.navigate('ChildProfileSuccess',  { username, childname, avatarSource } );
   };
 
   const isDietSelected = () => {

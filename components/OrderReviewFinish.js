@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, ScrollView, } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, } from '@react-navigation/native';
 import Footer from '../components/Footer';
 import globalStyles from './GlobalStyles';
 import HeaderOrderReviewFinish from '../components/HeaderOrderReviewFinish';
@@ -9,6 +9,8 @@ import { useRoute } from '@react-navigation/native';
 
 export default function OrderReview() {
   const navigation = useNavigation();
+  const route = useRoute();
+  const { totalPayment, selectedAddress,  username, childname, avatarSource   } = route.params;
   const { cartItems } = useContext(CartContext);
 
   const getTomorrowDate = () => {
@@ -123,6 +125,10 @@ const styles = StyleSheet.create({
     marginBottom: 37,
     overflow: 'visible',
     elevation: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 3,
     shadowColor: 'white',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,
@@ -145,12 +151,20 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 5,
     elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 3,
   },
   selectedButtonText: {
     color: 'white',
   },
   shadowButton: {
-    elevation: 2,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 3,
     borderRadius: 2,
     overflow: 'hidden',
     shadowColor: 'white', 
@@ -161,5 +175,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 1,
     elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 3,
   },
 });

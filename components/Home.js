@@ -5,6 +5,7 @@ import Header from '../components/Header';
 import MealCard from '../components/MealCard';
 import VideoCard from '../components/VideoCard';
 import Footer from '../components/Footer';
+import CalendarScreen from '../components/CalendarScreen';
 import globalStyles from './GlobalStyles';
 import { meals as initialMeals } from './MealData';
 import { CartContext } from './CartContext';
@@ -33,6 +34,7 @@ export default function Home({ }) {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [showConfirmationModal1, setShowConfirmationModal1] = useState(false);
   const [showConfirmationModal2, setShowConfirmationModal2] = useState(false);
+
   const CustomButton = ({ title, onPress, style, textStyle, icon }) => (
     <TouchableOpacity onPress={onPress} style={[globalStyles.button, style]}>
        {icon && <Image source={require('../assets/icons/deleteIcon.png')} style={{ width: 34, height: 34 }} />}
@@ -40,20 +42,20 @@ export default function Home({ }) {
     </TouchableOpacity>
   );
 
-  const handleDelete = (id) => {
-    setMealCards(mealCards.filter(meal => meal.id !== id));
-    setShowConfirmationModal1(true);
-    setShowConfirmationModal(false);
-  };
+
   const route = useRoute();
   const { newMeal } = route.params || {};
-  const { username, childname } = route.params || {};
+  const { username, childname, avatarSource } = route.params || {};
   
-useEffect(() => {
-  if (newMeal) {
-    setMealCards([...mealCards, newMeal]);
-  }
-}, [newMeal]);
+
+  useEffect(() => {
+    const { newMeal } = route.params || {};
+    if (newMeal) {
+      setMealCards(prevMeals => [...prevMeals, newMeal]);
+    }
+  }, [route.params]);
+
+
 
 const calculateTotalKkal = () => {
   let totalKkal = 0;
@@ -86,51 +88,9 @@ const filteredVideos = videos.filter(video => video.id === 1 || video.id === 2 |
             <Text style={[globalStyles.title2, {marginBottom:9}]}>Welcome { username }</Text>
             <Text style={globalStyles.productIngridients1}>Get { childname }'s menu for the day!</Text>
           </View>
-          <View style={styles.calendar}>
-            <TouchableOpacity onPress={() => setShowConfirmationModal(true)}>
-            <Image source={require('../assets/calendar.png')} />
-            </TouchableOpacity>
-          </View>
-          <View>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          <View style={{flexDirection:'row'}}>
-          {specificMeals.map((mealCard, index) => (
-    <MealCard
-      key={index}
-      backgroundColor={mealCard.backgroundColor}
-      imageSource={mealCard.imageSource}
-      title={mealCard.title}
-      name={mealCard.name}
-      width={mealCard.width}
-      height={mealCard.height}
-      width1={mealCard.width1}
-      height1={mealCard.height1}
-      widthImg={mealCard.widthImg}
-      heightImg={mealCard.heightImg}
-      fontSize1={mealCard.fontSize1}
-      widthText={mealCard.widthText}
-      heightText={mealCard.heightText}
-      onButtonPress={() => navigation.navigate('DescriptMealCard', { mealCard, handleDelete })}
-      titleBut={mealCard.titleBut}
-      ingridients={mealCard.ingridients}
-      smallIngridients={mealCard.smallIngridients}
-      kkal={mealCard.kkal}
-      time={mealCard.time}
-      ageCategory={mealCard.ageCategory}
-      ageMonth={mealCard.ageMonth}
-      ageCategoryImg={mealCard.ageCategoryImg}
-      smallProduct1={mealCard.smallProduct1}
-      smallProduct2={mealCard.smallProduct2}
-      smallProduct3={mealCard.smallProduct3}
-      smallProduct4={mealCard.smallProduct4}
-      navigation={navigation}
-      
-    />
-  ))}
-
-
-            </View>
-          </ScrollView>
+          <CalendarScreen style={{marginBottom:33}}></CalendarScreen>
+          <View style={styles.more}>
+            <DetailsButton />
           </View>
           <View>
             <Text style={[globalStyles.title2, {marginBottom:34}]}>Analysis of the diet</Text>
@@ -147,7 +107,7 @@ const filteredVideos = videos.filter(video => video.id === 1 || video.id === 2 |
           </View>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           {filteredVideos.map((video, index) => (
-            <TouchableOpacity key={video.id} onPress={() => navigation.navigate('VideoPage', { video })}>
+            <TouchableOpacity key={video.id} onPress={() => navigation.navigate('VideoPage', { video, username, childname, avatarSource })}>
             <VideoCard video={video} />
           </TouchableOpacity>          
         ))}
@@ -188,7 +148,7 @@ const filteredVideos = videos.filter(video => video.id === 1 || video.id === 2 |
      fontSize1={mealCard.fontSize1}
      widthText={mealCard.widthText}
      heightText={mealCard.heightText}
-     onButtonPress={() => navigation.navigate('DescriptMealCard', { mealCard, handleDelete })}
+     onButtonPress={() => navigation.navigate('DescriptMealCard', { mealCard, handleDelete, username, childname, avatarSource })}
      titleBut={mealCard.titleBut}
      ingridients={mealCard.ingridients}
      smallIngridients={mealCard.smallIngridients}
@@ -271,7 +231,11 @@ modalView1: {
   flexShrink: 0,
   borderRadius: 15,
   backgroundColor: '#FFF',
-  elevation: 20,
+  elevation: 10,
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.8,
+  shadowRadius: 3,
   margin: 20,
   paddingHorizontal: 35,
   paddingVertical:15,
@@ -292,6 +256,10 @@ modalView: {
   borderRadius: 15,
   backgroundColor: '#FFF',
   elevation: 10,
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.8,
+  shadowRadius: 3,
   margin: 20,
   padding: 10,
   alignItems: "center",
@@ -313,8 +281,7 @@ modalView: {
     borderTopRightRadius:39,
     bottom: 32,
     height:'100%',   
-    paddingLeft: 30,
-    paddingHorizontal: 30,
+    paddingHorizontal: '5%',
     paddingBottom: 106, // Adjust this value according to your footer height
   },
   top: {
@@ -347,7 +314,7 @@ modalView: {
   more: {
     alignItems: 'flex-end',
     paddingRight: 18,
-    marginBottom: 20,
+    marginBottom: 47,
   },
   analysis: {
     width: 369,

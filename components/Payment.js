@@ -1,10 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, ScrollView, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Footer from '../components/Footer';
 import globalStyles from './GlobalStyles';
 import HeaderPayment from '../components/HeaderPayment';
-import { AddressContext } from './SelectAddressScreen'; // Імпорт контексту
 import { useRoute } from '@react-navigation/native';
 
 export default function Payment() {
@@ -34,9 +33,9 @@ export default function Payment() {
           <View style={{ alignItems: 'flex-start', justifyContent: 'center', marginBottom: 24 }}>
             <View style={{ flexDirection: 'row', gap: 14 }}>
               <Image source={require('../assets/mapImg.png')} />
-              <View style={{ flexDirection: 'column', width: 170 }}>
+              <View style={{ flexDirection: 'column', width: '70%' }}>
                 <Text style={globalStyles.textDietName}>Home</Text>
-                <Text style={globalStyles.smallGreyText}>{selectedAddress}</Text>
+                <Text style={globalStyles.smallGreyText}>{selectedAddress || 'Select address, please'}</Text>
               </View>
             </View>
             <TouchableOpacity
@@ -49,7 +48,7 @@ export default function Payment() {
           <View style={{ marginBottom: 26 }}>
             <Text style={[globalStyles.title2]}>Add Payment Method</Text>
           </View>
-          <View style={{ marginBottom: 33, flexDirection: 'row', gap: 5, alignItems:'center' }}>
+          <View style={{ marginBottom: 33, flexDirection: 'row', gap: 5, alignItems:'center', alignSelf:'center' }}>
             <TouchableOpacity
               style={[styles.shadowButton, pressedButtonIndex === 0 && styles.pressedButton]}
               onPress={() => setPressedButtonIndex(0)}
@@ -75,7 +74,7 @@ export default function Payment() {
               <Image source={require('../assets/googleImg.png')} />
             </TouchableOpacity>
           </View>
-          <View style={{ marginBottom: 202 }}>
+          <View style={{ marginBottom: 202,  alignSelf:'center' }}>
             <Image source={require('../assets/cardImg.png')} />
           </View>
         </View>
@@ -89,7 +88,8 @@ export default function Payment() {
 
 const styles = StyleSheet.create({
   container: {
-    flex:1
+    flex:1,
+    backgroundColor: '#fff',
   },
   content: {
     backgroundColor: 'white',
@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
     paddingHorizontal: 30,
     paddingBottom: 53,
+    flex: 1,
   },
   top: {
     paddingTop: 17,
@@ -119,8 +120,11 @@ const styles = StyleSheet.create({
   shadowButton: {
     elevation: 10,
     borderRadius: 10,
-    overflow: 'hidden',
-    shadowColor: 'white', 
+    overflow: 'hidden', 
+    shadowColor: Platform.OS === 'ios' ? 'white' : 'white',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: Platform.OS === 'ios' ? 0.1 : 0.25,
+    shadowRadius: 4,
   },
   pressedButton: {
     shadowColor: 'black',

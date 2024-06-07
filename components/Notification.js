@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import Footer from '../components/Footer';
 import globalStyles from './GlobalStyles';
 import HeaderCart from './HeaderCart';
@@ -9,9 +9,11 @@ export default function Notifications() {
   const navigation = useNavigation();
   const ViewButton1 = ({ title }) => {
     const navigation = useNavigation();
+    const route = useRoute();
+    const { childname, username, avatarSource } = route.params || {};
   
     const handlePress1 = () => {
-      navigation.navigate('Home');
+      navigation.navigate('Home', { username, childname, avatarSource });
     };
     
   
@@ -187,7 +189,11 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     borderRadius: 15,
     backgroundColor: '#FFF',
-    elevation: 20,
+    elevation: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 3,
     margin: 20,
     paddingHorizontal: 35,
     paddingVertical: 15,
@@ -220,7 +226,11 @@ const styles = StyleSheet.create({
     height: 130,
     backgroundColor: 'white',
     borderRadius: 10,
-    elevation: 7,
+    elevation: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 3,
     paddingTop: 8,
     paddingLeft: 12,
     flexDirection: 'row',

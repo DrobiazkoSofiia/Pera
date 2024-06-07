@@ -7,7 +7,7 @@ import Footer from '../components/Footer';
 export default function ArticlePage() {
   const navigation = useNavigation()
   const route = useRoute();
-  const { article } = route.params;
+  const { article, username, childname, avatarSource } = route.params;
   const handlePress = () => {
     navigation.goBack();
   };

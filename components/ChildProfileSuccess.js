@@ -7,9 +7,9 @@ import {  useRoute } from '@react-navigation/native';
 export default function ChildProfileSuccess() {
   const navigation = useNavigation();
   const route = useRoute();
-  const { username, childname } = route.params || {};
+  const { username, childname, avatarSource } = route.params || {};
   const handlePress1 = () => {
-    navigation.navigate('Home',  { username, childname } );
+    navigation.navigate('Home',  { username, childname, avatarSource } );
   };
 
   return (

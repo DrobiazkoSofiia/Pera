@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Button, ImageBackground, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { StyleSheet, View, Button, ImageBackground, Text, TouchableOpacity, Image, ScrollView, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import globalStyles from './GlobalStyles';
 import TextInputField from './TextInputField';
@@ -26,7 +26,9 @@ export default function ChildProfileSuccess() {
   return (
     <View style={styles.container}>
       <ImageBackground source={require('../assets/back/welcomeImg.png')} style={styles.imageBackground}>
-       <View style={{backgroundColor:'white', width:387,height:595, borderRadius:20, paddingTop:31, paddingLeft:19, alignItems:'center', paddingRight:10, elevation:5 }}>
+       <View style={{backgroundColor:'white', width:387,height:595, borderRadius:20, paddingTop:31, paddingLeft:19, alignItems:'center', paddingRight:10, elevation:5, 
+    shadowColor: Platform.OS === 'ios' ? 'white' : 'white',
+    shadowOpacity: Platform.OS === 'ios' ? 0.1 : 0.25, }}>
        <Text style={[globalStyles.welcome, {alignSelf:'flex-start', marginBottom:22, paddingLeft:13 }]}>Welcome</Text>
        <TextInputField
         placeholder="Email"

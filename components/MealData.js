@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 export const meals = [
     {
         id: 1,
+        day:16,
         backgroundColor: '#FAE03C',
         imageSource: require('../assets/productImage.png'),
         title: "Breakfast",
@@ -14,7 +15,7 @@ export const meals = [
         heightImg: 212,
         fontSize1: 16,
         widthText: 150,
-        heightText: 17,
+        heightText: 18,
         titleBut: "View",
         ingridients: "Organic whole grain oats (contains wheat) and organic red quinoa and organic farro (wheat) cooked in water, organic banana puree, water, organic tapioca starch, organic dried mango, organic dried pineapple, organic lemon juice concentrate, natural vanilla flavor, deoiled sunflower lecithin (for texture), iron (ferrous sulfate).",
           smallIngridients:"Oats, red quinoa & farro with tropical fruits",
@@ -33,6 +34,7 @@ export const meals = [
     },
     {
       id: 2,
+      day:15,
       backgroundColor: '#C6EC7A',
       imageSource: require('../assets/productImg2.png'),
       title: "Snack 1",
@@ -45,7 +47,7 @@ export const meals = [
       heightImg: 212,
       fontSize1: 16,
       widthText: 150,
-      heightText: 17,
+      heightText: 18,
       titleBut: "View",
       ingridients: "Сultured reduced fat milk, sugar, strawberry puree, nonfat dry milk, tapioca starch, less than 1.5% of: gelatin, natural strawberry flavor, lactic acid esters of mono and diglycerides, fruit and vegetable juice colors, vitamin c (sodium ascorbate), vitamin e (alpha tocopheryl acetate), vitamin a acetate.",
       smallIngridients:"Freeze-dried yogurt snack with strawberry",
@@ -64,6 +66,7 @@ export const meals = [
       
     },
     { id: 3,
+      day:15,
       backgroundColor: '#C4BAE6',
       imageSource: require('../assets/productImg3.png'),
       title: "Snack 2",
@@ -76,7 +79,7 @@ export const meals = [
       heightImg: 212,
       fontSize1: 16,
       widthText: 150,
-      heightText: 17,
+      heightText: 18,
       titleBut: "View",
       ingridients: "Organic dried navy beans, organic rice flour, organic high oleic sunflower oil, organic cheddar cheese (organic cultured milk, salt, enzymes), sea salt, organic sweet whey, organic lemon juice concentrate, organic dried broccoli, organic garlic oil, organic onion oil, organic black pepper oil.",
       smallIngridients:"Crunchies with broccoli, cheddar and navy beans",
@@ -95,6 +98,7 @@ export const meals = [
     },
     {
       id: 4,
+      day:15,
       backgroundColor: '#FFC4BC',
       imageSource: require('../assets/productImage.png'),
       title: "Lunch",
@@ -107,7 +111,7 @@ export const meals = [
       heightImg: 212,
       fontSize1: 16,
       widthText: 150,
-      heightText: 17,
+      heightText: 18,
       titleBut: "View",
       ingridients: "Organic dried navy beans, organic rice flour, organic high oleic sunflower oil, organic cheddar cheese (organic cultured milk, salt, enzymes), sea salt, organic sweet whey, organic lemon juice concentrate, organic dried broccoli, organic garlic oil, organic onion oil, organic black pepper oil.",
       smallIngridients:"Crunchies with broccoli, cheddar and navy beans",
@@ -126,6 +130,7 @@ export const meals = [
     },
     
     {id: 5,
+      day:15,
       backgroundColor: '#D5EBF4',
       imageSource: require('../assets/productImage.png'),
       title: "Snack 3",
@@ -138,7 +143,7 @@ export const meals = [
       heightImg: 212,
       fontSize1: 16,
       widthText: 150,
-      heightText: 17,
+      heightText: 18,
       titleBut: "View",
       ingridients: "Organic dried navy beans, organic rice flour, organic high oleic sunflower oil, organic cheddar cheese (organic cultured milk, salt, enzymes), sea salt, organic sweet whey, organic lemon juice concentrate, organic dried broccoli, organic garlic oil, organic onion oil, organic black pepper oil.",
       smallIngridients:"Crunchies with broccoli, cheddar and navy beans",
@@ -156,6 +161,7 @@ export const meals = [
       time:"6",
     },
     {id: 6,
+      day:15,
       backgroundColor: '#FFA64F',
       imageSource: require('../assets/productImage.png'),
       title: "Dinner",
@@ -168,7 +174,7 @@ export const meals = [
       heightImg: 212,
       fontSize1: 16,
       widthText: 150,
-      heightText: 17,
+      heightText: 18,
       titleBut: "View",
       ingridients: "Organic dried navy beans, organic rice flour, organic high oleic sunflower oil, organic cheddar cheese (organic cultured milk, salt, enzymes), sea salt, organic sweet whey, organic lemon juice concentrate, organic dried broccoli, organic garlic oil, organic onion oil, organic black pepper oil.",
       smallIngridients:"Crunchies with broccoli, cheddar and navy beans",
@@ -186,6 +192,7 @@ export const meals = [
       time:"10",
 
     },
+    
   ];
   
   export function getMealCardsWithNavigation() {

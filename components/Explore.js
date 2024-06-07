@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { useNavigation,  useRoute  } from '@react-navigation/native'; // Import useNavigation hook
 import VideoCard from '../components/VideoCard';
@@ -17,6 +17,9 @@ export default function HomeNotRegistered() {
   const filteredVideos1 = videos.filter(video => video.id === 4 || video.id === 5 || video.id === 6);
   const filteredArticles = articles.filter(article => article.id === 1 || article.id === 2 || article.id === 3 || article.id === 4);
   const filteredArticles1 = articles.filter(article => article.id === 5 || article.id === 6 || article.id === 7 || article.id === 8);
+
+  const route = useRoute();
+  const { username, childname, avatarSource } = route.params || {};
 
   return (
     <View style={styles.container}>
@@ -37,7 +40,7 @@ export default function HomeNotRegistered() {
             </View>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             {filteredArticles.map((article, index) => (
-            <TouchableOpacity key={article.id} onPress={() => navigation.navigate('ArticlePage', { article })}>
+            <TouchableOpacity key={article.id} onPress={() => navigation.navigate('ArticlePage', { article, username, childname, avatarSource  })}>
             <Article article={article} />
           </TouchableOpacity>          
         ))}
@@ -49,7 +52,7 @@ export default function HomeNotRegistered() {
             </View>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             {filteredVideos.map((video, index) => (
-            <TouchableOpacity key={video.id} onPress={() => navigation.navigate('VideoPage', { video })}>
+            <TouchableOpacity key={video.id} onPress={() => navigation.navigate('VideoPage', { video, username, childname, avatarSource})}>
             <VideoCard video={video} />
           </TouchableOpacity>          
         ))}
@@ -61,7 +64,7 @@ export default function HomeNotRegistered() {
             </View>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             {filteredArticles1.map((article, index) => (
-            <TouchableOpacity key={article.id} onPress={() => navigation.navigate('ArticlePage', { article })}>
+            <TouchableOpacity key={article.id} onPress={() => navigation.navigate('ArticlePage', { article, username, childname, avatarSource })}>
             <Article article={article} />
           </TouchableOpacity>          
         ))}
@@ -73,7 +76,7 @@ export default function HomeNotRegistered() {
             </View>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             {filteredVideos1.map((video, index) => (
-            <TouchableOpacity key={video.id} onPress={() => navigation.navigate('VideoPage', { video })}>
+            <TouchableOpacity key={video.id} onPress={() => navigation.navigate('VideoPage', { video, username, childname, avatarSource })}>
             <VideoCard video={video} />
           </TouchableOpacity>          
         ))}
@@ -119,7 +122,11 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     borderRadius: 15,
     backgroundColor: '#FFF',
-    elevation: 20,
+    elevation: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 3,
     margin: 20,
     paddingHorizontal: 35,
     paddingVertical: 15,

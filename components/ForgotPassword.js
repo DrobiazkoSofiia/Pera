@@ -22,7 +22,11 @@ export default function ChildProfileSuccess() {
   return (
     <View style={styles.container}>
       <ImageBackground source={require('../assets/back/welcomeImg.png')} style={styles.imageBackground}>
-       <View style={{backgroundColor:'white', width:387,height:601, borderRadius:20, paddingTop:31, paddingLeft:19, alignItems:'center', paddingRight:10, elevation:5 }}>
+       <View style={{backgroundColor:'white', width:387,height:601, borderRadius:20, paddingTop:31, paddingLeft:19, alignItems:'center', paddingRight:10, elevation:5,     elevation: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 3, }}>
               <TouchableOpacity style={[globalStyles.buttonBackArrow, {alignSelf:'flex-start', marginBottom:24}]} onPress={handlePress4}>
                 <Image source={require('../assets/icons/arrowIcon.png')} style={{ width: 46, height: 46 }} />
               </TouchableOpacity>

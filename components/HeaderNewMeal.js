@@ -10,7 +10,7 @@ export default function HeaderPayment() {
 
   const handleCrossIconPress = () => {
     navigation.goBack();
-    navigation.navigate('DescriptMealCard', { showConfirmationModal1: true, mealCard });
+   
   };
   const route = useRoute();
   const { mealCard, handleDelete } = route.params;

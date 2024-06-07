@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, Platform } from 'react-native';
 import globalStyles from './GlobalStyles';
 
 export default function CartMeal({ name, imageSource, size, price, removeFromCart, updateItemCount, item }) {
@@ -27,7 +27,16 @@ export default function CartMeal({ name, imageSource, size, price, removeFromCar
     <View style={styles.container}>
       <View style={styles.centeredView}>
         <View style={{ flexDirection: 'row', gap: 17, width: 382, paddingLeft: 2, marginBottom: 22,  }}>
-          <View style={{ width: 100, height: 100, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', elevation: 5, borderRadius: 20 }}>
+          <View style={{ width: 100, height: 100, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center',  ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.8,
+        shadowRadius: 3,
+      },
+      android: {
+        elevation: 5,
+      }}), borderRadius: 20 }}>
             <Image source={imageSource} style={{ width: 76, height: 76 }} />
           </View>
           <View style={{ flexDirection: 'column', paddingTop: 10, gap: 6 }}>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, ScrollView, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Footer from '../components/Footer';
 import globalStyles from './GlobalStyles';
@@ -9,10 +9,10 @@ import { useRoute } from '@react-navigation/native';
 export default function PaymentOrder() {
   const navigation = useNavigation();
   const route = useRoute();
-  const { totalPayment } = route.params;
+  const { totalPayment, selectedAddress,  username, childname, avatarSource   } = route.params;
 
   const handlePress1 = () => {
-    navigation.navigate('OrderReview',  { totalPayment });
+    navigation.navigate('OrderReview',  { totalPayment, selectedAddress,  username, childname, avatarSource  });
   };
 
   const [selectedButton, setSelectedButton] = useState(null);
@@ -69,13 +69,13 @@ export default function PaymentOrder() {
       </TouchableOpacity>
     </View>
     </View>
-            <View style={{ width:362, height:58, backgroundColor: '#D9D9D9', borderRadius:11, alignItems: 'flex-start', justifyContent: 'center', marginBottom:58 }}>
+            <View style={{ width:362, height:58, backgroundColor: '#D9D9D9', borderRadius:11, alignItems: 'flex-start', justifyContent: 'center', marginBottom:'10%' }}>
               <TouchableOpacity style={{paddingLeft:29}}>
                 <Text style={globalStyles.productIngridients1}>+     Add new card</Text>
               </TouchableOpacity>
             </View>       
            
-          <TouchableOpacity style={[globalStyles.buttonNext]} onPress={handlePress1}>
+          <TouchableOpacity style={[globalStyles.buttonNext, {marginBottom:15}]} onPress={handlePress1}>
             <Text style={globalStyles.bigButtonText}>Next</Text>
           </TouchableOpacity>
         </View>
@@ -95,7 +95,8 @@ const styles = StyleSheet.create({
   content: {
     backgroundColor: 'white',
     alignItems:'center',
-    height:'100%'
+    height:'100%',
+    
   },
   top: {
     paddingTop: 45,
@@ -134,7 +135,9 @@ const styles = StyleSheet.create({
     borderColor: '#A3A3A3',
     marginBottom: 19,
     overflow: 'visible',
-    elevation: 10,
+    elevation: 10, 
+    shadowColor: Platform.OS === 'ios' ? 'white' : 'white',
+    shadowOpacity: Platform.OS === 'ios' ? 0.1 : 0.25,
     shadowColor: 'white',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,
@@ -156,13 +159,17 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 0.5,
     shadowRadius: 5,
-    elevation: 5,
+    elevation: 5, 
+    shadowColor: Platform.OS === 'ios' ? 'white' : 'white',
+    shadowOpacity: Platform.OS === 'ios' ? 0.1 : 0.25,
   },
   selectedButtonText: {
     color: 'white',
   },
   shadowButton: {
-    elevation: 2,
+    elevation: 5,
+    shadowColor: Platform.OS === 'ios' ? 'white' : 'white',
+    shadowOpacity: Platform.OS === 'ios' ? 0.1 : 0.25,
     borderRadius: 2,
     overflow: 'hidden',
     shadowColor: 'white', 
@@ -173,5 +180,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 1,
     elevation: 5,
+    shadowColor: Platform.OS === 'ios' ? 'white' : 'white',
+    shadowOpacity: Platform.OS === 'ios' ? 0.1 : 0.25,
   },
 });

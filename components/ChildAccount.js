@@ -11,10 +11,10 @@ export default function ChildAccount() {
     navigation.goBack();
   };
   const handlePress1 = () => {
-    navigation.navigate('RegistrationQ1');
+    navigation.navigate('RegistrationQ1', { username, childname, avatarSource });
   };
   const route = useRoute();
-  const { childname } = route.params || {};
+  const { childname, avatarSource, username } = route.params || {};
     return (
 
         <View style={styles.container}>
@@ -26,7 +26,11 @@ export default function ChildAccount() {
            <ImageBackground source={require('../assets/back/childAccountImg.png')} style={styles.imageBackground} >
             <View style={{paddingLeft:30, paddingTop:70, alignItems:'center', justifyContent:'center'}}>
            <TouchableOpacity>
-          <Image style={styles.baby} source={require('../assets/baby.jpg')} />
+           {avatarSource === null ? (
+                    <Image source={require('../assets/icons/babyboyIcon.png')} style={styles.baby} />
+                  ) : (
+                    <Image source={{ uri: avatarSource }} style={styles.baby} />
+                  )}
         </TouchableOpacity>
         <Text style={globalStyles.textParentProfileSuccess}>{ childname }</Text>
         </View>

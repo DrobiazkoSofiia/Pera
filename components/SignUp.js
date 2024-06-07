@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, ImageBackground, Text, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, ImageBackground, Text, TouchableOpacity, Image, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import globalStyles from './GlobalStyles';
 import TextInputField from './TextInputField';
@@ -120,7 +120,9 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     alignItems: 'center',
     paddingRight: 10,
-    elevation:5
+    elevation:5,
+    shadowColor: Platform.OS === 'ios' ? 'white' : 'white',
+    shadowOpacity: Platform.OS === 'ios' ? 0.1 : 0.25,
   },
   profileImage: {
     bottom: 30,
