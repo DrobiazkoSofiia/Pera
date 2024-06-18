@@ -1,25 +1,59 @@
-import React, { useState, } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
-import { useNavigation,  useRoute  } from '@react-navigation/native'; // Import useNavigation hook
+import { useNavigation, useRoute } from '@react-navigation/native';
+import axios from 'axios';
 import VideoCard from '../components/VideoCard';
 import Footer from '../components/Footer';
 import HeaderExplore from '../components/HeaderExplore';
 import Article from '../components/Article';
 import ModalMenu from '../components/ModalMenu';
 import globalStyles from './GlobalStyles';
-import { videos } from './VideoData';
-import { articles } from './ArticleData';
 
+const API_BASE_URL = 'https://kutsenko.be/api/v1';
 
 export default function HomeNotRegistered() {
   const navigation = useNavigation();
-  const filteredVideos = videos.filter(video => video.id === 1 || video.id === 2 || video.id === 3);
-  const filteredVideos1 = videos.filter(video => video.id === 4 || video.id === 5 || video.id === 6);
-  const filteredArticles = articles.filter(article => article.id === 1 || article.id === 2 || article.id === 3 || article.id === 4);
-  const filteredArticles1 = articles.filter(article => article.id === 5 || article.id === 6 || article.id === 7 || article.id === 8);
-
+  const [recipesVideos, setRecipesVideos] = useState([]);
+  const [interestingVideos, setInterestingVideos] = useState([]);
+  const [popularArticles, setPopularArticles] = useState([]);
+  const [allergiesArticles, setAllergiesArticles] = useState([]);
   const route = useRoute();
   const { username, childname, avatarSource } = route.params || {};
+
+  useEffect(() => {
+    fetchVideos();
+    fetchArticles();
+  }, []);
+
+  const fetchVideos = async () => {
+    try {
+      const recipesResponse = await axios.get(`${API_BASE_URL}/videos`, {
+        params: { ids: '15,16,17,18' },
+      });
+      const interestingResponse = await axios.get(`${API_BASE_URL}/videos`, {
+        params: { ids: '23,24,25,19' },
+      });
+      setRecipesVideos(recipesResponse.data);
+      setInterestingVideos(interestingResponse.data);
+    } catch (error) {
+      console.error('Error fetching videos:', error);
+    }
+  };
+
+  const fetchArticles = async () => {
+    try {
+      const popularResponse = await axios.get(`${API_BASE_URL}/articles`, {
+        params: { ids: '12,13,14,15' },
+      });
+      const allergiesResponse = await axios.get(`${API_BASE_URL}/articles`, {
+        params: { ids: '16,17,18,19' },
+      });
+      setPopularArticles(popularResponse.data);
+      setAllergiesArticles(allergiesResponse.data);
+    } catch (error) {
+      console.error('Error fetching articles:', error);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -39,11 +73,11 @@ export default function HomeNotRegistered() {
               <Text style={[globalStyles.title2, { marginBottom: 20 }]}>Most popular</Text>
             </View>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            {filteredArticles.map((article, index) => (
-            <TouchableOpacity key={article.id} onPress={() => navigation.navigate('ArticlePage', { article, username, childname, avatarSource  })}>
-            <Article article={article} />
-          </TouchableOpacity>          
-        ))}
+              {popularArticles.map((article) => (
+                <TouchableOpacity key={article.id} onPress={() => navigation.navigate('ArticlePage', { article, username, childname, avatarSource })}>
+                  <Article article={article} />
+                </TouchableOpacity>
+              ))}
             </ScrollView>
           </View>
           <View style={{ marginBottom: 33 }}>
@@ -51,11 +85,11 @@ export default function HomeNotRegistered() {
               <Text style={[globalStyles.title2, { marginBottom: 20 }]}>Recipes</Text>
             </View>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            {filteredVideos.map((video, index) => (
-            <TouchableOpacity key={video.id} onPress={() => navigation.navigate('VideoPage', { video, username, childname, avatarSource})}>
-            <VideoCard video={video} />
-          </TouchableOpacity>          
-        ))}
+              {recipesVideos.map((video) => (
+                <TouchableOpacity key={video.id} onPress={() => navigation.navigate('VideoPage', { video, username, childname, avatarSource })}>
+                  <VideoCard video={video} />
+                </TouchableOpacity>
+              ))}
             </ScrollView>
           </View>
           <View style={{ marginBottom: 26 }}>
@@ -63,11 +97,11 @@ export default function HomeNotRegistered() {
               <Text style={[globalStyles.title2, { marginBottom: 20 }]}>Allergies</Text>
             </View>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            {filteredArticles1.map((article, index) => (
-            <TouchableOpacity key={article.id} onPress={() => navigation.navigate('ArticlePage', { article, username, childname, avatarSource })}>
-            <Article article={article} />
-          </TouchableOpacity>          
-        ))}
+              {allergiesArticles.map((article) => (
+                <TouchableOpacity key={article.id} onPress={() => navigation.navigate('ArticlePage', { article, username, childname, avatarSource })}>
+                  <Article article={article} />
+                </TouchableOpacity>
+              ))}
             </ScrollView>
           </View>
           <View style={{ marginBottom: 17 }}>
@@ -75,11 +109,11 @@ export default function HomeNotRegistered() {
               <Text style={[globalStyles.title2, { marginBottom: 20 }]}>Might be interesting</Text>
             </View>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            {filteredVideos1.map((video, index) => (
-            <TouchableOpacity key={video.id} onPress={() => navigation.navigate('VideoPage', { video, username, childname, avatarSource })}>
-            <VideoCard video={video} />
-          </TouchableOpacity>          
-        ))}
+              {interestingVideos.map((video) => (
+                <TouchableOpacity key={video.id} onPress={() => navigation.navigate('VideoPage', { video, username, childname, avatarSource })}>
+                  <VideoCard video={video} />
+                </TouchableOpacity>
+              ))}
             </ScrollView>
           </View>
         </View>
@@ -92,7 +126,7 @@ export default function HomeNotRegistered() {
 }
 
 const styles = StyleSheet.create({
- container: {
+  container: {
     height: 'auto',
   },
   content: {
@@ -100,7 +134,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 39,
     borderTopRightRadius: 39,
     bottom: 32,
-    height: '100%',   
+    height: '100%',
     paddingLeft: 30,
     paddingHorizontal: 30,
     paddingBottom: 53,
@@ -110,8 +144,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   footer: {
-    position: 'absolute', 
-    bottom: 0, 
+    position: 'absolute',
+    bottom: 0,
     left: 0,
     right: 0,
     alignItems: 'center',
@@ -130,14 +164,17 @@ const styles = StyleSheet.create({
     margin: 20,
     paddingHorizontal: 35,
     paddingVertical: 15,
-    alignItems: "center",
-    justifyContent: "center",
-    shadowColor: "#000",
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
     shadowOffset: {
-        width: 0,
-        height: 2
+      width: 0,
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
   },
 });
+
+
+

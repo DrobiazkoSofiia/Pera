@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems:'flex-start',
     height:'auto',
-    paddingLeft:'6%',
+    paddingHorizontal:'2%',
     marginBottom:46
   },
   top: {

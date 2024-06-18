@@ -196,10 +196,10 @@ export const meals = [
   ];
   
   export function getMealCardsWithNavigation() {
-    const navigation = useNavigation(); // Отримайте navigation
+    const navigation = useNavigation();
     return mealCards.map(mealCard => ({
       ...mealCard,
-      onButtonPress: () => mealCard.onButtonPress(navigation), // Викликаємо onButtonPress із navigation
+      onButtonPress: () => mealCard.onButtonPress(navigation),
     }));
   }
   

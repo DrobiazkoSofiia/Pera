@@ -9,7 +9,7 @@ export default function ChildProfileSuccess() {
   const route = useRoute();
   const { username, childname, avatarSource } = route.params || {};
   const handlePress1 = () => {
-    navigation.navigate('Home',  { username, childname, avatarSource } );
+    navigation.navigate('Home', { username, childname, avatarSource } );
   };
 
   return (

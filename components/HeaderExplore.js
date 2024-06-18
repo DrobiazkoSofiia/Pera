@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     marginTop: 7,
   },
   bellIcon: {
-    marginRight: 7, // Adjust margin as needed
+    marginRight: 7,
   },
   baby: {
     width: 64,

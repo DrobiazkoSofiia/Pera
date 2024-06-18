@@ -28,7 +28,6 @@ import Intro4 from './components/Intro4';
 import ChildAccount from './components/ChildAccount';
 import VideoPage from './components/VideoPage';
 import ArticlePage from './components/ArticlePage';
-import ModalCalendar from './components/ModalCalendar';
 import { CartProvider } from './components/CartContext';
 import PaymentOrder from './components/PaymentOrder'; 
 import OrderReview from './components/OrderReview';
@@ -90,7 +89,6 @@ export default function App() {
         <Stack.Screen name="ChildAccount" component={ChildAccount} />
         <Stack.Screen name="VideoPage" component={VideoPage} />
         <Stack.Screen name="ArticlePage" component={ArticlePage} />
-        <Stack.Screen name="ModalCalendar" component={ModalCalendar} />
         <Stack.Screen name="PaymentOrder" component={PaymentOrder} />
         <Stack.Screen name="OrderReview" component={OrderReview} />
         <Stack.Screen name="OrderReviewFinish" component={OrderReviewFinish} />

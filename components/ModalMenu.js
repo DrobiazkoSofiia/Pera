@@ -12,18 +12,15 @@ export default function ModalMenu() {
   const navigation = useNavigation();
   const [mealCards, setMealCards] = useState(initialMeals);
   const route = useRoute();
-  const { mealCard, handleDelete } = route.params;
+  const { mealCard, handleDelete,  username, childname, avatarSource } = route.params;
   const handlePress12 = () => {
-    navigation.navigate('DescriptMealCard');
+    navigation.navigate('DescriptMealCard', { username, childname, avatarSource });
   };
   const calculateTotalKkal = () => {
     let totalKkal = 0;
-    
-    // Пройдіться по першим шести об'єктам mealCards та додайте їхні значення kkal до totalKkal
     for (let i = 0; i < 5 && i < mealCards.length; i++) {
       totalKkal += mealCards[i].kkal;
     }
-  
     return totalKkal;
   };
   
@@ -504,11 +501,11 @@ alignItems:'center'
     marginRight: 10,
   },
   footer: {
-    position: 'absolute', // Position the footer absolutely
-    bottom: 0, // Align footer to the bottom
+    position: 'absolute',
+    bottom: 0,
     left: 0,
     right: 0,
-    alignItems: 'center', // Align items at the center horizontally
+    alignItems: 'center',
   },
   modalView: {
     width: 373,
@@ -525,7 +522,7 @@ alignItems:'center'
     paddingHorizontal: 35,
     paddingVertical:15,
     alignItems: "center",
-    justifyContent: "center", // Add this line to center the content vertically
+    justifyContent: "center",
     shadowColor: "#000",
     shadowOffset: {
         width: 0,

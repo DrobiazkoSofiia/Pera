@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ImageBackground, Text, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, ImageBackground, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import globalStyles from './GlobalStyles';
 
@@ -19,7 +19,8 @@ export default function Intro1() {
         style={styles.imageBackground}
       >
         <View style={styles.content}>
-          <Text style={[globalStyles.bigButtonText1, { paddingTop: 672, marginBottom: 33 }]}>
+          <ScrollView>
+          <Text style={[globalStyles.bigButtonText1, {paddingTop: 700, marginBottom: '2%'}]}>
           Get a personalized menu
           </Text>
 
@@ -31,6 +32,7 @@ export default function Intro1() {
               <Image source={require('../assets/icons/arrowForwardIcon.png')} style={{ width: 46, height: 46 }} />
             </TouchableOpacity>
           </View>
+          </ScrollView>
         </View>
       </ImageBackground>
     </View>

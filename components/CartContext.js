@@ -6,7 +6,6 @@ export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
 
   const addToCart = (items) => {
-    // Перевіряємо, чи це масив
     if (Array.isArray(items)) {
       items.forEach(item => {
         const existingItem = cartItems.find(cartItem => cartItem.id === item.id);
@@ -19,7 +18,6 @@ export const CartProvider = ({ children }) => {
         }
       });
     } else {
-      // Якщо це не масив, обробляємо як один об'єкт
       const existingItem = cartItems.find(cartItem => cartItem.id === items.id);
       if (existingItem) {
         setCartItems(cartItems.map(cartItem => 

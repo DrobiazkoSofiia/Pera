@@ -1,120 +1,79 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import globalStyles from './GlobalStyles';
 
-export default function MealCard({
-  imageSource,
-  title,
-  name,
-  backgroundColor,
-  width,
-  height,
-  width1,
-  height1,
-  heightImg,
-  widthImg,
-  fontSize1,
-  widthText,
-  heightText,
-  onButtonPress,
-  titleBut, 
-  meal,
-  ingridients,
-  smallIngridients,
-  kkal,
-  time,
-  ageCategory,
-  ageMonth,
-  ageCategoryImg,
-  smallProduct1,
-  smallProduct2,
-  smallProduct3,
-  smallProduct4,
-  day,
-
-}) {
- 
-  const [buttonText, setButtonText] = useState(titleBut);
-
-  const handleButtonPress = () => {
-    setButtonText('✔');
-    if (onButtonPress) {
-      onButtonPress();
-    }
-  };
-
+const MealCard = ({ imageSource, title, name, onButtonPress }) => {
   return (
-    <View style={styles.container}>
-      <View style={{ width: width, height: height, backgroundColor: backgroundColor, alignItems: 'center', borderRadius: 20, justifyContent: 'center' }}>
-        <Image source={imageSource} style={[styles.image, { width: widthImg, height: heightImg }]} resizeMode="contain" />
+    <View style={styles.cardContainer}>
+      <Image source={imageSource} style={styles.image} />
+      <View style={styles.titleContainer}>
+        <Text style={styles.mealTitle}>{title}</Text>
+        <Text style={styles.mealName}>{name}</Text>
       </View>
-      <View style={[styles.name, { width: width1, height: height1 }]}>
-        <Text style={[styles.title]}>{title}</Text>
-        <View style={styles.row2}>
-          <Text style={[globalStyles.smallBlackText, { fontSize: fontSize1, width: widthText, height: heightText }]}>{name}</Text>
-          <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
-            <Text style={styles.buttonText}>{buttonText}</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+      <TouchableOpacity style={styles.detailsButton} onPress={onButtonPress}>
+        <Text style={styles.detailsButtonText}>View</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-    flex: 1,
-    paddingRight: 8,
-    flexShrink: 0,
-    alignItems: 'center'
-  },
-  name: {
-    borderRadius: 10,
-    backgroundColor: 'white',
-    elevation: 5,
+  cardContainer: {
+    backgroundColor: '#FAE03C',
+    borderRadius: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
-    shadowRadius: 3,
-    bottom: 27,
-    width: 236,
-    height: 75,
-    flexShrink: 0,
-  },
-  title: {
-    color: 'black',
-    textAlign: 'center',
-    fontFamily: 'RadioCanada',
-    fontSize: 20,
-  },
-  button: {
-    alignSelf: 'flex-end',
-    flex: 1,
-    width: 89,
-    height: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 10,
-    flexShrink: 0,
-    borderRadius: 30,
-    backgroundColor: '#7EC845',
-  },
-  buttonText: {
-    color: 'white',
-    textAlign: 'center',
-    fontFamily: 'RadioCanada',
-    fontSize: 16,
-  },
-  row2: {
-    flex: 2,
-    flexDirection: 'column',
-    paddingHorizontal: 10,
-    paddingBottom: 5,
-    paddingTop: 2,
+    shadowRadius: 2,
+    elevation: 5,
+    marginHorizontal: 10,
+    marginBottom: 60,
+    width: 250, 
+
   },
   image: {
-   
-  }
+    width: '90%',
+    height: 230,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    alignSelf:'center'
+  },
+  titleContainer: {
+    position: 'absolute',
+    top: 200,
+    alignSelf:'center',
+    width:200,
+    height:75,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    elevation:5,
+  },
+  mealTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+    alignSelf:'center'
+
+  },
+  mealName: {
+    fontSize: 16,
+    color: '#333',
+    paddingLeft:14
+  },
+  detailsButton: {
+    backgroundColor: '#7EC845',
+    borderRadius: 20,
+    marginRight: 30,
+    paddingHorizontal: 20,
+    alignSelf: 'center',
+    marginTop: 20,
+    alignSelf:'flex-end'
+
+  },
+  detailsButtonText: {
+    color: '#FFF',
+    fontSize: 16,
+    textAlign: 'center',
+  },
 });
+
+export default MealCard;

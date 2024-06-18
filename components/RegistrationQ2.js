@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     width:'100%'
   },
   imageBackground: {
-    width: '100%', // Set the width to fill the container
+    width: '100%',
     height: '100%',
   },
   content: {
@@ -78,6 +78,6 @@ const styles = StyleSheet.create({
     alignItems:'center',
   },
   customInputStyle: {
-    width: '80%', // Customize input field width if needed
+    width: '80%',
   },
 });

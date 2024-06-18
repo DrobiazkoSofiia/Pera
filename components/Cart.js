@@ -21,7 +21,7 @@ export default function Cart() {
   }, [cartItems]);
 
   const handlePress1 = () => {
-    navigation.navigate('PaymentOrder', { totalPayment, selectedAddress }); // Передача totalPayment як параметру
+    navigation.navigate('PaymentOrder', { totalPayment, selectedAddress });
   };
 
   return (
@@ -41,6 +41,7 @@ export default function Cart() {
                 removeFromCart={removeFromCart}
                 updateItemCount={updateItemCount}
                 item={item}
+                contentContainerStyle={styles.flatListContainer}
               />
             )}
           />
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flex: 1,
     height: '100%',
-    paddingHorizontal: 30,
+    paddingHorizontal: '3%',
     paddingBottom: 53,
     alignItems:'center'
   },
@@ -84,7 +85,8 @@ const styles = StyleSheet.create({
     marginBottom: 14,
     borderTopWidth: 5,
     borderColor: '#92949B',
-    borderTopRadius: 2,
+    borderTopLeftRadius: 2,
+    borderTopRightRadius: 2,
     borderStyle: 'dotted',
   },
   footer: {

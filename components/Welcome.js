@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Button, ImageBackground, Text, TouchableOpacity, Image, ScrollView, Platform } from 'react-native';
+import { StyleSheet, View, Button, ImageBackground, Text, TouchableOpacity, Image, TouchableNativeFeedback, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import globalStyles from './GlobalStyles';
 import TextInputField from './TextInputField';
@@ -12,10 +12,13 @@ export default function ChildProfileSuccess() {
   const handlePress3 = () => {
     navigation.navigate('SignUp');
   };
-  const CustomButton = ({ title, onPress, style, textStyle, icon }) => (
-    <TouchableOpacity onPress={handlePress33} style={[globalStyles.button, style]}>
+  const Touchable = Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity;
+  const CustomButton = ({ title, onPress, style, textStyle }) => (
+    <Touchable onPress={handlePress33}>
+    <View style={[globalStyles.button, style]}>
       <Text style={[globalStyles.buttonText, textStyle]}>{title}</Text>
-    </TouchableOpacity>
+    </View>
+    </Touchable>
   );
   const [text1, setText1] = useState('');
   const [text2, setText2] = useState('');
@@ -44,12 +47,16 @@ export default function ChildProfileSuccess() {
         style={[styles.customInputStyle, {marginBottom:20 }]}
         icon={require('../assets/icons/passwordIcon.png')}
       />
-      <TouchableOpacity style={{marginBottom:32}} onPress={handlePress1} >
+      <Touchable onPress={handlePress1}>
+      <View style={{marginBottom:32}}>
     <Text style={{color:'#007EB1', paddingLeft:'50%', paddingRight:24, fontSize:16, fontFamily: 'RadioCanada',}}>Forgot password?</Text>
-      </TouchableOpacity>
-      <View style={{ flexDirection: 'row', marginBottom:29, alignItems:'center'}}>
+      </View>
+      </Touchable>
+      <Touchable>
+      <View style={{ flexDirection: 'row', marginBottom:29, alignItems:'center', height:57}}>
           <CustomButton  style={[globalStyles.buttonParentProfileSuccess, globalStyles.editButtonContent, {backgroundColor:'#007EB1'}]} textStyle={globalStyles.bigButtonText} title="Sign In" />
       </View>
+      </Touchable>
       <Text style={[globalStyles.productIngridients,{marginBottom:27}]}>or sign in with</Text>
       <View style={{marginBottom:10, flexDirection:'row', gap:5}}> 
           <TouchableOpacity onPress={() => console.log('Mastercard pressed')}><Image source={require('../assets/facebookImg.png')}/></TouchableOpacity> 
@@ -58,9 +65,11 @@ export default function ChildProfileSuccess() {
           </View>
           <View style={{ flexDirection:'row', alignItems:'center', gap:5  }}> 
        <Text style={[globalStyles.productIngridients1]}>Don’t have an account?</Text>
-       <TouchableOpacity onPress={handlePress3}>
+       <Touchable onPress={handlePress3}>
+       <View >
     <Text style={{color:'#007EB1',  fontSize:20, fontFamily: 'RadioCanada'}}>Sign Up</Text>
-      </TouchableOpacity>
+      </View>
+      </Touchable>
        </View>
        </View>
        
@@ -81,7 +90,7 @@ const styles = StyleSheet.create({
   },
   buttonsContainer: {
     position: 'absolute',
-    bottom: 50, // Adjust as needed
+    bottom: 50,
   },
   customInputStyle: {
     width: '90%',

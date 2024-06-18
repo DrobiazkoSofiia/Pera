@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   content: {
     backgroundColor: 'white',
     alignItems:'center',
-    height:'100%',
+   marginBottom:'25%'
     
   },
   top: {

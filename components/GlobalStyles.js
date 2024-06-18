@@ -97,6 +97,7 @@ const globalStyles = StyleSheet.create({
         color: '#FFF',
         fontFamily: 'RadioCanada',
         fontSize: 18,
+        fontWeight:'700'
     },
     textVideo: {
         color: '#686868',
@@ -112,6 +113,7 @@ const globalStyles = StyleSheet.create({
         color: '#000',
         fontFamily: 'RadioCanada',
         fontSize: 18,
+        fontWeight:'800'
     },
     textDietName1: {
         color: '#FFF',
@@ -191,9 +193,9 @@ const globalStyles = StyleSheet.create({
     },
     bigBlueButton: {
         width: 325,
-        height: 59, // Adjust the height according to your design
+        height: 59,
         alignItems: 'center',
-        justifyContent: 'center', // Center the content vertically
+        justifyContent: 'center',
         borderRadius: 30,
         backgroundColor: '#007EB1',
     },
@@ -208,7 +210,7 @@ const globalStyles = StyleSheet.create({
         width: 153,
         height: 46,
         alignItems: 'center',
-        justifyContent: 'center', // Center the content vertically
+        justifyContent: 'center',
         borderRadius: 30,
         backgroundColor: '#5CA6CE',
     },
@@ -217,6 +219,7 @@ const globalStyles = StyleSheet.create({
         textAlign: 'center',
         fontFamily: 'RadioCanada',
         fontSize: 20,
+        fontSize: Platform.OS === 'android' ? 18 : 20,
     },
     editButtonContent: {
         flex: 1,
@@ -230,7 +233,7 @@ const globalStyles = StyleSheet.create({
         width: 141,
         height: 44,
         alignItems: 'center',
-        justifyContent: 'center', // Center the content vertically
+        justifyContent: 'center',
         borderRadius: 30,
         backgroundColor: '#EA6448',
     },

@@ -7,11 +7,11 @@ import { useNavigation } from '@react-navigation/native';
 export default function Article({ article }) {
     const navigation = useNavigation();
     const handlePress1 = () => {
-        navigation.navigate('ArticlePage');
+        navigation.navigate('ArticlePage', { article, username, childname, avatarSource });
       };
     return (
         <View style={styles.container}>
-            <Image source={article.imageSource} style={styles.image} />
+            <Image source={{ uri: article.Picture }} style={styles.image} />
             <View style={styles.blueArticle}>
                 <Image source={require('../assets/icons/articleIcon.png')} />
                 <Text style={globalStyles.smallWhiteText}>Article</Text>
@@ -57,3 +57,4 @@ const styles = StyleSheet.create({
     left:20   
     }
 });
+

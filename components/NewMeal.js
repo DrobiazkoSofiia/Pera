@@ -206,11 +206,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   footer: {
-    position: 'absolute', // Position the footer absolutely
-    bottom: 0, // Align footer to the bottom
+    position: 'absolute',
+    bottom: 0, 
     left: 0,
     right: 0,
-    alignItems: 'center', // Align items at the center horizontally
+    alignItems: 'center',
   },
   modalView: {
     width: 373,
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 35,
     paddingVertical: 15,
     alignItems: 'center',
-    justifyContent: 'center', // Add this line to center the content vertically
+    justifyContent: 'center',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, FlatList, Image, Modal } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import MealCard from '../components/MealCard';
 import globalStyles from './GlobalStyles';
-import { meals as initialMeals } from './MealData';
 import { CartContext } from './CartContext';
 
 const CalendarScreen = () => {
@@ -15,60 +14,46 @@ const CalendarScreen = () => {
   const [days, setDays] = useState([]);
   const [specificMeals, setSpecificMeals] = useState([]);
 
-
-  const route = useRoute();
-  const { username, childname, avatarSource } = route.params || {};
-  const { newMeal } = route.params || {};
-
-  useEffect(() => {
-    // Оновлюємо specificMeals при зміні mealCards
-    setSpecificMeals(mealCards.filter(meal => meal.day === selectedDay));
-  }, [selectedDay, mealCards]);
-
-  const handleAddMeal = (newMeal) => {
-    // Додаємо новий обід до mealCards
-    setMealCards((prevMeals) => [ { ...newMeal, day: selectedDay }, ...prevMeals,]);
-    // Оновлюємо specificMeals, щоб відобразити тільки обіди для обраного дня
-    setSpecificMeals((prevMeals) => [ { ...newMeal, day: selectedDay }, ...prevMeals,]);
-  };
   useEffect(() => {
     const today = new Date();
-    const todayDate = today.getDate().toString();
-    setSelectedDay(todayDate);
-
     const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const todayIndex = today.getDay(); // Get the index of today (0-6, Sun-Sat)
-    
-    // Generate the days array starting from Sunday
+    const dayIds = { Sun: 17, Mon: 16, Tue: 15, Wed: 19, Thu: 14, Fri: 18, Sat: 13 };
     const generatedDays = dayNames.map((name, index) => {
       const date = new Date(today);
-      date.setDate(today.getDate() - todayIndex + index); // Adjust the date to match the day name
+      date.setDate(today.getDate() - today.getDay() + index);
       return {
         number: date.getDate().toString(),
         name: name,
+        id: dayIds[name],
       };
     });
 
     setDays(generatedDays);
-
-    // Generate meals dynamically based on the days
-    const generatedMeals = generatedDays.flatMap((day, dayIndex) => {
-      return initialMeals.slice(0, 6).map((meal, mealIndex) => ({
-        ...meal,
-        day: day.number, // Assign day number to each meal
-        id: `${day.number}-${mealIndex}` // Ensure unique id for each meal
-      }));
-    });
-
-    setMealCards(generatedMeals);
+    setSelectedDay(generatedDays[0]); // Устанавливаем первый день недели как выбранный по умолчанию
   }, []);
+
+  useEffect(() => {
+    if (selectedDay) {
+      fetchMealsForDay(selectedDay.id);
+    }
+  }, [selectedDay]);
+
+  const fetchMealsForDay = async (id) => {
+    try {
+      const response = await fetch(`https://kutsenko.be/api/v1/menus/${id}`);
+      const data = await response.json();
+      console.log('Fetched data:', data);
+      setSpecificMeals(data.meals || []);
+    } catch (error) {
+      console.error('Error fetching meals:', error);
+    }
+  };
 
   const { addToCart } = useContext(CartContext);
 
-
   const CustomButton = ({ title, onPress, style, textStyle, icon }) => (
     <TouchableOpacity onPress={onPress} style={[globalStyles.button, style]}>
-       {icon && <Image source={require('../assets/icons/deleteIcon.png')} style={{ width: 34, height: 34 }} />}
+      {icon && <Image source={require('../assets/icons/deleteIcon.png')} style={{ width: 34, height: 34 }} />}
       <Text style={[globalStyles.buttonText, textStyle]}>{title}</Text>
     </TouchableOpacity>
   );
@@ -78,17 +63,12 @@ const CalendarScreen = () => {
     setShowConfirmationModal2(true);
   };
 
- const handleDelete = (id) => {
-    setMealCards(prevMeals => prevMeals.filter(meal => meal.id !== id));
+  const handleDelete = (id) => {
+    setSpecificMeals(prevMeals => prevMeals.filter(meal => meal.id !== id));
   };
 
   const calculateTotalKkal = () => {
-    let totalKkal = 0;
-    // Пройдіться по першим шести об'єктам mealCards та додайте їхні значення kkal до totalKkal
-    for (let i = 0; i < 5 && i < mealCards.length; i++) {
-      totalKkal += mealCards[i].kkal;
-    }
-    return totalKkal;
+    return specificMeals.reduce((total, meal) => total + meal.kkal, 0);
   };
 
   return (
@@ -111,7 +91,7 @@ const CalendarScreen = () => {
           data={days}
           horizontal
           renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => setSelectedDay(item.number)} style={[styles.day, selectedDay === item.number && styles.selectedDayBut]}>
+            <TouchableOpacity onPress={() => setSelectedDay(item)} style={[styles.day, selectedDay.number === item.number && styles.selectedDayBut]}>
               <View style={styles.dayContainer}>
                 <Text style={[styles.dayName]}>
                   {item.name}
@@ -122,144 +102,26 @@ const CalendarScreen = () => {
               </View>
             </TouchableOpacity>
           )}
-          keyExtractor={(item) => item.number} // Ensure unique keys
+          keyExtractor={(item) => item.number}
           contentContainerStyle={styles.flatListContainer}
         />
       </View>
 
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-        {specificMeals.map((mealCard) => (
+        {specificMeals.map((mealCard, index) => (
           <MealCard
             key={mealCard.id}
-            backgroundColor={mealCard.backgroundColor}
-            imageSource={mealCard.imageSource}
-            title={mealCard.title}
+            imageSource={{ uri: mealCard.main_picture }}
+            title={mealCard.meal_category}
             name={mealCard.name}
-            width={mealCard.width}
-            height={mealCard.height}
-            width1={mealCard.width1}
-            height1={mealCard.height1}
-            widthImg={mealCard.widthImg}
-            heightImg={mealCard.heightImg}
-            fontSize1={mealCard.fontSize1}
-            widthText={mealCard.widthText}
-            heightText={mealCard.heightText}
             onButtonPress={() =>
-                navigation.navigate('DescriptMealCard', {
-                  mealCard,
-                  handleDelete,
-                  addMeal: handleAddMeal, username, childname, avatarSource})}
-            titleBut={mealCard.titleBut}
-            ingridients={mealCard.ingridients}
-            smallIngridients={mealCard.smallIngridients}
-            kkal={mealCard.kkal}
-            time={mealCard.time}
-            ageCategory={mealCard.ageCategory}
-            ageMonth={mealCard.ageMonth}
-            ageCategoryImg={mealCard.ageCategoryImg}
-            smallProduct1={mealCard.smallProduct1}
-            smallProduct2={mealCard.smallProduct2}
-            smallProduct3={mealCard.smallProduct3}
-            smallProduct4={mealCard.smallProduct4}
-            navigation={navigation}
+              navigation.navigate('DescriptMealCard', {
+                mealId: mealCard.id, // Передаем mealId вместо mealCard
+              })
+            }
           />
         ))}
       </ScrollView>
-      <Modal
-                animationType="slide"
-                transparent={true}
-                visible={showConfirmationModal}
-            >
-                <View style={styles.centeredView}>
-                <View style={[styles.modalView, {height:'auto'}]}>
-                    <View style={{alignSelf:'flex-end'}}>
-                        <TouchableOpacity onPress={() => setShowConfirmationModal(false)}>
-                        <Image source={require('../assets/icons/crossIcon.png')} style={{ width: 42, height: 42}} />
-                        </TouchableOpacity>
-                        </View>
-                        <Text style={[globalStyles.title2, {marginBottom:27}]}>Menu For Next Week</Text>
-                        <View  style={{width:360, height:104, marginBottom:27}}>
-                        <CalendarScreen style={[styles.day1,]}></CalendarScreen>
-                        </View>
-                        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                        <View style={{flexDirection:'row', paddingLeft:'0.5%'}}>
-                        {specificMeals.map((mealCard, index) => (
-     <MealCard
-     key={index}
-     backgroundColor={mealCard.backgroundColor}
-     imageSource={mealCard.imageSource}
-     title={mealCard.title}
-     name={mealCard.name}
-     width={mealCard.width}
-     height={mealCard.height}
-     width1={mealCard.width1}
-     height1={mealCard.height1}
-     widthImg={mealCard.widthImg}
-     heightImg={mealCard.heightImg}
-     fontSize1={mealCard.fontSize1}
-     widthText={mealCard.widthText}
-     heightText={mealCard.heightText}
-     onButtonPress={() => navigation.navigate('DescriptMealCard', { mealCard, handleDelete, username, childname, avatarSource })}
-     titleBut={mealCard.titleBut}
-     ingridients={mealCard.ingridients}
-     smallIngridients={mealCard.smallIngridients}
-     kkal={mealCard.kkal}
-     time={mealCard.time}
-     ageCategory={mealCard.ageCategory}
-     ageMonth={mealCard.ageMonth}
-     ageCategoryImg={mealCard.ageCategoryImg}
-     smallProduct1={mealCard.smallProduct1}
-     smallProduct2={mealCard.smallProduct2}
-     smallProduct3={mealCard.smallProduct3}
-     smallProduct4={mealCard.smallProduct4}
-     navigation={navigation}
-     
-   />
-  ))}
-
-            </View>
-                        </ScrollView>
-                        <View style={{width:301, height:80, backgroundColor:'#7EC845', flexDirection:'column', borderRadius:10, gap:2, paddingTop:8, paddingLeft:8, marginBottom:39}}>
-                        <Text style={[globalStyles.naming, {alignSelf:'flex-start'}]}>TOTAL</Text>
-                        <View style={{flexDirection:'row', gap:137}}>
-                          <Text style={globalStyles.editButtonText}>Calories:</Text>
-                          <Text style={globalStyles.editButtonText}>{calculateTotalKkal()}kkal</Text>
-                        </View>
-
-                      </View>
-                      <View style={{ flexDirection: 'row', gap:7, marginBottom:18 }}>
-
-                            <CustomButton  style={[globalStyles.buttonParentProfileSuccess, globalStyles.editButtonContent, {backgroundColor:'#007EB1'}]} textStyle={globalStyles.bigButtonText} title="Confirm"  onPress={handleGetMyPlan} />
-                        </View>
-                       
-                        </View>
-                </View>
-            </Modal>
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={showConfirmationModal2}
-            >
-                <View style={styles.centeredView}>
-                    <ScrollView>
-                    <View style={styles.modalView1}>
-                    <View style={{alignSelf:'flex-end', marginBottom:24}}>
-                        <TouchableOpacity onPress={() => setShowConfirmationModal2(false)}>
-                        <Image source={require('../assets/icons/crossIcon.png')} style={{ width: 42, height: 42}} />
-                        </TouchableOpacity>
-                        </View>
-                        <View style={{alignItems: 'center', justifyContent:'center',flex:1}}>
-          <Image style={{marginBottom:29, width:298, height:232}} source={require('../assets/notRegisteredChildImg.png')}/>
-          <Text style={[globalStyles.bigButtonText1, {marginBottom:26,}]}>Your meal plan was added to Cart</Text>
-          <TouchableOpacity  style={[globalStyles.bigAddButton, {marginBottom:46}]} onPress={() => setShowConfirmationModal2(false)}>
-            <Text style={globalStyles.bigButtonText}>Done</Text>
-           </TouchableOpacity>
-           </View>
-                        
-                    </View>
-                    </ScrollView>
-                </View>
-            </Modal>
     </View>
   );
 };
@@ -277,8 +139,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#fff',
-    alignItems:'center',
-    justifyContent:'center'
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   day: {
     width: 45,
@@ -313,68 +175,68 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'black',
     padding: 2,
-    fontWeight:'bold'
+    fontWeight: 'bold',
   },
   selectedDayBut: {
     backgroundColor: '#7EC845',
   },
   flatListContainer: {
     alignItems: 'center',
-    justifyContent:'center',
+    justifyContent: 'center',
     gap: 6,
     paddingVertical: 5,
     paddingHorizontal: 5,
-    marginBottom:25,
+    marginBottom: 25,
   },
   mealContainer: {
     padding: 10,
-    flexDirection:'row',
+    flexDirection: 'row',
   },
   centeredView: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: 22,
-},
-modalView1: {
-  width: 373,
-  height: 'auto',
-  flexShrink: 0,
-  borderRadius: 15,
-  backgroundColor: '#FFF',
-  elevation: 20,
-  margin: 20,
-  paddingHorizontal: 35,
-  paddingVertical:15,
-  alignItems: "center",
-  justifyContent: "center", // Add this line to center the content vertically
-  shadowColor: "#000",
-  shadowOffset: {
-      width: 0,
-      height: 2
   },
-  shadowOpacity: 0.25,
-  shadowRadius: 4,
-},
-modalView: {
-  width: 360,
-  height: 217, // Adjust the height to accommodate the text
-  flexShrink: 0,
-  borderRadius: 15,
-  backgroundColor: '#FFF',
-  elevation: 10,
-  margin: 20,
-  padding: 10,
-  alignItems: "center",
-  justifyContent: "center", // Add this line to center the content vertically
-  shadowColor: "#000",
-  shadowOffset: {
+  modalView1: {
+    width: 373,
+    height: 'auto',
+    flexShrink: 0,
+    borderRadius: 15,
+    backgroundColor: '#FFF',
+    elevation: 20,
+    margin: 20,
+    paddingHorizontal: 35,
+    paddingVertical: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
   },
-  shadowOpacity: 0.25,
-  shadowRadius: 4,
-},
+  modalView: {
+    width: 360,
+    height: 217,
+    flexShrink: 0,
+    borderRadius: 15,
+    backgroundColor: '#FFF',
+    elevation: 10,
+    margin: 20,
+    padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+  },
 });
 
 export default CalendarScreen;

@@ -4,8 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 import globalStyles from './GlobalStyles';
 import { useRoute } from '@react-navigation/native';
 import ProgressBar from './ProgressBar';
-import * as ImagePicker from 'expo-image-picker'; // Імпортуємо Expo Image Picker
-import * as MediaLibrary from 'expo-media-library'; // Імпортуємо Expo Media Library
+import * as ImagePicker from 'expo-image-picker';
+import * as MediaLibrary from 'expo-media-library';
 
 export default function RegistrationQ4() {
   const navigation = useNavigation();

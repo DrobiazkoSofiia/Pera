@@ -1,27 +1,26 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import globalStyles from './GlobalStyles';
 import { useNavigation } from '@react-navigation/native';
 
 export default function VideoCard({ video }) {
     const navigation = useNavigation();
     const handlePress = () => {
-        navigation.navigate('VideoPage', { video });
-      };
+        navigation.navigate('VideoPage', { videoId: video.id });
+    };
+
     return (
-        <View style={styles.container}>
-            
-            <Image source={video.imageSource} style={styles.image} />
-           
-           <View style={styles.name}>
+        <TouchableOpacity onPress={handlePress} style={styles.container}>
+            <Image source={{ uri: video.cover_picture }} style={styles.image} />
+            <View style={styles.name}>
                 <Text style={styles.title}>{video.title}</Text>
-                <Text style={globalStyles.smallGreyText}>{video.duration} · {video.views} views</Text>
+                <Text style={globalStyles.smallGreyText}>{video.duration} · {video.likes_amount} likes</Text>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 }
 
-const styles=StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
         flex: 1,
@@ -36,21 +35,17 @@ const styles=StyleSheet.create({
         resizeMode: 'cover',
         borderRadius: 10,
     },
-name:{
-  flex:1,
-  flexDirection: 'column',
-    width: 236,
-    height: 75,
-    flexShrink: 0,
-    
-},
-title:{
-    color: 'black',
-    fontFamily:'RadioCanada',
-    fontSize: 20,
-    width:319
-},
-
-
-
+    name: {
+        flex: 1,
+        flexDirection: 'column',
+        width: 236,
+        height: 75,
+        flexShrink: 0,
+    },
+    title: {
+        color: 'black',
+        fontFamily: 'RadioCanada',
+        fontSize: 20,
+        width: 319,
+    },
 });

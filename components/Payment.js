@@ -11,6 +11,7 @@ export default function Payment() {
   const [selectedAddress, setSelectedAddress] = useState(null);
   const navigation = useNavigation();
   const [pressedButtonIndex, setPressedButtonIndex] = useState(null);
+  const { username, childname, avatarSource } = route.params || {};
 
   useEffect(() => {
     if (route.params?.selectedAddress) {
@@ -19,7 +20,7 @@ export default function Payment() {
   }, [route.params?.selectedAddress]);
 
   const handleChangeAddress = () => {
-    navigation.navigate('SelectAddressScreen');
+    navigation.navigate('SelectAddressScreen', {username, childname, avatarSource});
   };
 
   return (
@@ -121,14 +122,16 @@ const styles = StyleSheet.create({
     elevation: 10,
     borderRadius: 10,
     overflow: 'hidden', 
-    shadowColor: Platform.OS === 'ios' ? 'white' : 'white',
+    shadowColor: Platform.OS === 'ios' ? 'black' : 'white',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: Platform.OS === 'ios' ? 0.1 : 0.25,
     shadowRadius: 4,
   },
   pressedButton: {
-    shadowColor: 'black',
+
+    shadowColor: Platform.OS === 'ios' ? 'black' : 'white',
     shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: Platform.OS === 'ios' ? 0.1 : 0.25,
     shadowOpacity: 1,
     shadowRadius: 7,
   },
